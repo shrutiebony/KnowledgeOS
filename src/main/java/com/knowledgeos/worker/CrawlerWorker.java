@@ -5,11 +5,11 @@ import com.knowledgeos.model.UrlQueue;
 import com.knowledgeos.repository.DocumentRepository;
 import com.knowledgeos.repository.UrlQueueRepository;
 import com.knowledgeos.service.CrawlerService;
-
+import com.knowledgeos.service.UrlNormalizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
+import com.knowledgeos.service.ChunkingService;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,11 +20,11 @@ import java.util.Optional;
 @Component
 public class CrawlerWorker {
 
-
+    private final UrlNormalizer urlNormalizer;
     private final UrlQueueRepository urlQueueRepository;
     private final CrawlerService crawlerService;
     private final DocumentRepository documentRepository;
-
+    private final ChunkingService chunkingService;
 
     @Value("${crawler.max-pages}")
     private int maxPages;
@@ -32,19 +32,21 @@ public class CrawlerWorker {
 
 
     public CrawlerWorker(
-            UrlQueueRepository urlQueueRepository,
+            UrlNormalizer urlNormalizer, UrlQueueRepository urlQueueRepository,
             CrawlerService crawlerService,
-            DocumentRepository documentRepository
+            DocumentRepository documentRepository, ChunkingService chunkingService
     ) {
+        this.urlNormalizer = urlNormalizer;
 
         this.urlQueueRepository = urlQueueRepository;
         this.crawlerService = crawlerService;
         this.documentRepository = documentRepository;
+        this.chunkingService = chunkingService;
     }
 
 
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 2000)
     public void processQueue() throws IOException {
 
 
@@ -105,7 +107,10 @@ public class CrawlerWorker {
 
 
 
-        documentRepository.save(document);
+        Document savedDocument =
+                documentRepository.save(document);
+
+        chunkingService.chunk(savedDocument);
 
 
 
@@ -122,12 +127,16 @@ public class CrawlerWorker {
         for (String link : links) {
 
 
-            if (!urlQueueRepository.existsByUrl(link)) {
+            String normalizedUrl =
+                    urlNormalizer.normalize(link);
+
+
+            if (!urlQueueRepository.existsByUrl(normalizedUrl)) {
 
 
                 UrlQueue newItem = new UrlQueue();
 
-                newItem.setUrl(link);
+                newItem.setUrl(normalizedUrl);
                 newItem.setVisited(false);
 
 
