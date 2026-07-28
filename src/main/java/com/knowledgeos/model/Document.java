@@ -1,9 +1,16 @@
 package com.knowledgeos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
-@Table(name = "document")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Document {
 
     @Id
@@ -12,54 +19,13 @@ public class Document {
 
     private String title;
 
-    private String url;
-
     @Column(columnDefinition = "TEXT")
     private String content;
 
-
-    public Document() {
-    }
-
-
+    private String url;
     public Document(String title, String url, String content) {
         this.title = title;
         this.url = url;
-        this.content = content;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public String getTitle() {
-        return title;
-    }
-
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public String getUrl() {
-        return url;
-    }
-
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-
-    public String getContent() {
-        return content;
-    }
-
-
-    public void setContent(String content) {
         this.content = content;
     }
 }

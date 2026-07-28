@@ -1,39 +1,38 @@
 package com.knowledgeos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class DocumentChunk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @ManyToOne
     private Document document;
+
+
+    private Integer chunkIndex;
+
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
 
-    public Long getId() {
-        return id;
-    }
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Column(columnDefinition = "vector(1536)")
+    private float[] embedding;
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

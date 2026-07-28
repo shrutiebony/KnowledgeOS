@@ -1,9 +1,16 @@
 package com.knowledgeos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
-@Table(name = "url_queue")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UrlQueue {
 
     @Id
@@ -12,30 +19,5 @@ public class UrlQueue {
 
     private String url;
 
-    private boolean visited = false;
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public String getUrl() {
-        return url;
-    }
-
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
+    private boolean visited;
 }

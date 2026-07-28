@@ -1,15 +1,15 @@
 package com.knowledgeos.worker;
 
+
 import com.knowledgeos.model.Document;
 import com.knowledgeos.model.UrlQueue;
 import com.knowledgeos.repository.DocumentRepository;
 import com.knowledgeos.repository.UrlQueueRepository;
+import com.knowledgeos.service.ChunkingService;
 import com.knowledgeos.service.CrawlerService;
-import com.knowledgeos.service.UrlNormalizer;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import com.knowledgeos.service.ChunkingService;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,53 +20,40 @@ import java.util.Optional;
 @Component
 public class CrawlerWorker {
 
-    private final UrlNormalizer urlNormalizer;
-    private final UrlQueueRepository urlQueueRepository;
-    private final CrawlerService crawlerService;
-    private final DocumentRepository documentRepository;
-    private final ChunkingService chunkingService;
 
-    @Value("${crawler.max-pages}")
-    private int maxPages;
+    private final UrlQueueRepository urlQueueRepository;
+
+    private final CrawlerService crawlerService;
+
+    private final DocumentRepository documentRepository;
+
+    private final ChunkingService chunkingService;
 
 
 
     public CrawlerWorker(
-            UrlNormalizer urlNormalizer, UrlQueueRepository urlQueueRepository,
+            UrlQueueRepository urlQueueRepository,
             CrawlerService crawlerService,
-            DocumentRepository documentRepository, ChunkingService chunkingService
+            DocumentRepository documentRepository,
+            ChunkingService chunkingService
     ) {
-        this.urlNormalizer = urlNormalizer;
 
         this.urlQueueRepository = urlQueueRepository;
+
         this.crawlerService = crawlerService;
+
         this.documentRepository = documentRepository;
+
         this.chunkingService = chunkingService;
     }
 
 
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 10000)
     public void processQueue() throws IOException {
 
 
         System.out.println("WORKER RUNNING");
-
-
-        long documentCount = documentRepository.count();
-
-
-        if (documentCount >= maxPages) {
-
-            System.out.println(
-                    "Crawl limit reached: "
-                            + documentCount
-                            + "/"
-                            + maxPages
-            );
-
-            return;
-        }
 
 
 
@@ -75,9 +62,7 @@ public class CrawlerWorker {
 
 
 
-        if (item.isEmpty()) {
-
-            System.out.println("No URLs in queue");
+        if(item.isEmpty()) {
 
             return;
         }
@@ -110,12 +95,17 @@ public class CrawlerWorker {
         Document savedDocument =
                 documentRepository.save(document);
 
+
+
+        // Create chunks after document gets an ID
         chunkingService.chunk(savedDocument);
+
 
 
 
         List<String> links =
                 crawlerService.extractLinks(queueItem.getUrl());
+
 
 
         System.out.println(
@@ -124,25 +114,25 @@ public class CrawlerWorker {
 
 
 
-        for (String link : links) {
+        for(String link : links) {
 
 
-            String normalizedUrl =
-                    urlNormalizer.normalize(link);
-
-
-            if (!urlQueueRepository.existsByUrl(normalizedUrl)) {
+            if(!urlQueueRepository.existsByUrl(link)) {
 
 
                 UrlQueue newItem = new UrlQueue();
 
-                newItem.setUrl(normalizedUrl);
+
+                newItem.setUrl(link);
+
+
                 newItem.setVisited(false);
 
 
                 urlQueueRepository.save(newItem);
             }
         }
+
 
 
 
