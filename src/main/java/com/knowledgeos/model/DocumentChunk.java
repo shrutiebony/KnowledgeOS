@@ -21,6 +21,7 @@ public class DocumentChunk {
 
 
     @ManyToOne
+    @JoinColumn(name="document_id")
     private Document document;
 
 

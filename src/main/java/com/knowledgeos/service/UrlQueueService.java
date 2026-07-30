@@ -11,21 +11,52 @@ public class UrlQueueService {
 
     private final UrlQueueRepository urlQueueRepository;
 
+    private final UrlNormalizer urlNormalizer;
 
-    public UrlQueueService(UrlQueueRepository urlQueueRepository) {
+
+
+    public UrlQueueService(
+            UrlQueueRepository urlQueueRepository,
+            UrlNormalizer urlNormalizer
+    ) {
+
         this.urlQueueRepository = urlQueueRepository;
+        this.urlNormalizer = urlNormalizer;
+
     }
+
 
 
     public void addUrl(String url) {
 
+
+        String normalizedUrl =
+                urlNormalizer.normalize(url);
+
+
+
+        if(urlQueueRepository.existsByUrl(normalizedUrl)) {
+
+            System.out.println(
+                    "URL already exists: " + normalizedUrl
+            );
+
+            return;
+        }
+
+
+
         UrlQueue item = new UrlQueue();
 
-        item.setUrl(url);
+
+        item.setUrl(normalizedUrl);
+
         item.setVisited(false);
+
 
         urlQueueRepository.save(item);
     }
+
 
 
     public UrlQueue getNextUrl() {
@@ -36,8 +67,10 @@ public class UrlQueueService {
     }
 
 
+
     public long size() {
 
         return urlQueueRepository.count();
+
     }
 }

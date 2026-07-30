@@ -1,7 +1,7 @@
 package com.knowledgeos.service;
 
+import com.knowledgeos.model.CrawledPage;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +13,28 @@ import java.util.List;
 public class CrawlerService {
 
 
-    public String crawl(String url) {
+    public CrawledPage crawl(String url) {
 
         try {
 
-            return Jsoup.connect(url)
-                    .get()
-                    .text();
+            org.jsoup.nodes.Document document =
+                    Jsoup.connect(url).get();
 
-        } catch (Exception e) {
 
-            return "Failed to crawl: " + url;
+            return new CrawledPage(
+                    document.title(),
+                    document.text()
+            );
+
+
+        } catch(Exception e){
+
+            return new CrawledPage(
+                    "Failed",
+                    ""
+            );
         }
     }
-
 
 
     public List<String> extractLinks(String url) {
@@ -35,8 +43,8 @@ public class CrawlerService {
 
         try {
 
-            Document document = Jsoup.connect(url)
-                    .get();
+            org.jsoup.nodes.Document document =
+                    Jsoup.connect(url).get();
 
 
             for (Element link : document.select("a[href]")) {
@@ -49,7 +57,9 @@ public class CrawlerService {
 
         } catch (Exception e) {
 
-            System.out.println("Failed extracting links from: " + url);
+            System.out.println(
+                    "Failed extracting links from: " + url
+            );
         }
 
 

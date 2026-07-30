@@ -1,6 +1,7 @@
 package com.knowledgeos.controller;
 
 
+import com.knowledgeos.model.CrawledPage;
 import com.knowledgeos.model.Document;
 import com.knowledgeos.model.UrlQueue;
 import com.knowledgeos.repository.DocumentRepository;
@@ -68,20 +69,18 @@ public class DocumentController {
         }
 
 
-        String content =
+        CrawledPage page =
                 crawlerService.crawl(queueItem.getUrl());
 
 
-
         Document document = new Document(
-                "Crawled Document",
+                page.getTitle(),
                 queueItem.getUrl(),
-                content
+                page.getContent()
         );
 
 
         documentRepository.save(document);
-
 
 
         queueItem.setVisited(true);

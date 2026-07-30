@@ -2,6 +2,7 @@ package com.knowledgeos.controller;
 
 
 import com.knowledgeos.model.DocumentChunk;
+import com.knowledgeos.model.SearchResult;
 import com.knowledgeos.service.SearchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class SearchController {
 
 
     @GetMapping
-    public List<DocumentChunk> search(
+    public List<SearchResult> search(
             @RequestParam String query
     ){
 
