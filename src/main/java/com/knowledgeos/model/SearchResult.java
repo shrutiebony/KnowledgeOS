@@ -2,31 +2,40 @@ package com.knowledgeos.model;
 
 public class SearchResult {
 
-    private final String title;
+    private Long id;
+    private String title;
+    private String snippet;
 
-    private final String url;
+    public SearchResult() {
+    }
 
-    private final String snippet;
-
-    public SearchResult(
-            String title,
-            String url,
-            String snippet
-    ) {
+    public SearchResult(Long id, String title, String snippet) {
+        this.id = id;
         this.title = title;
-        this.url = url;
         this.snippet = snippet;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getUrl() {
-        return url;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSnippet() {
         return snippet;
+    }
+
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
     }
 }

@@ -146,7 +146,7 @@ public class CrawlerWorker {
 
                 savedDocument =
                         documentRepository.save(document);
-
+                chunkingService.chunk(savedDocument);
 
 
             } catch(DataIntegrityViolationException e) {

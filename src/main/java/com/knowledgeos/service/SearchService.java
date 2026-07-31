@@ -1,18 +1,15 @@
 package com.knowledgeos.service;
 
-import com.knowledgeos.model.DocumentChunk;
 import com.knowledgeos.model.SearchResult;
 import com.knowledgeos.repository.DocumentChunkRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class SearchService {
 
     private final DocumentChunkRepository repository;
-
     private final EmbeddingService embeddingService;
 
     public SearchService(
@@ -25,25 +22,28 @@ public class SearchService {
 
     public List<SearchResult> search(String query) {
 
-        float[] embedding =
-                embeddingService.generateEmbedding(query);
+        float[] vector = embeddingService.generateEmbedding(query);
 
-        List<DocumentChunk> chunks =
-                repository.findSimilarChunks(embedding);
+        String embedding = convert(vector);
 
-        List<SearchResult> results = new ArrayList<>();
+        return repository.searchSimilar(embedding);
+    }
 
-        for (DocumentChunk chunk : chunks) {
+    private String convert(float[] vector) {
 
-            results.add(
-                    new SearchResult(
-                            chunk.getDocument().getTitle(),
-                            chunk.getDocument().getUrl(),
-                            chunk.getContent()
-                    )
-            );
+        StringBuilder sb = new StringBuilder("[");
+
+        for (int i = 0; i < vector.length; i++) {
+
+            sb.append(vector[i]);
+
+            if (i < vector.length - 1) {
+                sb.append(",");
+            }
         }
 
-        return results;
+        sb.append("]");
+
+        return sb.toString();
     }
 }
