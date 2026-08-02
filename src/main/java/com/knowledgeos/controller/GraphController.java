@@ -1,38 +1,51 @@
 package com.knowledgeos.controller;
 
+import com.knowledgeos.model.DocumentLink;
+import com.knowledgeos.repository.DocumentLinkRepository;
 import com.knowledgeos.service.HitsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/graph")
 public class GraphController {
 
-
     private final HitsService hitsService;
+    private final DocumentLinkRepository documentLinkRepository;
 
 
-    public GraphController(HitsService hitsService){
-        this.hitsService=hitsService;
+    public GraphController(
+            HitsService hitsService,
+            DocumentLinkRepository documentLinkRepository
+    ){
+        this.hitsService = hitsService;
+        this.documentLinkRepository = documentLinkRepository;
     }
-
 
 
     @GetMapping("/hits")
     public Object hits(){
 
-        Map<Long, List<Long>> graph=new HashMap<>();
+        Map<Long, List<Long>> graph = new HashMap<>();
 
-        graph.put(1L,List.of(2L,3L));
-        graph.put(2L,List.of(3L));
-        graph.put(3L,List.of(1L));
+        List<DocumentLink> links = documentLinkRepository.findAll();
 
 
-        return hitsService.calculateHits(graph,20);
+        for(DocumentLink link : links){
+
+            Long source = link.getSource().getId();
+            Long target = link.getTarget().getId();
+
+            graph
+                    .computeIfAbsent(source, k -> new ArrayList<>())
+                    .add(target);
+
+            graph.putIfAbsent(target, new ArrayList<>());
+        }
+
+
+        return hitsService.calculateHits(graph, 20);
     }
 }

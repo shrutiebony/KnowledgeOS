@@ -23,7 +23,6 @@ public class EmbeddingMigrationService {
     }
 
 
-
     public void generateMissingEmbeddings() {
 
 
@@ -31,12 +30,7 @@ public class EmbeddingMigrationService {
                 repository.findByEmbeddingIsNull();
 
 
-        System.out.println(
-                "Missing embeddings: " + chunks.size()
-        );
-
-
-        for(DocumentChunk chunk : chunks) {
+        for (DocumentChunk chunk : chunks) {
 
 
             float[] embedding =
@@ -53,8 +47,5 @@ public class EmbeddingMigrationService {
         repository.saveAll(chunks);
 
 
-        System.out.println(
-                "Embedding migration completed"
-        );
     }
 }

@@ -55,7 +55,6 @@ public class CrawlerWorker {
     public void processQueue() {
 
 
-        System.out.println("WORKER RUNNING");
 
 
         Optional<UrlQueue> item =
@@ -175,9 +174,6 @@ public class CrawlerWorker {
 
 
 
-            System.out.println(
-                    "Found links: " + links.size()
-            );
 
 
 
@@ -234,9 +230,7 @@ public class CrawlerWorker {
 
 
 
-            System.out.println(
-                    "Finished: " + normalizedUrl
-            );
+
 
 
 

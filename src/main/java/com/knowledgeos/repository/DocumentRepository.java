@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
+    Optional<Document> findByUrl(String url);
+
     boolean existsByUrl(String url);
 
 }

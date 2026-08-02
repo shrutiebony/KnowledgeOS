@@ -55,8 +55,6 @@ public class ChunkingService {
 
         repository.saveAll(chunks);
 
-        System.out.println(
-                "Created chunks: " + chunks.size()
-        );
+
     }
 }
