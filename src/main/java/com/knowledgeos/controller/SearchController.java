@@ -1,6 +1,6 @@
 package com.knowledgeos.controller;
 
-import com.knowledgeos.model.SearchResult;
+import com.knowledgeos.model.RagSearchResult;
 import com.knowledgeos.service.SearchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ public class SearchController {
     }
 
     @GetMapping
-    public List<SearchResult> search(
+    public List<RagSearchResult> search(
             @RequestParam String query
     ) {
         return searchService.search(query);

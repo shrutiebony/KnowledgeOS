@@ -137,26 +137,18 @@ public class CrawlerWorker {
             );
 
 
-
             Document savedDocument;
-
 
             try {
 
+                savedDocument = documentRepository.save(document);
 
-                savedDocument =
-                        documentRepository.save(document);
-                chunkingService.chunk(savedDocument);
-
-
-            } catch(DataIntegrityViolationException e) {
-
+            } catch (DataIntegrityViolationException e) {
 
                 System.out.println(
                         "Duplicate document skipped: "
                                 + normalizedUrl
                 );
-
 
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
