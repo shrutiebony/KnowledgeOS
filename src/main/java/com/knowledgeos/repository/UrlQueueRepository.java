@@ -14,4 +14,11 @@ public interface UrlQueueRepository
 
     boolean existsByUrl(String url);
 
+
+    long countByVisitedFalse();
+
+    long countByVisitedTrue();
+
+    long deleteByVisitedFalse();
+
 }

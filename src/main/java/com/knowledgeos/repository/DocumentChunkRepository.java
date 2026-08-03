@@ -15,6 +15,8 @@ public interface DocumentChunkRepository
     List<DocumentChunk> findByEmbeddingIsNull();
 
 
+    long countByEmbeddingIsNull();
+
 
     @Query(value = """
             SELECT 
@@ -24,7 +26,7 @@ public interface DocumentChunkRepository
                 dc.embedding
             FROM document_chunk dc
             ORDER BY dc.embedding <-> CAST(:embedding AS vector)
-            LIMIT 5
+            LIMIT 20
             """,
             nativeQuery = true)
     List<DocumentChunk> searchSimilar(

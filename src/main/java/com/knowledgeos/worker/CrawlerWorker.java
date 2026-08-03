@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,15 @@ public class CrawlerWorker {
     @Scheduled(fixedDelay = 10000)
     public void processQueue() {
 
+        crawlNext();
+    }
 
+
+
+    public String crawlNext() {
+
+
+        System.out.println("WORKER RUNNING");
 
 
         Optional<UrlQueue> item =
@@ -63,7 +72,7 @@ public class CrawlerWorker {
 
 
         if(item.isEmpty()) {
-            return;
+            return "Queue empty";
         }
 
 
@@ -84,9 +93,6 @@ public class CrawlerWorker {
 
 
 
-            /*
-             * Skip already crawled documents
-             */
             if(documentRepository.existsByUrl(normalizedUrl)) {
 
 
@@ -98,14 +104,11 @@ public class CrawlerWorker {
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Already crawled: " + normalizedUrl;
             }
 
 
 
-            /*
-             * Crawl webpage
-             */
             CrawledPage page =
                     crawlerService.crawl(normalizedUrl);
 
@@ -123,7 +126,7 @@ public class CrawlerWorker {
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Empty content: " + normalizedUrl;
             }
 
 
@@ -152,28 +155,25 @@ public class CrawlerWorker {
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Duplicate document skipped: " + normalizedUrl;
             }
 
 
 
 
-            /*
-             * Create chunks + embeddings
-             */
             chunkingService.chunk(savedDocument);
 
 
 
 
-            /*
-             * Discover new links
-             */
             List<String> links =
                     crawlerService.extractLinks(normalizedUrl);
 
 
 
+            System.out.println(
+                    "Found links: " + links.size()
+            );
 
 
 
@@ -183,6 +183,11 @@ public class CrawlerWorker {
 
                 String normalizedLink =
                         urlNormalizer.normalize(link);
+
+
+                if(!sameHost(normalizedUrl, normalizedLink)) {
+                    continue;
+                }
 
 
 
@@ -218,9 +223,6 @@ public class CrawlerWorker {
 
 
 
-            /*
-             * Mark queue item completed
-             */
             queueItem.setUrl(normalizedUrl);
 
             queueItem.setVisited(true);
@@ -230,7 +232,11 @@ public class CrawlerWorker {
 
 
 
+            System.out.println(
+                    "Finished: " + normalizedUrl
+            );
 
+            return "Crawled: " + normalizedUrl;
 
 
 
@@ -249,6 +255,23 @@ public class CrawlerWorker {
             queueItem.setVisited(true);
 
             urlQueueRepository.save(queueItem);
+
+            return "Crawler failed: " + normalizedUrl;
+        }
+    }
+
+
+
+    private boolean sameHost(String urlA, String urlB) {
+
+        try {
+            String hostA = new URI(urlA).getHost();
+            String hostB = new URI(urlB).getHost();
+
+            return hostA != null && hostA.equalsIgnoreCase(hostB);
+
+        } catch (Exception e) {
+            return false;
         }
     }
 }

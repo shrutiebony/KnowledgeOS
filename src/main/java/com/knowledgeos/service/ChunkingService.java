@@ -6,10 +6,14 @@ import com.knowledgeos.repository.DocumentChunkRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class ChunkingService {
+
+    private static final int CHUNK_SIZE_WORDS = 200;
+    private static final int OVERLAP_WORDS = 40;
 
     private final DocumentChunkRepository repository;
     private final EmbeddingService embeddingService;
@@ -26,35 +30,59 @@ public class ChunkingService {
 
         String content = document.getContent();
 
-        int chunkSize = 500;
+        if (content == null || content.isBlank()) {
+            System.out.println(
+                    "Skipping chunking: document " + document.getId() + " has no content"
+            );
+            return;
+        }
+
+        List<String> words = Arrays.asList(content.trim().split("\\s+"));
 
         List<DocumentChunk> chunks = new ArrayList<>();
+        List<String> chunkTexts = new ArrayList<>();
 
-        for (int i = 0; i < content.length(); i += chunkSize) {
+        int step = Math.max(1, CHUNK_SIZE_WORDS - OVERLAP_WORDS);
+        int start = 0;
 
-            int end = Math.min(
-                    i + chunkSize,
-                    content.length()
-            );
+        while (start < words.size()) {
 
-            String text = content.substring(i, end);
+            int end = Math.min(start + CHUNK_SIZE_WORDS, words.size());
+
+            String text = String.join(" ", words.subList(start, end));
 
             DocumentChunk chunk = new DocumentChunk();
-
             chunk.setDocument(document);
-
             chunk.setContent(text);
 
-            float[] embedding =
-                    embeddingService.generateEmbedding(text);
-
-            chunk.setEmbedding(embedding);
-
             chunks.add(chunk);
+            chunkTexts.add(text);
+
+            if (end == words.size()) {
+                break;
+            }
+
+            start += step;
+        }
+
+        try {
+            List<float[]> embeddings = embeddingService.generateEmbeddingsBatch(chunkTexts);
+
+            for (int i = 0; i < chunks.size(); i++) {
+                chunks.get(i).setEmbedding(embeddings.get(i));
+            }
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Batch embedding failed for document " + document.getId() +
+                            " (" + chunks.size() + " chunks): " + e.getMessage()
+            );
         }
 
         repository.saveAll(chunks);
 
-
+        System.out.println(
+                "Created chunks: " + chunks.size() + " for document " + document.getId()
+        );
     }
 }
