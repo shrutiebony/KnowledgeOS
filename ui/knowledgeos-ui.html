@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KnowledgeOS — Graph Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg: #0B0E14;
+            --panel: #10141D;
+            --panel-border: #1E2430;
+            --text: #E8E6E1;
+            --text-dim: #7A8194;
+            --cyan: #4FD1C5;
+            --amber: #E8A33D;
+            --teal: #3DBFAE;
+            --violet: #8B7FD6;
+            --slate: #6B7280;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--panel);
+            border-right: 1px solid var(--panel-border);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span { color: var(--cyan); }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 13px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        input[type=text] {
+            width: 100%;
+            background: #161B26;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        input[type=text]:focus { border-color: var(--cyan); }
+
+        button {
+            width: 100%;
+            margin-top: 8px;
+            background: var(--cyan);
+            color: #0B0E14;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        button:hover { opacity: 0.85; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        button.secondary {
+            background: transparent;
+            border: 1px solid var(--panel-border);
+            color: var(--text);
+        }
+
+        .status-line {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 8px;
+            min-height: 16px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: #161B26;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--cyan);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .result-card {
+            background: #161B26;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .result-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .result-snippet {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.5;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .result-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--cyan);
+            margin-top: 6px;
+        }
+
+        .graph-area {
+            position: relative;
+            background: radial-gradient(ellipse at center, #0F1420 0%, #0B0E14 70%);
+        }
+
+        #network { width: 100%; height: 100%; }
+
+        .empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--text-dim);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .empty-state .big {
+            font-size: 28px;
+            color: #2A3040;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar">
+        <div>
+            <h1>Knowledge<span>OS</span></h1>
+            <div class="subtitle">Crawl a site, search it by meaning, explore what it knows as a graph.</div>
+        </div>
+
+        <div>
+            <div class="section-label">Crawl a URL</div>
+            <input type="text" id="urlInput" placeholder="https://example.com/page">
+            <button onclick="addUrl()">Add to crawl queue</button>
+            <div class="status-line" id="crawlStatus"></div>
+        </div>
+
+        <div>
+            <div class="section-label">Search</div>
+            <input type="text" id="searchInput" placeholder="Ask a question or enter keywords" onkeydown="if(event.key==='Enter') runSearch()">
+            <button onclick="runSearch()">Search</button>
+            <div class="results" id="results"></div>
+        </div>
+
+        <div>
+            <div class="section-label">Pipeline status</div>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="statDocs">—</div>
+                    <div class="stat-label">Documents</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statChunks">—</div>
+                    <div class="stat-label">Chunks embedded</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statEntities">—</div>
+                    <div class="stat-label">Nodes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statEdges">—</div>
+                    <div class="stat-label">Connections</div>
+                </div>
+            </div>
+            <button class="secondary" onclick="refreshAll()" style="margin-top:12px;">Refresh</button>
+        </div>
+
+        <div>
+            <div class="section-label">Page authority (HITS)</div>
+            <button onclick="computeRankings()" id="computeBtn">Compute rankings</button>
+            <div class="status-line" id="rankStatus"></div>
+            <div id="rankResults" style="margin-top:10px;"></div>
+        </div>
+
+        <div>
+            <div class="section-label">Node types</div>
+            <div class="legend">
+                <div class="legend-item"><span class="dot" style="background:#E8A33D"></span> Person</div>
+                <div class="legend-item"><span class="dot" style="background:#3DBFAE"></span> Organization</div>
+                <div class="legend-item"><span class="dot" style="background:#8B7FD6"></span> Technology</div>
+                <div class="legend-item"><span class="dot" style="background:#6B7280"></span> Other</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="graph-area">
+        <div id="network"></div>
+        <div class="empty-state" id="emptyState">
+            <div class="big">◌</div>
+            No nodes extracted yet.<br>Crawl a site and check back shortly.
+        </div>
+    </div>
+</div>
+
+<script>
+    const API = "http://localhost:8080";
+
+    const typeColors = {
+        PERSON: "#E8A33D",
+        ORGANIZATION: "#3DBFAE",
+        TECHNOLOGY: "#8B7FD6",
+        OTHER: "#6B7280"
+    };
+
+    let network = null;
+    let nodesDataSet = null;
+    let edgesDataSet = null;
+    let allNodeIds = [];
+
+    async function addUrl() {
+        const url = document.getElementById("urlInput").value.trim();
+        const statusEl = document.getElementById("crawlStatus");
+        if (!url) return;
+
+        statusEl.textContent = "Adding...";
+        try {
+            const res = await fetch(`${API}/queue/add?url=${encodeURIComponent(url)}`);
+            const text = await res.text();
+            statusEl.textContent = text + " — crawling runs automatically every 10s.";
+            document.getElementById("urlInput").value = "";
+        } catch (e) {
+            statusEl.textContent = "Couldn't reach the backend. Is it running on :8080?";
+        }
+    }
+
+    async function runSearch() {
+        const query = document.getElementById("searchInput").value.trim();
+        const resultsEl = document.getElementById("results");
+        if (!query) return;
+
+        resultsEl.innerHTML = `<div class="status-line">Searching...</div>`;
+
+        try {
+            const res = await fetch(`${API}/search?q=${encodeURIComponent(query)}`);
+            if (!res.ok) throw new Error("Search failed");
+            const data = await res.json();
+
+            if (!data.length) {
+                resultsEl.innerHTML = `<div class="status-line">No results yet — try crawling more pages.</div>`;
+                return;
+            }
+
+            resultsEl.innerHTML = data.map(r => `
+      <div class="result-card">
+        <div class="result-title">${escapeHtml(r.title || "Untitled")}</div>
+        <div class="result-snippet">${escapeHtml((r.snippet || "").slice(0, 180))}...</div>
+        <div class="result-score">score ${r.score.toFixed(4)}</div>
+      </div>
+    `).join("");
+        } catch (e) {
+            resultsEl.innerHTML = `<div class="status-line">Couldn't reach the backend.</div>`;
+        }
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    async function refreshStatus() {
+        try {
+            const res = await fetch(`${API}/status`);
+            const data = await res.json();
+            document.getElementById("statDocs").textContent = data.documentsIndexed;
+            document.getElementById("statChunks").textContent =
+                (data.chunksTotal - data.chunksMissingEmbedding) + "/" + data.chunksTotal;
+        } catch (e) { /* backend not up yet - stay silent, don't spam errors */ }
+    }
+
+    async function refreshGraph() {
+        try {
+            const res = await fetch(`${API}/graph`);
+            const data = await res.json();
+
+            document.getElementById("statEntities").textContent = data.nodes.length;
+            document.getElementById("statEdges").textContent = data.edges.length;
+
+            document.getElementById("emptyState").style.display =
+                data.nodes.length === 0 ? "block" : "none";
+
+            if (data.nodes.length === 0) return;
+
+            const maxFreq = Math.max(...data.nodes.map(n => n.frequency || 1));
+
+            const visNodes = data.nodes.map(n => ({
+                id: n.id,
+                label: n.name,
+                color: {
+                    background: typeColors[n.type] || typeColors.OTHER,
+                    border: "#0B0E14",
+                    highlight: { background: typeColors[n.type] || typeColors.OTHER, border: "#4FD1C5" }
+                },
+                size: 10 + 18 * Math.sqrt((n.frequency || 1) / maxFreq),
+                font: { color: "#E8E6E1", size: 12, face: "Inter" }
+            }));
+
+            const visEdges = data.edges.map((e, i) => ({
+                id: i,
+                from: e.source,
+                to: e.target,
+                color: { color: "rgba(79, 209, 197, 0.25)", highlight: "#4FD1C5" },
+                smooth: { type: "curvedCW", roundness: 0.15 }
+            }));
+
+            allNodeIds = visNodes.map(n => n.id);
+
+            if (!network) {
+                nodesDataSet = new vis.DataSet(visNodes);
+                edgesDataSet = new vis.DataSet(visEdges);
+
+                network = new vis.Network(
+                    document.getElementById("network"),
+                    { nodes: nodesDataSet, edges: edgesDataSet },
+                    {
+                        physics: {
+                            barnesHut: { gravitationalConstant: -3000, springLength: 120, springConstant: 0.02 },
+                            stabilization: { iterations: 150 }
+                        },
+                        interaction: { hover: true, tooltipDelay: 100 },
+                        edges: { arrows: { to: { enabled: true, scaleFactor: 0.4 } }, width: 1 }
+                    }
+                );
+
+                network.on("click", function (params) {
+                    if (params.nodes.length > 0) {
+                        highlightNeighborhood(params.nodes[0]);
+                    } else {
+                        resetHighlight();
+                    }
+                });
+            } else {
+                nodesDataSet.clear(); nodesDataSet.add(visNodes);
+                edgesDataSet.clear(); edgesDataSet.add(visEdges);
+            }
+        } catch (e) { /* backend not up yet */ }
+    }
+
+    function highlightNeighborhood(nodeId) {
+        const connected = new Set(network.getConnectedNodes(nodeId));
+        connected.add(nodeId);
+
+        nodesDataSet.update(allNodeIds.map(id => ({
+            id,
+            opacity: connected.has(id) ? 1 : 0.12
+        })));
+    }
+
+    function resetHighlight() {
+        nodesDataSet.update(allNodeIds.map(id => ({ id, opacity: 1 })));
+    }
+
+    async function computeRankings() {
+        const btn = document.getElementById("computeBtn");
+        const statusEl = document.getElementById("rankStatus");
+        const resultsEl = document.getElementById("rankResults");
+
+        btn.disabled = true;
+        statusEl.textContent = "Running HITS over the crawled link graph...";
+
+        try {
+            const computeRes = await fetch(`${API}/rank/compute`);
+            const computeData = await computeRes.json();
+            statusEl.textContent =
+                `Scored ${computeData.documentsScored} pages, ${computeData.edgesUsed} edges, ${computeData.iterations} iterations.`;
+
+            const [authRes, hubRes] = await Promise.all([
+                fetch(`${API}/rank/top?by=authority&limit=5`),
+                fetch(`${API}/rank/top?by=hub&limit=5`)
+            ]);
+            const authorities = await authRes.json();
+            const hubs = await hubRes.json();
+
+            resultsEl.innerHTML = `
+      <div class="section-label" style="margin-top:12px;">Top authorities</div>
+      ${authorities.map(d => `
+        <div class="result-card">
+          <div class="result-title">${escapeHtml(d.title || d.url)}</div>
+          <div class="result-score">authority ${(d.authorityScore ?? 0).toFixed(4)}</div>
+        </div>
+      `).join("")}
+      <div class="section-label" style="margin-top:12px;">Top hubs</div>
+      ${hubs.map(d => `
+        <div class="result-card">
+          <div class="result-title">${escapeHtml(d.title || d.url)}</div>
+          <div class="result-score">hub ${(d.hubScore ?? 0).toFixed(4)}</div>
+        </div>
+      `).join("")}
+    `;
+        } catch (e) {
+            statusEl.textContent = "Couldn't reach the backend.";
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function refreshAll() {
+        refreshStatus();
+        refreshGraph();
+    }
+
+    refreshAll();
+    setInterval(refreshAll, 15000);
+</script>
+
+</body>
+</html>
