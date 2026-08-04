@@ -3,8 +3,10 @@ package com.knowledgeos.worker;
 
 import com.knowledgeos.model.CrawledPage;
 import com.knowledgeos.model.Document;
+import com.knowledgeos.model.PageLink;
 import com.knowledgeos.model.UrlQueue;
 import com.knowledgeos.repository.DocumentRepository;
+import com.knowledgeos.repository.PageLinkRepository;
 import com.knowledgeos.repository.UrlQueueRepository;
 import com.knowledgeos.service.ChunkingService;
 import com.knowledgeos.service.CrawlerService;
@@ -14,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +35,8 @@ public class CrawlerWorker {
 
     private final UrlNormalizer urlNormalizer;
 
+    private final PageLinkRepository pageLinkRepository;
+
 
 
     public CrawlerWorker(
@@ -39,7 +44,8 @@ public class CrawlerWorker {
             CrawlerService crawlerService,
             DocumentRepository documentRepository,
             ChunkingService chunkingService,
-            UrlNormalizer urlNormalizer
+            UrlNormalizer urlNormalizer,
+            PageLinkRepository pageLinkRepository
     ) {
 
         this.urlQueueRepository = urlQueueRepository;
@@ -47,12 +53,28 @@ public class CrawlerWorker {
         this.documentRepository = documentRepository;
         this.chunkingService = chunkingService;
         this.urlNormalizer = urlNormalizer;
+        this.pageLinkRepository = pageLinkRepository;
     }
 
 
 
     @Scheduled(fixedDelay = 10000)
     public void processQueue() {
+
+        crawlNext();
+    }
+
+
+
+    /**
+     * Pops the next unvisited URL off the queue and runs it through the full
+     * crawl -> save -> chunk -> embed pipeline. Public so it can be called
+     * both by the scheduler above and on-demand (e.g. from a controller),
+     * instead of having two separate, divergent copies of this logic.
+     *
+     * @return a short human-readable status message describing what happened
+     */
+    public String crawlNext() {
 
 
         System.out.println("WORKER RUNNING");
@@ -64,7 +86,7 @@ public class CrawlerWorker {
 
 
         if(item.isEmpty()) {
-            return;
+            return "Queue empty";
         }
 
 
@@ -99,7 +121,7 @@ public class CrawlerWorker {
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Already crawled: " + normalizedUrl;
             }
 
 
@@ -124,7 +146,7 @@ public class CrawlerWorker {
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Empty content: " + normalizedUrl;
             }
 
 
@@ -137,31 +159,23 @@ public class CrawlerWorker {
             );
 
 
-
             Document savedDocument;
-
 
             try {
 
+                savedDocument = documentRepository.save(document);
 
-                savedDocument =
-                        documentRepository.save(document);
-                chunkingService.chunk(savedDocument);
-
-
-            } catch(DataIntegrityViolationException e) {
-
+            } catch (DataIntegrityViolationException e) {
 
                 System.out.println(
                         "Duplicate document skipped: "
                                 + normalizedUrl
                 );
 
-
                 queueItem.setVisited(true);
                 urlQueueRepository.save(queueItem);
 
-                return;
+                return "Duplicate document skipped: " + normalizedUrl;
             }
 
 
@@ -195,6 +209,21 @@ public class CrawlerWorker {
 
                 String normalizedLink =
                         urlNormalizer.normalize(link);
+
+
+                // Stay on the same site the crawl started from. Without this,
+                // the crawler follows every outbound link on every page and
+                // the queue grows unboundedly across the entire web.
+                if(!sameHost(normalizedUrl, normalizedLink)) {
+                    continue;
+                }
+
+
+                // Persist the hyperlink itself, not just the crawl queue
+                // decision - this is the graph HITS/PageRank later run over.
+                // Recorded regardless of whether the target is already
+                // queued/visited, since the edge exists either way.
+                pageLinkRepository.save(new PageLink(savedDocument, normalizedLink));
 
 
 
@@ -246,6 +275,8 @@ public class CrawlerWorker {
                     "Finished: " + normalizedUrl
             );
 
+            return "Crawled: " + normalizedUrl;
+
 
 
         } catch(Exception e) {
@@ -263,6 +294,23 @@ public class CrawlerWorker {
             queueItem.setVisited(true);
 
             urlQueueRepository.save(queueItem);
+
+            return "Crawler failed: " + normalizedUrl;
+        }
+    }
+
+
+
+    private boolean sameHost(String urlA, String urlB) {
+
+        try {
+            String hostA = new URI(urlA).getHost();
+            String hostB = new URI(urlB).getHost();
+
+            return hostA != null && hostA.equalsIgnoreCase(hostB);
+
+        } catch (Exception e) {
+            return false;
         }
     }
 }
