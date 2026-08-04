@@ -3,8 +3,10 @@ package com.knowledgeos.worker;
 
 import com.knowledgeos.model.CrawledPage;
 import com.knowledgeos.model.Document;
+import com.knowledgeos.model.PageLink;
 import com.knowledgeos.model.UrlQueue;
 import com.knowledgeos.repository.DocumentRepository;
+import com.knowledgeos.repository.PageLinkRepository;
 import com.knowledgeos.repository.UrlQueueRepository;
 import com.knowledgeos.service.ChunkingService;
 import com.knowledgeos.service.CrawlerService;
@@ -33,6 +35,8 @@ public class CrawlerWorker {
 
     private final UrlNormalizer urlNormalizer;
 
+    private final PageLinkRepository pageLinkRepository;
+
 
 
     public CrawlerWorker(
@@ -40,7 +44,8 @@ public class CrawlerWorker {
             CrawlerService crawlerService,
             DocumentRepository documentRepository,
             ChunkingService chunkingService,
-            UrlNormalizer urlNormalizer
+            UrlNormalizer urlNormalizer,
+            PageLinkRepository pageLinkRepository
     ) {
 
         this.urlQueueRepository = urlQueueRepository;
@@ -48,6 +53,7 @@ public class CrawlerWorker {
         this.documentRepository = documentRepository;
         this.chunkingService = chunkingService;
         this.urlNormalizer = urlNormalizer;
+        this.pageLinkRepository = pageLinkRepository;
     }
 
 
@@ -188,6 +194,9 @@ public class CrawlerWorker {
                 if(!sameHost(normalizedUrl, normalizedLink)) {
                     continue;
                 }
+
+
+                pageLinkRepository.save(new PageLink(savedDocument, normalizedLink));
 
 
 

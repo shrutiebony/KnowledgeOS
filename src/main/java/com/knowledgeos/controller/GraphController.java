@@ -1,120 +1,55 @@
 package com.knowledgeos.controller;
 
-import com.knowledgeos.model.DocumentLink;
-import com.knowledgeos.model.RankingScore;
-import com.knowledgeos.repository.DocumentLinkRepository;
-import com.knowledgeos.repository.RankingScoreRepository;
-import com.knowledgeos.service.HitsService;
+import com.knowledgeos.model.GraphEdge;
+import com.knowledgeos.model.GraphEntity;
+import com.knowledgeos.model.GraphNode;
+import com.knowledgeos.model.GraphResponse;
+import com.knowledgeos.model.Relationship;
+import com.knowledgeos.repository.GraphEntityRepository;
+import com.knowledgeos.repository.RelationshipRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/graph")
+@CrossOrigin(origins = "*")
 public class GraphController {
 
-    private final HitsService hitsService;
-    private final DocumentLinkRepository documentLinkRepository;
-    private final RankingScoreRepository rankingScoreRepository;
-
+    private final GraphEntityRepository entityRepository;
+    private final RelationshipRepository relationshipRepository;
 
     public GraphController(
-            HitsService hitsService,
-            DocumentLinkRepository documentLinkRepository,
-            RankingScoreRepository rankingScoreRepository
-    ){
-        this.hitsService = hitsService;
-        this.documentLinkRepository = documentLinkRepository;
-        this.rankingScoreRepository = rankingScoreRepository;
+            GraphEntityRepository entityRepository,
+            RelationshipRepository relationshipRepository
+    ) {
+        this.entityRepository = entityRepository;
+        this.relationshipRepository = relationshipRepository;
     }
 
+    @GetMapping("/graph")
+    public GraphResponse graph() {
 
+        List<GraphEntity> entities = entityRepository.findTop150ByOrderByFrequencyDesc();
 
-    @GetMapping("/hits")
-    public Object hits(){
+        List<Long> ids = entities.stream().map(GraphEntity::getId).toList();
 
-        Map<Long,List<Long>> graph = new HashMap<>();
+        List<Relationship> relationships =
+                relationshipRepository.findBySource_IdInAndTarget_IdIn(ids, ids);
 
-        List<DocumentLink> links =
-                documentLinkRepository.findAll();
+        List<GraphNode> nodes = entities.stream()
+                .map(e -> new GraphNode(e.getId(), e.getName(), e.getType(), e.getFrequency()))
+                .toList();
 
+        List<GraphEdge> edges = relationships.stream()
+                .map(r -> new GraphEdge(
+                        r.getSource().getId(),
+                        r.getTarget().getId(),
+                        r.getRelationType()
+                ))
+                .toList();
 
-
-        for(DocumentLink link : links){
-
-            Long source =
-                    link.getSource().getId();
-
-            Long target =
-                    link.getTarget().getId();
-
-
-            graph
-                    .computeIfAbsent(
-                            source,
-                            k -> new ArrayList<>()
-                    )
-                    .add(target);
-
-
-            graph.putIfAbsent(
-                    target,
-                    new ArrayList<>()
-            );
-        }
-
-
-
-        Map<Long,double[]> scores =
-                hitsService.calculateHits(
-                        graph,
-                        20
-                );
-
-
-
-        rankingScoreRepository.deleteAll();
-
-
-
-        List<RankingScore> rankingScores =
-                new ArrayList<>();
-
-
-        for(Map.Entry<Long,double[]> entry :
-                scores.entrySet()){
-
-
-            RankingScore score =
-                    new RankingScore();
-
-
-            score.setDocumentId(
-                    entry.getKey()
-            );
-
-
-            score.setAuthorityScore(
-                    entry.getValue()[0]
-            );
-
-
-            score.setHubScore(
-                    entry.getValue()[1]
-            );
-
-
-            rankingScores.add(score);
-        }
-
-
-
-        rankingScoreRepository.saveAll(
-                rankingScores
-        );
-
-
-        return scores;
+        return new GraphResponse(nodes, edges);
     }
 }

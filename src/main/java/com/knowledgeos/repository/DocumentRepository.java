@@ -16,6 +16,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     boolean existsByUrl(String url);
 
+    List<Document> findTop5ByEntitiesExtractedFalseAndContentIsNotNull();
 
     @Query("""
         SELECT d

@@ -29,6 +29,11 @@ public class Document {
     @Column(updatable = false)
     private Instant createdAt;
 
+    private boolean entitiesExtracted = false;
+
+    private Double hubScore;
+    private Double authorityScore;
+
     public Document(String title, String url, String content) {
         this.title = title;
         this.url = url;

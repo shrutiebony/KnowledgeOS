@@ -25,13 +25,13 @@ public class Relationship {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_entity_id")
-    private KnowledgeEntity source;
+    private GraphEntity source;
 
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_entity_id")
-    private KnowledgeEntity target;
+    private GraphEntity target;
 
 
 
@@ -46,8 +46,8 @@ public class Relationship {
 
 
     public Relationship(
-            KnowledgeEntity source,
-            KnowledgeEntity target,
+            GraphEntity source,
+            GraphEntity target,
             String relationType,
             Document document
     ){
