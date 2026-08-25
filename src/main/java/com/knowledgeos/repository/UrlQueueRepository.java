@@ -33,5 +33,7 @@ public interface UrlQueueRepository
 
     @Transactional
     long deleteByDatasetKeyAndVisitedFalse(String datasetKey);
+    @Transactional
+    long deleteByDatasetKey(String datasetKey);
 
 }

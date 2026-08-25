@@ -12,6 +12,7 @@ import com.knowledgeos.service.ChunkingService;
 import com.knowledgeos.service.CrawlerService;
 import com.knowledgeos.service.UrlNormalizer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,8 @@ public class CrawlerWorker {
 
     private final PageLinkRepository pageLinkRepository;
 
+    private final int maxPagesPerDataset;
+
 
 
     public CrawlerWorker(
@@ -45,7 +48,8 @@ public class CrawlerWorker {
             DocumentRepository documentRepository,
             ChunkingService chunkingService,
             UrlNormalizer urlNormalizer,
-            PageLinkRepository pageLinkRepository
+            PageLinkRepository pageLinkRepository,
+            @Value("${crawler.max-pages-per-dataset:300}") int maxPagesPerDataset
     ) {
 
         this.urlQueueRepository = urlQueueRepository;
@@ -54,6 +58,7 @@ public class CrawlerWorker {
         this.chunkingService = chunkingService;
         this.urlNormalizer = urlNormalizer;
         this.pageLinkRepository = pageLinkRepository;
+        this.maxPagesPerDataset = maxPagesPerDataset;
     }
 
 
@@ -101,6 +106,7 @@ public class CrawlerWorker {
             );
 
 
+
             if(documentRepository.existsByUrlAndDatasetKey(normalizedUrl, datasetKey)) {
 
 
@@ -114,7 +120,6 @@ public class CrawlerWorker {
 
                 return "Already crawled: " + normalizedUrl;
             }
-
 
 
             CrawledPage page =
@@ -169,8 +174,6 @@ public class CrawlerWorker {
 
 
 
-
-
             chunkingService.chunk(savedDocument);
 
 
@@ -188,6 +191,18 @@ public class CrawlerWorker {
 
 
 
+            boolean datasetAtCap =
+                    documentRepository.countByDatasetKey(datasetKey) >= maxPagesPerDataset;
+
+            if (datasetAtCap) {
+                System.out.println(
+                        "Dataset '" + datasetKey + "' has reached its "
+                                + maxPagesPerDataset
+                                + "-page crawl cap - recording link edges but not queuing further pages."
+                );
+            }
+
+
 
             for(String link : links) {
 
@@ -196,12 +211,16 @@ public class CrawlerWorker {
                         urlNormalizer.normalize(link);
 
 
+
                 if(!sameHost(normalizedUrl, normalizedLink)) {
                     continue;
                 }
 
-                pageLinkRepository.save(new PageLink(savedDocument, normalizedLink));
 
+                pageLinkRepository.save(new PageLink(savedDocument, normalizedLink));
+                if (datasetAtCap) {
+                    continue;
+                }
 
 
                 if(!urlQueueRepository.existsByUrlAndDatasetKey(normalizedLink, datasetKey)) {
@@ -234,6 +253,8 @@ public class CrawlerWorker {
                     }
                 }
             }
+
+
 
             queueItem.setUrl(normalizedUrl);
 

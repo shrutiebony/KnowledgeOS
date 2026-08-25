@@ -6,6 +6,7 @@ import com.knowledgeos.model.StatusResponse;
 import com.knowledgeos.repository.DocumentChunkRepository;
 import com.knowledgeos.repository.DocumentRepository;
 import com.knowledgeos.repository.UrlQueueRepository;
+import com.knowledgeos.service.DatasetService;
 import com.knowledgeos.service.UrlQueueService;
 import com.knowledgeos.worker.CrawlerWorker;
 
@@ -30,6 +31,8 @@ public class DocumentController {
 
     private final CrawlerWorker crawlerWorker;
 
+    private final DatasetService datasetService;
+
 
 
     public DocumentController(
@@ -37,13 +40,15 @@ public class DocumentController {
             DocumentChunkRepository documentChunkRepository,
             UrlQueueRepository urlQueueRepository,
             UrlQueueService urlQueueService,
-            CrawlerWorker crawlerWorker
+            CrawlerWorker crawlerWorker,
+            DatasetService datasetService
     ) {
         this.documentRepository = documentRepository;
         this.documentChunkRepository = documentChunkRepository;
         this.urlQueueRepository = urlQueueRepository;
         this.urlQueueService = urlQueueService;
         this.crawlerWorker = crawlerWorker;
+        this.datasetService = datasetService;
     }
 
 
@@ -59,6 +64,10 @@ public class DocumentController {
     }
 
 
+
+    // Every distinct corpus currently in Postgres - "default" (the free-form
+    // crawl), any static snapshots (e.g. "wikipedia-india"), and any other
+    // dynamic crawl session keys a user has created.
     @GetMapping("/datasets")
     public List<String> getDatasets(){
 
@@ -76,6 +85,11 @@ public class DocumentController {
     }
 
 
+
+    // datasetKey lets a user run several independent "crawl anything"
+    // sessions side by side (e.g. datasetKey=my-research-crawl) without
+    // their queues, HITS scores, or chat answers bleeding into each other.
+    // Omit it to use the original single free-form "default" crawl.
     @GetMapping("/queue/add")
     public String addToQueue(
             @RequestParam String url,
@@ -94,7 +108,27 @@ public class DocumentController {
     public String crawlDocument(
             @RequestParam(defaultValue = "default") String datasetKey
     ){
+
+        // Delegates to the same pipeline the scheduled worker uses, instead
+        // of a second copy that skipped chunking/embedding and never
+        // persisted the visited flag.
         return crawlerWorker.crawlNext(datasetKey);
+    }
+
+
+
+    // Wipes every row tagged with this datasetKey: documents, chunks, page
+    // links, entities, relationships, GNN embeddings, predicted links, and
+    // any pending/visited queue entries. Irreversible - there's no undo
+    // short of a database backup.
+    @DeleteMapping("/datasets/{datasetKey}")
+    public String deleteDataset(
+            @PathVariable String datasetKey
+    ){
+
+        datasetService.deleteDataset(datasetKey);
+
+        return "Deleted dataset '" + datasetKey + "'";
     }
 
 

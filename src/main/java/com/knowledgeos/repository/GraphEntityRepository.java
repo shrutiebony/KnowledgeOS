@@ -22,4 +22,6 @@ public interface GraphEntityRepository
 
     List<GraphEntity> findByDatasetKey(String datasetKey);
 
+    void deleteByDatasetKey(String datasetKey);
+
 }

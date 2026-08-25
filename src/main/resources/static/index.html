@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KnowledgeOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1f1e1c;
+            --muted: #726f66;
+            --faint: #a6a297;
+            --paper: #faf8f3;
+            --card: #ffffff;
+            --line: #e7e3d8;
+
+            --teal: #0f6e56;    --teal-bg: #e1f5ee;   --teal-line: #9fe1cb;
+            --purple: #3c3489;  --purple-bg: #eeedfe; --purple-line: #cecbf6;
+            --coral: #993c1d;   --coral-bg: #faece7;  --coral-line: #f0997b;
+            --gray-bg: #f1efe8;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Inter", -apple-system, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            margin: 0;
+            padding: 32px 20px 60px;
+        }
+        .wrap { max-width: 900px; margin: 0 auto; }
+
+        header { margin-bottom: 24px; }
+        h1 {
+            font-family: "Fraunces", serif;
+            font-size: 30px; font-weight: 500; margin: 0 0 6px;
+            letter-spacing: -0.01em;
+        }
+        .tagline { color: var(--muted); font-size: 14px; }
+
+        /* ---- Dataset panel ---- */
+        .dataset-panel {
+            background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+            padding: 18px 22px; margin: 22px 0 26px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .dataset-current {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+        }
+        .dataset-current .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .dataset-badge {
+            font-family: "Fraunces", serif; font-size: 17px;
+            background: var(--purple-bg); color: var(--purple);
+            border: 1px solid var(--purple-line);
+            padding: 5px 14px; border-radius: 100px;
+        }
+        .copy-btn {
+            background: none; border: 1px solid var(--line); color: var(--muted);
+            font-size: 11px; padding: 4px 9px; border-radius: 100px; cursor: pointer;
+        }
+        .copy-btn:hover { border-color: var(--faint); color: var(--ink); }
+
+        .dataset-help {
+            font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 14px;
+            max-width: 620px;
+        }
+        .dataset-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+        .chip {
+            font-size: 12px; padding: 5px 11px; border-radius: 100px; cursor: pointer;
+            background: var(--gray-bg); color: var(--ink); border: 1px solid transparent;
+        }
+        .chip.active { background: var(--purple); color: #fff; }
+        .chip:hover:not(.active) { border-color: var(--faint); }
+
+        select, input[type=text], input[type=number] {
+            font-family: inherit; font-size: 13.5px;
+            border: 1px solid var(--line); border-radius: 8px;
+            padding: 8px 11px; background: #fff; color: var(--ink);
+        }
+        select:focus, input:focus { outline: none; border-color: var(--purple-line); }
+
+        /* ---- Section cards ---- */
+        .section {
+            background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+            padding: 22px 24px; margin-bottom: 18px;
+            border-left: 3px solid var(--accent, var(--line));
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .section.ingest { --accent: var(--teal); }
+        .section.graph  { --accent: var(--purple); }
+        .section.docs   { --accent: var(--teal); }
+        .section.chat   { --accent: var(--coral); }
+
+        .section h2 {
+            font-family: "Fraunces", serif; font-weight: 500;
+            font-size: 18px; margin: 0 0 4px;
+        }
+        .section .desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+        .tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+        .tab {
+            padding: 6px 14px; border-radius: 100px; font-size: 13px; cursor: pointer;
+            background: var(--gray-bg); color: var(--muted);
+        }
+        .tab.active { background: var(--teal); color: #fff; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .row input { flex: 1; min-width: 180px; }
+
+        button {
+            font-family: inherit; font-size: 13px; font-weight: 500;
+            background: var(--ink); color: #fff; border: none; border-radius: 8px;
+            padding: 9px 15px; cursor: pointer; transition: opacity 0.15s;
+        }
+        button:hover { opacity: 0.85; }
+        button.secondary { background: var(--gray-bg); color: var(--ink); }
+        button.danger { background: #fff; color: var(--coral); border: 1px solid var(--coral-line); }
+        button.danger:hover { background: var(--coral-bg); opacity: 1; }
+        button:disabled { opacity: 0.4; cursor: default; }
+
+        .status-line { font-size: 12.5px; color: var(--muted); margin-top: 4px; min-height: 16px; }
+        .status-line.err { color: var(--coral); }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .stat { background: var(--gray-bg); border-radius: 10px; padding: 12px 14px; }
+        .stat .n { font-family: "Fraunces", serif; font-size: 22px; font-weight: 500; }
+        .stat .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+        .subhead { font-size: 12.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin: 18px 0 8px; }
+
+        .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag { background: var(--purple-bg); color: var(--purple); border-radius: 100px; padding: 4px 11px; font-size: 12px; }
+
+        .link-row {
+            font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--gray-bg);
+            display: flex; justify-content: space-between; gap: 12px;
+        }
+        .link-row:last-child { border-bottom: none; }
+        .link-row .score { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+
+        .empty { font-size: 13px; color: var(--faint); font-style: italic; }
+
+        .doc-list { border-top: 1px solid var(--gray-bg); }
+        .doc-row { border-bottom: 1px solid var(--gray-bg); }
+        .doc-row-head {
+            display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+            padding: 11px 2px; cursor: pointer;
+        }
+        .doc-row-head:hover .doc-title { color: var(--teal); }
+        .doc-title { font-size: 13.5px; font-weight: 500; }
+        .doc-url { font-size: 11.5px; color: var(--faint); margin-top: 2px; word-break: break-all; }
+        .doc-toggle { font-size: 11px; color: var(--muted); flex-shrink: 0; }
+        .doc-content {
+            display: none; font-size: 13px; color: var(--muted); line-height: 1.6;
+            padding: 0 2px 14px; max-height: 220px; overflow-y: auto; white-space: pre-wrap;
+        }
+        .doc-row.open .doc-content { display: block; }
+        .doc-row.open .doc-toggle { color: var(--teal); }
+
+        .chat-log { max-height: 360px; overflow-y: auto; margin-bottom: 12px; padding-right: 4px; }
+        .msg { padding: 11px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 14px; line-height: 1.55; max-width: 88%; }
+        .msg.user { background: var(--coral-bg); color: var(--ink); margin-left: auto; }
+        .msg.bot { background: var(--gray-bg); color: var(--ink); }
+        .msg .sources { font-size: 11px; color: var(--muted); margin-top: 7px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <header>
+        <h1>KnowledgeOS</h1>
+        <div class="tagline">Add data, see what the graph has learned, and ask it questions.</div>
+    </header>
+
+    <div class="dataset-panel">
+        <div class="dataset-current">
+            <span class="label">Working on</span>
+            <span class="dataset-badge" id="datasetBadge">default</span>
+            <button class="copy-btn" onclick="copyDatasetKey()">copy key</button>
+        </div>
+        <div class="dataset-help">
+            Everything below (crawling, the graph, chat) only ever touches <strong>one dataset at a time</strong>,
+            identified by this key. Datasets never mix: a snapshot called <code>wikipedia-india</code> and a scratch
+            crawl called <code>test</code> stay completely separate, even in the same database. Switch datasets below,
+            or type a new key to start a fresh one. Nothing is created until you add data to it.
+        </div>
+        <div class="dataset-controls">
+            <select id="datasetSelect"></select>
+            <input type="text" id="newDatasetKey" placeholder="new-dataset-name">
+            <button class="secondary" onclick="useNewDataset()">Switch</button>
+            <button class="secondary" onclick="refreshAll()">Refresh</button>
+        </div>
+        <div class="chip-row" id="datasetChips" style="margin-top:10px;"></div>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line);">
+            <button class="danger" onclick="deleteDataset()">Delete dataset</button>
+            <span class="status-line" id="resetStatus" style="display:inline; margin-left:8px;"></span>
+        </div>
+    </div>
+
+    <!-- Add data -->
+    <div class="section ingest">
+        <h2>Add data</h2>
+        <div class="desc">Bring content into the current dataset: one URL at a time, or a whole bounded Wikipedia snapshot.</div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="crawl" onclick="switchTab('crawl')">Crawl a URL</div>
+            <div class="tab" data-tab="snapshot" onclick="switchTab('snapshot')">Build Wikipedia snapshot</div>
+        </div>
+
+        <div class="panel active" id="panel-crawl">
+            <div class="row">
+                <input type="text" id="crawlUrl" placeholder="https://en.wikipedia.org/wiki/India">
+                <button onclick="addUrl()">Add to queue</button>
+                <button class="secondary" onclick="crawlNext()">Crawl next</button>
+            </div>
+            <div class="status-line" id="crawlStatus"></div>
+        </div>
+
+        <div class="panel" id="panel-snapshot">
+            <div class="row">
+                <input type="text" id="wikiCategories" placeholder="India,History_of_India,Politics_of_India">
+            </div>
+            <div class="row">
+                <input type="number" id="wikiMaxDepth" placeholder="max depth" value="2" style="max-width:130px">
+                <input type="number" id="wikiMaxPages" placeholder="max pages" value="100" style="max-width:130px">
+                <button onclick="buildSnapshot()">Build snapshot</button>
+            </div>
+            <div class="status-line" id="snapshotStatus"></div>
+        </div>
+    </div>
+
+    <!-- Graph / GNN status -->
+    <div class="section graph">
+        <h2>What this dataset knows</h2>
+        <div class="desc">Live state of the crawl, the extracted entity graph, and what the GNN has trained on.</div>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div class="row" style="align-items:center;">
+            <button onclick="trainGnn()">Train GNN on this dataset</button>
+            <span class="status-line" id="gnnStatus" style="margin:0;"></span>
+        </div>
+
+        <div class="subhead">Entities extracted</div>
+        <div class="tag-list" id="entityTags"></div>
+
+        <div class="subhead">GNN-predicted links</div>
+        <div id="predictedLinks"></div>
+    </div>
+
+    <!-- Documents -->
+    <div class="section docs">
+        <h2>Documents</h2>
+        <div class="desc">Every page ingested into this dataset. Click one to read what was actually stored.</div>
+        <div class="doc-list" id="docList"></div>
+    </div>
+
+    <!-- Chat -->
+    <div class="section chat">
+        <h2>Ask this dataset</h2>
+        <div class="desc">Answers are grounded only in <span id="chatDatasetLabel">this dataset</span>; nothing else leaks in.</div>
+
+        <div class="chat-log" id="chatLog"></div>
+        <div class="row">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()">Send</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentDataset = localStorage.getItem('knowledgeos_dataset') || 'default';
+
+    function setCurrentDataset(key) {
+        currentDataset = key;
+        localStorage.setItem('knowledgeos_dataset', key);
+        document.getElementById('datasetBadge').textContent = key;
+        document.getElementById('chatDatasetLabel').textContent = `"${key}"`;
+    }
+
+    function copyDatasetKey() {
+        navigator.clipboard.writeText(currentDataset);
+    }
+
+    function switchTab(name) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+    }
+
+    async function loadDatasets() {
+        try {
+            const res = await fetch('/datasets');
+            const keys = await res.json();
+            if (!keys.includes(currentDataset)) keys.push(currentDataset);
+
+            const select = document.getElementById('datasetSelect');
+            select.innerHTML = keys.map(k => `<option value="${k}" ${k === currentDataset ? 'selected' : ''}>${k}</option>`).join('');
+
+            const chips = document.getElementById('datasetChips');
+            chips.innerHTML = keys.map(k =>
+                `<span class="chip ${k === currentDataset ? 'active' : ''}" onclick="selectDataset('${k}')">${k}</span>`
+            ).join('');
+
+            setCurrentDataset(currentDataset);
+        } catch (e) {
+            console.error('Failed to load datasets', e);
+        }
+    }
+
+    function selectDataset(key) {
+        setCurrentDataset(key);
+        loadDatasets().then(refreshAll);
+    }
+
+    function useNewDataset() {
+        const val = document.getElementById('newDatasetKey').value.trim();
+        if (!val) return;
+        document.getElementById('newDatasetKey').value = '';
+        selectDataset(val);
+    }
+
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'datasetSelect') selectDataset(e.target.value);
+    });
+
+    async function addUrl() {
+        const url = document.getElementById('crawlUrl').value.trim();
+        const statusEl = document.getElementById('crawlStatus');
+        if (!url) { statusEl.textContent = 'Enter a URL first'; statusEl.className = 'status-line err'; return; }
+        statusEl.className = 'status-line';
+        statusEl.textContent = 'Adding...';
+        try {
+            const res = await fetch(`/queue/add?url=${encodeURIComponent(url)}&datasetKey=${encodeURIComponent(currentDataset)}`);
+            statusEl.textContent = await res.text();
+            loadDatasets();
+            refreshStatus();
+        } catch (e) {
+            statusEl.className = 'status-line err';
+            statusEl.textContent = 'Failed to add URL. Is the backend running?';
+        }
+    }
+
+    async function crawlNext() {
+        const statusEl = document.getElementById('crawlStatus');
+        statusEl.className = 'status-line';
+        statusEl.textContent = 'Crawling...';
+        try {
+            const res = await fetch(`/crawl?datasetKey=${encodeURIComponent(currentDataset)}`);
+            statusEl.textContent = await res.text();
+            refreshStatus();
+        } catch (e) {
+            statusEl.className = 'status-line err';
+            statusEl.textContent = 'Crawl failed';
+        }
+    }
+
+    async function buildSnapshot() {
+        const categories = document.getElementById('wikiCategories').value.trim();
+        const maxDepth = document.getElementById('wikiMaxDepth').value || 2;
+        const maxPages = document.getElementById('wikiMaxPages').value || 100;
+        const statusEl = document.getElementById('snapshotStatus');
+        if (!categories) { statusEl.textContent = 'Enter at least one category'; statusEl.className = 'status-line err'; return; }
+        statusEl.className = 'status-line';
+        statusEl.textContent = 'Building snapshot. This can take a couple of minutes for a few hundred pages...';
+        try {
+            const params = new URLSearchParams();
+            categories.split(',').map(c => c.trim()).filter(Boolean).forEach(c => params.append('categories', c));
+            params.set('maxDepth', maxDepth);
+            params.set('maxPages', maxPages);
+            params.set('datasetKey', currentDataset);
+            const res = await fetch(`/datasets/wikipedia/build?${params.toString()}`, { method: 'POST' });
+            const data = await res.json();
+            statusEl.textContent = `Done. ${data.documentsCreated} documents created, ${data.edgesCreated} edges, ${data.titlesDiscovered} titles discovered.`;
+            loadDatasets();
+            refreshStatus();
+        } catch (e) {
+            statusEl.className = 'status-line err';
+            statusEl.textContent = 'Snapshot build failed';
+        }
+    }
+
+    async function refreshStatus() {
+        try {
+            const res = await fetch(`/status?datasetKey=${encodeURIComponent(currentDataset)}`);
+            const s = await res.json();
+            document.getElementById('statGrid').innerHTML = `
+      <div class="stat"><div class="n">${s.documentsIndexed}</div><div class="l">documents</div></div>
+      <div class="stat"><div class="n">${s.queuePending}</div><div class="l">queue pending</div></div>
+      <div class="stat"><div class="n">${s.queueVisited}</div><div class="l">queue visited</div></div>
+      <div class="stat"><div class="n">${s.chunksTotal}</div><div class="l">chunks</div></div>
+    `;
+        } catch (e) {
+            document.getElementById('statGrid').innerHTML = '<div class="status-line err">Could not load status</div>';
+        }
+    }
+
+    async function refreshGraph() {
+        try {
+            const res = await fetch(`/graph?datasetKey=${encodeURIComponent(currentDataset)}`);
+            const g = await res.json();
+            const tagsEl = document.getElementById('entityTags');
+            if (!g.nodes || g.nodes.length === 0) {
+                tagsEl.innerHTML = '<span class="empty">No entities extracted yet for this dataset.</span>';
+            } else {
+                tagsEl.innerHTML = g.nodes
+                    .sort((a, b) => (b.frequency || 0) - (a.frequency || 0))
+                    .slice(0, 40)
+                    .map(n => `<span class="tag">${n.name}${n.frequency ? ` &middot; ${n.frequency}` : ''}</span>`)
+                    .join('');
+            }
+        } catch (e) {
+            document.getElementById('entityTags').innerHTML = '<span class="status-line err">Could not load graph</span>';
+        }
+    }
+
+    async function refreshPredictedLinks() {
+        try {
+            const res = await fetch(`/gnn/predicted-links?datasetKey=${encodeURIComponent(currentDataset)}&limit=20`);
+            const links = await res.json();
+            const el = document.getElementById('predictedLinks');
+            if (!links || links.length === 0) {
+                el.innerHTML = '<span class="empty">Nothing trained yet. Click "Train GNN" once entities exist.</span>';
+            } else {
+                el.innerHTML = links.map(l => `
+        <div class="link-row">
+          <span>${l.sourceName} &rarr; ${l.targetName}</span>
+          <span class="score">${l.score.toFixed(3)}</span>
+        </div>
+      `).join('');
+            }
+        } catch (e) {
+            document.getElementById('predictedLinks').innerHTML = '<span class="status-line err">Could not load predicted links</span>';
+        }
+    }
+
+    async function trainGnn() {
+        const statusEl = document.getElementById('gnnStatus');
+        statusEl.className = 'status-line';
+        statusEl.textContent = 'Training...';
+        try {
+            const res = await fetch(`/gnn/train?datasetKey=${encodeURIComponent(currentDataset)}`, { method: 'POST' });
+            if (!res.ok) throw new Error(await res.text());
+            statusEl.textContent = 'Training complete';
+            refreshPredictedLinks();
+        } catch (e) {
+            statusEl.className = 'status-line err';
+            statusEl.textContent = 'Training failed. Is the GNN sidecar running on :8001, and do entities/relationships exist yet?';
+        }
+    }
+
+    function appendMessage(role, html, sources) {
+        const log = document.getElementById('chatLog');
+        const div = document.createElement('div');
+        div.className = `msg ${role}`;
+        div.innerHTML = html + (sources && sources.length ? `<div class="sources">Sources: ${sources.join(', ')}</div>` : '');
+        log.appendChild(div);
+        log.scrollTop = log.scrollHeight;
+        return div;
+    }
+
+    async function sendChat() {
+        const input = document.getElementById('chatInput');
+        const query = input.value.trim();
+        if (!query) return;
+        appendMessage('user', query);
+        input.value = '';
+        const thinkingDiv = appendMessage('bot', 'Thinking...');
+        try {
+            const res = await fetch(`/chat?query=${encodeURIComponent(query)}&datasetKey=${encodeURIComponent(currentDataset)}`);
+            const data = await res.json();
+            thinkingDiv.innerHTML = (data.answer || 'No answer returned.') +
+                (data.sources && data.sources.length ? `<div class="sources">Sources: ${data.sources.join(', ')}</div>` : '');
+        } catch (e) {
+            thinkingDiv.textContent = 'Something went wrong reaching the backend.';
+        }
+    }
+
+    async function refreshDocuments() {
+        const listEl = document.getElementById('docList');
+        try {
+            const res = await fetch(`/documents?datasetKey=${encodeURIComponent(currentDataset)}`);
+            const docs = await res.json();
+            if (!docs || docs.length === 0) {
+                listEl.innerHTML = '<div class="empty" style="padding:12px 2px;">No documents in this dataset yet.</div>';
+                return;
+            }
+            listEl.innerHTML = docs.map((d, i) => `
+      <div class="doc-row" id="doc-row-${i}">
+        <div class="doc-row-head" onclick="toggleDoc(${i})">
+          <div>
+            <div class="doc-title">${escapeHtml(d.title || '(untitled)')}</div>
+            <div class="doc-url">${escapeHtml(d.url || '')}</div>
+          </div>
+          <div class="doc-toggle" id="doc-toggle-${i}">show content</div>
+        </div>
+        <div class="doc-content">${escapeHtml((d.content || '').slice(0, 4000))}${(d.content || '').length > 4000 ? '\n\n[truncated]' : ''}</div>
+      </div>
+    `).join('');
+        } catch (e) {
+            listEl.innerHTML = '<div class="status-line err">Could not load documents</div>';
+        }
+    }
+
+    function toggleDoc(i) {
+        const row = document.getElementById(`doc-row-${i}`);
+        const toggle = document.getElementById(`doc-toggle-${i}`);
+        const open = row.classList.toggle('open');
+        toggle.textContent = open ? 'hide content' : 'show content';
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    async function deleteDataset() {
+        const statusEl = document.getElementById('resetStatus');
+        const confirmed = confirm(
+            `Delete every document, chunk, entity, relationship, and prediction in "${currentDataset}"? This cannot be undone.`
+        );
+        if (!confirmed) return;
+
+        statusEl.className = 'status-line';
+        statusEl.textContent = 'Deleting...';
+        try {
+            const res = await fetch(`/datasets/${encodeURIComponent(currentDataset)}`, { method: 'DELETE' });
+            statusEl.textContent = await res.text();
+            loadDatasets().then(refreshAll);
+        } catch (e) {
+            statusEl.className = 'status-line err';
+            statusEl.textContent = 'Delete failed';
+        }
+    }
+
+    function refreshAll() {
+        refreshStatus();
+        refreshGraph();
+        refreshPredictedLinks();
+        refreshDocuments();
+    }
+
+    setCurrentDataset(currentDataset);
+    loadDatasets().then(refreshAll);
+</script>
+</body>
+</html>

@@ -20,6 +20,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     long countByDatasetKey(String datasetKey);
 
+    void deleteByDatasetKey(String datasetKey);
+
     @org.springframework.data.jpa.repository.Query(
             "SELECT DISTINCT d.datasetKey FROM Document d ORDER BY d.datasetKey")
     List<String> findDistinctDatasetKeys();

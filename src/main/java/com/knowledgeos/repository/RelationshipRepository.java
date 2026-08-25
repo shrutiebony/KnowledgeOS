@@ -16,4 +16,6 @@ public interface RelationshipRepository
             List<Long> targetIds
     );
 
+    void deleteByDocument_DatasetKey(String datasetKey);
+
 }

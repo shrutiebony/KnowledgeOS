@@ -18,6 +18,9 @@ public interface GnnEmbeddingRepository extends JpaRepository<GnnEmbedding, Long
     @Transactional
     void deleteByEntityId(Long entityId);
 
+    @Modifying
+    @Transactional
+    void deleteByEntityIdIn(List<Long> entityIds);
 
     @Query(value = """
             SELECT

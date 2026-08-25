@@ -18,6 +18,9 @@ public interface DocumentChunkRepository
     long countByEmbeddingIsNull();
 
 
+    void deleteByDocument_DatasetKey(String datasetKey);
+
+
 
     @Query(value = """
             SELECT 
@@ -35,6 +38,9 @@ public interface DocumentChunkRepository
     );
 
 
+    // Same as searchSimilar but confined to one dataset, so RAG/chat over a
+    // static snapshot (e.g. wikipedia-india) never pulls in chunks from an
+    // unrelated user crawl, and vice versa.
     @Query(value = """
             SELECT
                 dc.id,
