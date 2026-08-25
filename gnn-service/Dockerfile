@@ -1,12 +1,16 @@
-FROM python:3.11-slim
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
+COPY src src
+RUN mvn clean package -DskipTests -B
+
+FROM eclipse-temurin:21-jre AS run
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY --from=build /app/target/*.jar app.jar
 
-COPY main.py .
+EXPOSE 8080
 
-EXPOSE 8001
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

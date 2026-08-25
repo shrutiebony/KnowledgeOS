@@ -1,0 +1,49 @@
+databases:
+
+  - name: knowledgeos-postgres
+    databaseName: knowledgeos
+    plan: basic-256mb
+    postgresMajorVersion: "16"
+
+services:
+
+  - type: web
+    name: knowledgeos-gnn
+    runtime: docker
+    dockerfilePath: ./gnn-service/Dockerfile
+    dockerContext: ./gnn-service
+    plan: starter
+    healthCheckPath: /health
+
+  - type: web
+    name: knowledgeos-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: standard
+    envVars:
+      - key: DATABASE_HOST
+        fromDatabase:
+          name: knowledgeos-postgres
+          property: host
+      - key: DATABASE_PORT
+        fromDatabase:
+          name: knowledgeos-postgres
+          property: port
+      - key: DATABASE_NAME
+        fromDatabase:
+          name: knowledgeos-postgres
+          property: database
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: knowledgeos-postgres
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: knowledgeos-postgres
+          property: password
+      - key: GNN_SERVICE_URL
+        fromService:
+          type: web
+          name: knowledgeos-gnn
+          property: hostport
