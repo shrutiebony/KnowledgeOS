@@ -19,10 +19,11 @@ public class ChatController {
 
     @GetMapping
     public ChatResponse chat(
-            @RequestParam String query
+            @RequestParam String query,
+            @RequestParam(defaultValue = "default") String datasetKey
     ){
 
-        return chatService.answer(query);
+        return chatService.answer(query, datasetKey);
 
     }
 }

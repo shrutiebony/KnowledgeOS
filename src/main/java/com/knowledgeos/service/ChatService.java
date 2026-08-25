@@ -26,10 +26,14 @@ public class ChatService {
 
 
     public ChatResponse answer(String query){
+        return answer(query, "default");
+    }
+
+    public ChatResponse answer(String query, String datasetKey){
 
 
         List<RagSearchResult> results =
-                searchService.search(query);
+                searchService.search(query, datasetKey);
 
 
 
@@ -99,10 +103,14 @@ public class ChatService {
 
     }
     public String buildPrompt(String query){
+        return buildPrompt(query, "default");
+    }
+
+    public String buildPrompt(String query, String datasetKey){
 
 
         List<RagSearchResult> results =
-                searchService.search(query);
+                searchService.search(query, datasetKey);
 
 
         StringBuilder context = new StringBuilder();

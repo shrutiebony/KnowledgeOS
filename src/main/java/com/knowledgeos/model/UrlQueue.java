@@ -20,4 +20,6 @@ public class UrlQueue {
     private String url;
 
     private boolean visited;
+
+    private String datasetKey = "default";
 }

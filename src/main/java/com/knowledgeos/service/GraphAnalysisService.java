@@ -26,15 +26,19 @@ public class GraphAnalysisService {
 
 
     public Map<String, Object> computeHits() {
+        return computeHits("default");
+    }
 
-        List<Document> documents = documentRepository.findAll();
+    public Map<String, Object> computeHits(String datasetKey) {
+
+        List<Document> documents = documentRepository.findByDatasetKey(datasetKey);
 
         Map<String, Long> urlToId = new HashMap<>();
         for (Document d : documents) {
             urlToId.put(d.getUrl(), d.getId());
         }
 
-        List<PageLink> links = pageLinkRepository.findAll();
+        List<PageLink> links = pageLinkRepository.findBySource_DatasetKey(datasetKey);
 
         Map<Long, List<Long>> outLinks = new HashMap<>();
         Map<Long, List<Long>> inLinks = new HashMap<>();

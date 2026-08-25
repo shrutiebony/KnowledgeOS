@@ -14,6 +14,12 @@ public interface GraphEntityRepository
 
     Optional<GraphEntity> findByName(String name);
 
+    Optional<GraphEntity> findByNameAndDatasetKey(String name, String datasetKey);
+
     List<GraphEntity> findTop150ByOrderByFrequencyDesc();
+
+    List<GraphEntity> findTop150ByDatasetKeyOrderByFrequencyDesc(String datasetKey);
+
+    List<GraphEntity> findByDatasetKey(String datasetKey);
 
 }

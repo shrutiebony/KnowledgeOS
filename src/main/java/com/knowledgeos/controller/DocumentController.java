@@ -49,9 +49,20 @@ public class DocumentController {
 
 
     @GetMapping("/documents")
-    public List<Document> getDocuments(){
+    public List<Document> getDocuments(
+            @RequestParam(required = false) String datasetKey
+    ){
 
-        return documentRepository.findAll();
+        return datasetKey == null
+                ? documentRepository.findAll()
+                : documentRepository.findByDatasetKey(datasetKey);
+    }
+
+
+    @GetMapping("/datasets")
+    public List<String> getDatasets(){
+
+        return documentRepository.findDistinctDatasetKeys();
     }
 
 
@@ -65,46 +76,50 @@ public class DocumentController {
     }
 
 
-
     @GetMapping("/queue/add")
-    public String addToQueue(@RequestParam String url){
+    public String addToQueue(
+            @RequestParam String url,
+            @RequestParam(defaultValue = "default") String datasetKey
+    ){
 
-        urlQueueService.addUrl(url);
+        urlQueueService.addUrl(url, datasetKey);
 
-        return "Added: " + url;
+        return "Added to dataset '" + datasetKey + "': " + url;
     }
 
 
 
 
     @GetMapping("/crawl")
-    public String crawlDocument(){
-
-        // Delegates to the same pipeline the scheduled worker uses, instead
-        // of a second copy that skipped chunking/embedding and never
-        // persisted the visited flag.
-        return crawlerWorker.crawlNext();
+    public String crawlDocument(
+            @RequestParam(defaultValue = "default") String datasetKey
+    ){
+        return crawlerWorker.crawlNext(datasetKey);
     }
 
 
 
     @DeleteMapping("/queue/clear")
-    public String clearQueue(){
+    public String clearQueue(
+            @RequestParam(defaultValue = "default") String datasetKey
+    ){
 
-        long removed = urlQueueRepository.deleteByVisitedFalse();
+        long removed = urlQueueRepository.deleteByDatasetKeyAndVisitedFalse(datasetKey);
 
-        return "Removed " + removed + " pending queue entries";
+        return "Removed " + removed + " pending queue entries from dataset '" + datasetKey + "'";
     }
 
 
 
     @GetMapping("/status")
-    public StatusResponse status(){
+    public StatusResponse status(
+            @RequestParam(defaultValue = "default") String datasetKey
+    ){
 
         return new StatusResponse(
-                documentRepository.count(),
-                urlQueueRepository.countByVisitedFalse(),
-                urlQueueRepository.countByVisitedTrue(),
+                documentRepository.countByDatasetKey(datasetKey),
+                urlQueueRepository.countByDatasetKeyAndVisitedFalse(datasetKey),
+                urlQueueRepository.countByDatasetKeyAndVisitedTrue(datasetKey),
                 documentChunkRepository.count(),
                 documentChunkRepository.countByEmbeddingIsNull()
         );

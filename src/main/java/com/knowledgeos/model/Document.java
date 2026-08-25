@@ -16,7 +16,7 @@ public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    
+    private Long id;
 
     private String title;
 
@@ -24,6 +24,8 @@ public class Document {
     private String content;
 
     private String url;
+    @Column(nullable = false)
+    private String datasetKey = "default";
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -34,11 +36,6 @@ public class Document {
     private Double hubScore;
     private Double authorityScore;
 
-    // Generic content-analysis pipeline. aiTextScore is a rough estimate
-    // (0-1, from an LLM-judge heuristic - NOT a validated detector) of how
-    // likely the content is AI-generated/assisted. Stylometric features are
-    // computed directly and can be reused for other analysis tasks beyond
-    // AI-text detection, since they're generic writing-style signals.
     private boolean contentAnalyzed = false;
     private Double aiTextScore;
     private Double typeTokenRatio;
@@ -49,5 +46,12 @@ public class Document {
         this.title = title;
         this.url = url;
         this.content = content;
+    }
+
+    public Document(String title, String url, String content, String datasetKey) {
+        this.title = title;
+        this.url = url;
+        this.content = content;
+        this.datasetKey = datasetKey;
     }
 }

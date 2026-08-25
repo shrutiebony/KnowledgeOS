@@ -35,12 +35,13 @@ public class StreamingChatController {
             produces = "text/event-stream"
     )
     public Flux<String> streamChat(
-            @RequestParam String query
+            @RequestParam String query,
+            @RequestParam(defaultValue = "default") String datasetKey
     ){
 
 
         String prompt =
-                chatService.buildPrompt(query);
+                chatService.buildPrompt(query, datasetKey);
 
 
         return llmService.generateStream(prompt);

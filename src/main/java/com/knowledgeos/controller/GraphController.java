@@ -30,10 +30,13 @@ public class GraphController {
     }
 
     @GetMapping("/graph")
-    public GraphResponse graph() {
+    public GraphResponse graph(
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "default") String datasetKey
+    ) {
 
 
-        List<GraphEntity> entities = entityRepository.findTop150ByOrderByFrequencyDesc();
+        List<GraphEntity> entities =
+                entityRepository.findTop150ByDatasetKeyOrderByFrequencyDesc(datasetKey);
 
         List<Long> ids = entities.stream().map(GraphEntity::getId).toList();
 

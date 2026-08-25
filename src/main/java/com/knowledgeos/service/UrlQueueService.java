@@ -28,6 +28,10 @@ public class UrlQueueService {
 
 
     public void addUrl(String url) {
+        addUrl(url, "default");
+    }
+
+    public void addUrl(String url, String datasetKey) {
 
 
         String normalizedUrl =
@@ -35,10 +39,10 @@ public class UrlQueueService {
 
 
 
-        if(urlQueueRepository.existsByUrl(normalizedUrl)) {
+        if(urlQueueRepository.existsByUrlAndDatasetKey(normalizedUrl, datasetKey)) {
 
             System.out.println(
-                    "URL already exists: " + normalizedUrl
+                    "URL already exists in dataset " + datasetKey + ": " + normalizedUrl
             );
 
             return;
@@ -52,6 +56,8 @@ public class UrlQueueService {
         item.setUrl(normalizedUrl);
 
         item.setVisited(false);
+
+        item.setDatasetKey(datasetKey);
 
 
         urlQueueRepository.save(item);

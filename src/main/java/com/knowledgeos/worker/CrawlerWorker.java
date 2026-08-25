@@ -65,23 +65,18 @@ public class CrawlerWorker {
     }
 
 
-
-    /**
-     * Pops the next unvisited URL off the queue and runs it through the full
-     * crawl -> save -> chunk -> embed pipeline. Public so it can be called
-     * both by the scheduler above and on-demand (e.g. from a controller),
-     * instead of having two separate, divergent copies of this logic.
-     *
-     * @return a short human-readable status message describing what happened
-     */
     public String crawlNext() {
+        return crawlNext("default");
+    }
+
+    public String crawlNext(String datasetKey) {
 
 
-        System.out.println("WORKER RUNNING");
+        System.out.println("WORKER RUNNING (dataset: " + datasetKey + ")");
 
 
         Optional<UrlQueue> item =
-                urlQueueRepository.findFirstByVisitedFalse();
+                urlQueueRepository.findFirstByVisitedFalseAndDatasetKey(datasetKey);
 
 
 
@@ -106,11 +101,7 @@ public class CrawlerWorker {
             );
 
 
-
-            /*
-             * Skip already crawled documents
-             */
-            if(documentRepository.existsByUrl(normalizedUrl)) {
+            if(documentRepository.existsByUrlAndDatasetKey(normalizedUrl, datasetKey)) {
 
 
                 System.out.println(
@@ -126,9 +117,6 @@ public class CrawlerWorker {
 
 
 
-            /*
-             * Crawl webpage
-             */
             CrawledPage page =
                     crawlerService.crawl(normalizedUrl);
 
@@ -155,7 +143,8 @@ public class CrawlerWorker {
             Document document = new Document(
                     page.getTitle(),
                     normalizedUrl,
-                    page.getContent()
+                    page.getContent(),
+                    datasetKey
             );
 
 
@@ -181,17 +170,13 @@ public class CrawlerWorker {
 
 
 
-            /*
-             * Create chunks + embeddings
-             */
+
             chunkingService.chunk(savedDocument);
 
 
 
 
-            /*
-             * Discover new links
-             */
+
             List<String> links =
                     crawlerService.extractLinks(normalizedUrl);
 
@@ -211,23 +196,15 @@ public class CrawlerWorker {
                         urlNormalizer.normalize(link);
 
 
-                // Stay on the same site the crawl started from. Without this,
-                // the crawler follows every outbound link on every page and
-                // the queue grows unboundedly across the entire web.
                 if(!sameHost(normalizedUrl, normalizedLink)) {
                     continue;
                 }
 
-
-                // Persist the hyperlink itself, not just the crawl queue
-                // decision - this is the graph HITS/PageRank later run over.
-                // Recorded regardless of whether the target is already
-                // queued/visited, since the edge exists either way.
                 pageLinkRepository.save(new PageLink(savedDocument, normalizedLink));
 
 
 
-                if(!urlQueueRepository.existsByUrl(normalizedLink)) {
+                if(!urlQueueRepository.existsByUrlAndDatasetKey(normalizedLink, datasetKey)) {
 
 
                     UrlQueue newItem =
@@ -237,6 +214,8 @@ public class CrawlerWorker {
                     newItem.setUrl(normalizedLink);
 
                     newItem.setVisited(false);
+
+                    newItem.setDatasetKey(datasetKey);
 
 
 
@@ -256,12 +235,6 @@ public class CrawlerWorker {
                 }
             }
 
-
-
-
-            /*
-             * Mark queue item completed
-             */
             queueItem.setUrl(normalizedUrl);
 
             queueItem.setVisited(true);

@@ -8,7 +8,10 @@ import lombok.AllArgsConstructor;
 
 
 @Entity
-@Table(name = "graph_entity")
+@Table(
+        name = "graph_entity",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "datasetKey"})
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +24,7 @@ public class GraphEntity {
     private Long id;
 
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
 
@@ -29,6 +32,10 @@ public class GraphEntity {
 
 
     private Integer frequency = 1;
+
+
+    @Column(nullable = false)
+    private String datasetKey = "default";
 
 
 
@@ -39,6 +46,17 @@ public class GraphEntity {
         this.name = name;
         this.type = type;
         this.frequency = 1;
+    }
+
+    public GraphEntity(
+            String name,
+            String type,
+            String datasetKey
+    ){
+        this.name = name;
+        this.type = type;
+        this.frequency = 1;
+        this.datasetKey = datasetKey;
     }
 
 }

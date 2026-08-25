@@ -26,20 +26,23 @@ public class RankingController {
     }
 
     @GetMapping("/compute")
-    public Map<String, Object> compute() {
-        return graphAnalysisService.computeHits();
+    public Map<String, Object> compute(
+            @RequestParam(defaultValue = "default") String datasetKey
+    ) {
+        return graphAnalysisService.computeHits(datasetKey);
     }
 
     @GetMapping("/top")
     public List<Document> top(
             @RequestParam(defaultValue = "authority") String by,
-            @RequestParam(defaultValue = "10") int limit
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "default") String datasetKey
     ) {
         Comparator<Document> comparator = "hub".equalsIgnoreCase(by)
                 ? Comparator.comparing(Document::getHubScore, Comparator.nullsLast(Comparator.reverseOrder()))
                 : Comparator.comparing(Document::getAuthorityScore, Comparator.nullsLast(Comparator.reverseOrder()));
 
-        return documentRepository.findAll().stream()
+        return documentRepository.findByDatasetKey(datasetKey).stream()
                 .sorted(comparator)
                 .limit(limit)
                 .toList();

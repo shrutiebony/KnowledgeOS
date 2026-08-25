@@ -75,7 +75,7 @@ public class EntityExtractionService {
                         continue;
                     }
 
-                    resolved.put(name, resolveEntity(name.trim(), type.trim()));
+                    resolved.put(name, resolveEntity(name.trim(), type.trim(), document.getDatasetKey()));
                 }
             }
 
@@ -91,10 +91,10 @@ public class EntityExtractionService {
                     }
 
                     GraphEntity source = resolved.computeIfAbsent(
-                            sourceName.trim(), n -> resolveEntity(n, "OTHER"));
+                            sourceName.trim(), n -> resolveEntity(n, "OTHER", document.getDatasetKey()));
 
                     GraphEntity target = resolved.computeIfAbsent(
-                            targetName.trim(), n -> resolveEntity(n, "OTHER"));
+                            targetName.trim(), n -> resolveEntity(n, "OTHER", document.getDatasetKey()));
 
                     relationshipRepository.save(
                             new Relationship(source, target, relationType.trim(), document)
@@ -110,7 +110,7 @@ public class EntityExtractionService {
 
             System.out.println(
                     "GraphEntity extraction failed for document " + document.getId() +
-                    ": " + e.getMessage()
+                            ": " + e.getMessage()
             );
         }
 
@@ -119,14 +119,14 @@ public class EntityExtractionService {
     }
 
 
-    private GraphEntity resolveEntity(String name, String type) {
+    private GraphEntity resolveEntity(String name, String type, String datasetKey) {
 
-        return entityRepository.findByName(name)
+        return entityRepository.findByNameAndDatasetKey(name, datasetKey)
                 .map(existing -> {
                     existing.setFrequency(existing.getFrequency() + 1);
                     return entityRepository.save(existing);
                 })
-                .orElseGet(() -> entityRepository.save(new GraphEntity(name, type)));
+                .orElseGet(() -> entityRepository.save(new GraphEntity(name, type, datasetKey)));
     }
 
 

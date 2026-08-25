@@ -9,4 +9,6 @@ public interface PageLinkRepository extends JpaRepository<PageLink, Long> {
 
     List<PageLink> findAll();
 
+    List<PageLink> findBySource_DatasetKey(String datasetKey);
+
 }

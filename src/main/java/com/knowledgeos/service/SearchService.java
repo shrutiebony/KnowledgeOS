@@ -14,10 +14,6 @@ import java.util.Locale;
 @Service
 public class SearchService {
 
-
-    // Reciprocal Rank Fusion constant. Standard default from IR literature -
-    // large enough that a #1 vs #2 rank difference doesn't completely
-    // dominate the combined score.
     private static final int RRF_K = 60;
 
     private static final int TOP_K = 5;
@@ -38,6 +34,10 @@ public class SearchService {
 
 
     public List<RagSearchResult> search(String query){
+        return search(query, "default");
+    }
+
+    public List<RagSearchResult> search(String query, String datasetKey){
 
 
         float[] vector =
@@ -47,27 +47,20 @@ public class SearchService {
         String embedding =
                 convert(vector);
 
-
-        // Top 20 candidates by vector similarity, already ordered
-        // closest-first by the DB.
         List<DocumentChunk> candidates =
-                repository.searchSimilar(embedding);
+                repository.searchSimilarInDataset(embedding, datasetKey);
 
 
         List<String> queryTerms = tokenize(query);
 
 
-        // Rank the same candidate set by keyword overlap.
+
         List<DocumentChunk> byKeyword = candidates.stream()
                 .sorted(Comparator.comparingInt(
                         (DocumentChunk c) -> keywordScore(c, queryTerms)
                 ).reversed())
                 .toList();
 
-
-        // Rank the same candidate set by recency, newest first. Documents
-        // with no createdAt (pre-migration rows) sort last instead of
-        // blowing up.
         List<DocumentChunk> byRecency = candidates.stream()
                 .sorted(Comparator.comparing(
                         (DocumentChunk c) -> {

@@ -12,15 +12,26 @@ public interface UrlQueueRepository
 
     Optional<UrlQueue> findFirstByVisitedFalse();
 
+    Optional<UrlQueue> findFirstByVisitedFalseAndDatasetKey(String datasetKey);
+
 
     boolean existsByUrl(String url);
+
+    boolean existsByUrlAndDatasetKey(String url, String datasetKey);
 
 
     long countByVisitedFalse();
 
     long countByVisitedTrue();
 
+    long countByDatasetKeyAndVisitedFalse(String datasetKey);
+
+    long countByDatasetKeyAndVisitedTrue(String datasetKey);
+
     @Transactional
     long deleteByVisitedFalse();
+
+    @Transactional
+    long deleteByDatasetKeyAndVisitedFalse(String datasetKey);
 
 }

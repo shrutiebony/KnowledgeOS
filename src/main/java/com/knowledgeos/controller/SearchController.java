@@ -19,8 +19,9 @@ public class SearchController {
 
     @GetMapping
     public List<RagSearchResult> search(
-            @RequestParam String query
+            @RequestParam String query,
+            @RequestParam(defaultValue = "default") String datasetKey
     ) {
-        return searchService.search(query);
+        return searchService.search(query, datasetKey);
     }
 }
