@@ -11,5 +11,17 @@ services:
     volumes:
       - knowledgeos-postgres-data:/var/lib/postgresql/data
 
+  gnn-service:
+    build: ./gnn-service
+    container_name: knowledgeos-gnn
+    ports:
+      - "8001:8001"
+
+  embedding-service:
+    build: ./embedding-service
+    container_name: knowledgeos-embeddings
+    ports:
+      - "8000:8000"
+
 volumes:
   knowledgeos-postgres-data:

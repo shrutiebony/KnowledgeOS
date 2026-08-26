@@ -1,5 +1,4 @@
 databases:
-
   - name: knowledgeos-postgres
     databaseName: knowledgeos
     plan: basic-256mb
@@ -12,6 +11,14 @@ services:
     runtime: docker
     dockerfilePath: ./gnn-service/Dockerfile
     dockerContext: ./gnn-service
+    plan: starter
+    healthCheckPath: /health
+
+  - type: web
+    name: knowledgeos-embeddings
+    runtime: docker
+    dockerfilePath: ./embedding-service/Dockerfile
+    dockerContext: ./embedding-service
     plan: starter
     healthCheckPath: /health
 
@@ -47,3 +54,11 @@ services:
           type: web
           name: knowledgeos-gnn
           property: hostport
+      - key: EMBEDDING_SERVICE_URL
+        fromService:
+          type: web
+          name: knowledgeos-embeddings
+          property: hostport
+
+      - key: LLM_API_KEY
+        sync: false

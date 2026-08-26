@@ -4,6 +4,7 @@ import com.knowledgeos.model.EmbeddingBatchRequest;
 import com.knowledgeos.model.EmbeddingBatchResponse;
 import com.knowledgeos.model.EmbeddingRequest;
 import com.knowledgeos.model.EmbeddingResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -18,7 +19,13 @@ public class EmbeddingService {
 
     private final RestClient restClient;
 
-    public EmbeddingService() {
+    private final String embeddingServiceBaseUrl;
+
+    public EmbeddingService(
+            @Value("${embedding.service.url:http://localhost:8000}") String embeddingServiceBaseUrl
+    ) {
+
+        this.embeddingServiceBaseUrl = embeddingServiceBaseUrl;
 
         // RestClient.create() was letting Spring auto-detect a request
         // factory, which with webflux on the classpath was picking a
@@ -56,7 +63,7 @@ public class EmbeddingService {
 
                 System.out.println(
                         "Embedding attempt " + attempt + "/" + MAX_RETRIES +
-                        " failed: " + e.getMessage()
+                                " failed: " + e.getMessage()
                 );
 
                 if (attempt < MAX_RETRIES) {
@@ -74,7 +81,7 @@ public class EmbeddingService {
         EmbeddingRequest request = new EmbeddingRequest(text);
 
         EmbeddingResponse response = restClient.post()
-                .uri("http://localhost:8000/embed")
+                .uri(embeddingServiceBaseUrl + "/embed")
                 .body(request)
                 .retrieve()
                 .body(EmbeddingResponse.class);
@@ -113,7 +120,7 @@ public class EmbeddingService {
 
                 System.out.println(
                         "Batch embedding attempt " + attempt + "/" + MAX_RETRIES +
-                        " failed for batch of " + texts.size() + ": " + e.getMessage()
+                                " failed for batch of " + texts.size() + ": " + e.getMessage()
                 );
 
                 if (attempt < MAX_RETRIES) {
@@ -131,7 +138,7 @@ public class EmbeddingService {
         EmbeddingBatchRequest request = new EmbeddingBatchRequest(texts);
 
         EmbeddingBatchResponse response = restClient.post()
-                .uri("http://localhost:8000/embed_batch")
+                .uri(embeddingServiceBaseUrl + "/embed_batch")
                 .body(request)
                 .retrieve()
                 .body(EmbeddingBatchResponse.class);
