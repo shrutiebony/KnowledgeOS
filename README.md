@@ -2,11 +2,9 @@
 
 Collection-level estimate of how much of a document set looks AI-generated or AI-assisted.
 
-This is **not** proof of authorship, not a Q&A / RAG system, and not HITS. GraphSAGE neighborhood embeddings are optional graph context only. They are **not** in the share number.
 
-Collections are independent. Wikipedia India, a URL crawl named GDELT, PDF/text uploads, and other URL crawls do not share graphs or baselines.
+Collections are independent. 3 sources of data are being used : Wikipedia India, a URL crawl named GDELT while allowing the user to give any public URL of choice or upload PDFs to check the amount of AI generated text in either a particular topic at hand or in their specific PDF.
 
-The dashboard is `web/index.html`. The UI was not redesigned.
 
 ## Architecture
 
