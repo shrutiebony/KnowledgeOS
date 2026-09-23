@@ -7,20 +7,19 @@ Collections are independent. 3 sources of data are being used : Wikipedia India,
 
 ## Experimental / recovered original (not this runtime)
 
-An **experimental** snapshot of an earlier tree lives at [https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23](https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23). That branch is a **recovered original** — archival / experimental only. It is **not** the current product and **not** what the shared demo runs.
+An **experimental** snapshot of an earlier tree lives at [https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23](https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23). That branch is a **recovered original**, archival / experimental only. 
 
-This repository’s runtime is **C++20 + CMake** (`knowledgeos.exe`). Use this tree (and the URLs below) for the live dashboard.
+This repository’s runtime is **C++20 + CMake** (`knowledgeos.exe`).
 
 ## Where it is running
 
-Runtime is still **C++20** + **CMake** (`knowledgeos.exe`). The shared demo is a Cloudflare quick tunnel in front of that process on a PC — not GCP / Cloud Run.
-
+Runtime is still **C++20** + **CMake** (`knowledgeos.exe`). The shared demo is a Cloudflare quick tunnel GCP.
 | | URL |
 | --- | --- |
 | Public (Cloudflare quick tunnel) | [https://full-definition-hundreds-bye.trycloudflare.com](https://full-definition-hundreds-bye.trycloudflare.com) |
 | Local | [http://localhost:8080](http://localhost:8080) |
 
-Honest limits: the PC must stay on; the tunnel URL can change when the tunnel is restarted; there is **no auth**; every visitor on that process (localhost and the public tunnel) shares the same datasets. This is a shared demo, not a private instance.
+Honest limits: the PC must stay on; the tunnel URL can change when the tunnel is restarted; there is **no auth**; every visitor on that process (localhost and the public tunnel) shares the same datasets.
 
 ## Architecture
 
@@ -117,7 +116,7 @@ Cloud Run uses the same C++ `Dockerfile`. Containers honor `PORT`.
 
 Same product UI as the public demo and localhost.
 
-1. **Dataset** — pick a collection, then **Refresh**. Wikipedia India is the seeded corpus. Each upload or URL crawl is its own row. A collection named `gdelt` / `GDELT` is kept across `knowledgeos.exe` restarts; other extra names last for the running process.
+1. **Dataset** — pick a collection, then **Refresh**. Wikipedia India is the seeded corpus. Each upload or URL crawl is its own row. 
 2. **Wikipedia topic** — only on Wikipedia India. A **view** on that same collection. It does not create another dataset.
 3. **Header pills** — share of documents, share of analyzed words, uncertainty range, and band counts (likely AI / likely human / uncertain). Read-only. Estimates, not proof. GraphSAGE is not in these numbers.
 4. **Document graph** — circular layout: unlabeled dots are documents; one subheading sits on each cluster. Hover a dot for the title. Edges are embedding similarity.
@@ -132,7 +131,7 @@ There is **no POST that creates a Wikipedia subset dataset**. `topic=` and `ids=
 
 ## Lifecycle of one additional collection (URL crawl or PDF/text)
 
-Wikipedia India is already seeded. This section is the full life of **one extra collection** — a public URL (same-site crawl) **or** a PDF/text upload. That extra set is independent. It is never mixed into Wikipedia India.
+Wikipedia India is already seeded. The full life of **one extra collection**, a public URL (same-site crawl) **or** a PDF/text upload is as follows:
 
 Open the shared demo at [https://full-definition-hundreds-bye.trycloudflare.com](https://full-definition-hundreds-bye.trycloudflare.com) or [http://localhost:8080](http://localhost:8080). Both hit the same `knowledgeos.exe` process and the same SQLite file.
 
