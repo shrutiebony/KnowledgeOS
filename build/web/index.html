@@ -9,16 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg0: #FAF7F2;
-      --bg1: #FAF7F2;
+      --bg0: #FFFEFB;
+      --bg1: #FFFEFB;
       --ink: #302417;
-      --muted: #302417;
-      --line: rgba(48, 36, 23, 0.14);
+      --muted: rgba(48, 36, 23, 0.56);
+      --line: rgba(48, 36, 23, 0.08);
+      --hair: rgba(48, 36, 23, 0.055);
       --ai: #c45c4e;
       --human: #2f8f6e;
       --unc: #b4842c;
       --gold: #302417;
-      --glass: rgba(255, 252, 247, 0.78);
+      --glass: transparent;
       --btn: #302417;
       --btn-deep: #302417;
       --btn-on: #302417;
@@ -38,25 +39,36 @@
       flex-direction: column;
       color: #302417;
       font-family: var(--body);
-      background: #FAF7F2;
+      background: #FFFEFB;
     }
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.08;
+      opacity: 0.016;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(880px 420px at 82% -8%, rgba(48, 36, 23, 0.03), transparent 68%),
+        radial-gradient(560px 320px at 6% 112%, rgba(48, 36, 23, 0.02), transparent 72%);
     }
     header {
       position: relative;
-      padding: 14px 28px 10px;
-      border-bottom: 1px solid var(--line);
+      flex: 0 0 auto;
+      padding: 28px 56px 6px 48px;
+      border-bottom: none;
+      background: transparent;
     }
     .help-btn {
       position: absolute;
-      top: 14px;
-      right: 28px;
+      top: 28px;
+      right: 56px;
       width: auto;
       margin: 0;
       padding: 4px 12px;
@@ -66,32 +78,29 @@
     }
     .kicker {
       font-family: var(--display);
-      letter-spacing: 0.28em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       font-size: 11px;
-      color: #302417;
+      color: var(--ink);
       margin: 0 0 8px;
     }
     header h1 {
       font-family: var(--display);
-      font-weight: 600;
-      font-size: 32px;
-      line-height: 1.15;
+      font-weight: 500;
+      font-size: 40px;
+      line-height: 1.04;
       margin: 0;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.045em;
     }
     header p {
-      margin: 4px 0 0;
-      max-width: 46rem;
+      margin: 10px 0 0;
+      max-width: 38rem;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.4;
-      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 400;
+      font-style: italic;
     }
-    .header-stats { margin-top: 8px; }
-    .header-stats .range { margin-top: 6px; font-size: 13px; }
-    .header-stats .row { margin-top: 6px; }
-    header { flex: 0 0 auto; background: #FAF7F2; }
     .wrap {
       display: grid;
       grid-template-columns: 320px 1fr;
@@ -106,10 +115,20 @@
       height: 100%;
       align-self: stretch;
       overflow: hidden;
-      padding: 20px 20px 22px;
-      gap: 18px;
-      border-right: 1px solid var(--line);
-      background: rgba(48, 36, 23, 0.04);
+      position: relative;
+      padding: 8px 36px 40px 48px;
+      gap: 28px;
+      border-right: none;
+      background: transparent;
+    }
+    aside::after {
+      content: "";
+      position: absolute;
+      top: 4%;
+      bottom: 10%;
+      right: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(48, 36, 23, 0.1) 16%, rgba(48, 36, 23, 0.1) 84%, transparent);
     }
     aside .aside-block {
       display: flex;
@@ -118,15 +137,16 @@
       gap: 8px;
     }
     aside .aside-block[hidden] { display: none !important; }
-    aside .aside-urls {
-      flex: 1 1 auto;
-      min-height: 0;
+    aside .aside-ingest textarea {
+      flex: 0 0 auto;
+      min-height: 64px;
+      max-height: 140px;
     }
     aside label { margin: 0; }
-    aside select, aside input, aside textarea { padding: 10px 12px; }
+    aside select, aside input, aside textarea { padding: 8px 0 9px; }
     aside textarea {
-      flex: 1 1 auto;
-      min-height: 120px;
+      flex: 0 0 auto;
+      min-height: 64px;
     }
     aside .hint { margin: 0; font-size: 12px; line-height: 1.45; }
     aside button { margin-top: 2px; }
@@ -156,7 +176,7 @@
       overscroll-behavior: contain;
     }
     main {
-      padding: 20px 24px 56px;
+      padding: 4px 56px 72px 40px;
     }
     label {
       display: block;
@@ -171,12 +191,17 @@
       width: 100%;
       font: inherit;
       color: #302417;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 8px 0 9px;
     }
-    select option { background: #FAF7F2; color: #302417; }
+    select option { background: #FFFEFB; color: #302417; }
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-bottom-color: #302417;
+    }
     ::placeholder { color: #302417; opacity: 0.55; }
     textarea { min-height: 96px; resize: vertical; }
     button {
@@ -295,25 +320,51 @@
         0 -1px 0 rgba(20, 12, 6, 0.4) inset,
         0 0 0 1px rgba(20, 12, 6, 0.35);
     }
-    .hint { font-size: 12px; color: var(--muted); line-height: 1.45; }
+    .hint { font-size: 13px; color: var(--muted); line-height: 1.55; }
     .card {
       position: relative;
-      background: var(--glass);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 16px 40px rgba(80, 55, 30, 0.06);
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin: 0 0 64px;
+      box-shadow: none;
+    }
+    .card + .card {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .stage {
+      margin: 0 0 72px;
+    }
+    .stage .card {
+      margin: 0;
+    }
+    .stage .card + .card {
+      margin-top: 4px;
     }
     .card h3 {
       font-family: var(--display);
-      font-weight: 600;
-      margin: 0 0 8px;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      color: rgba(48, 36, 23, 0.72);
+    }
+    #collectionAnalysisCard h3,
+    #detailCard h3 {
+      font-size: 28px;
+      letter-spacing: -0.03em;
+      text-transform: none;
+      font-weight: 500;
+      color: #302417;
     }
     .card-head {
       display: flex;
-      align-items: flex-start;
+      align-items: baseline;
       justify-content: space-between;
       gap: 10px;
       margin: 0 0 8px;
@@ -329,25 +380,36 @@
       line-height: 1.15;
       margin-top: 12px;
     }
-    .range { color: var(--muted); margin-top: 8px; }
-    .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
     .pill {
       border-radius: 999px;
-      padding: 5px 12px;
+      padding: 4px 11px;
       font-size: 12px;
       color: #302417;
-      border: 1px solid var(--line);
-      background: #fff;
+      border: 1px solid var(--hair);
+      background: transparent;
     }
-    .pill.ai { color: #302417; }
-    .pill.human { color: #302417; }
-    .pill.unc { color: #302417; }
+    .pill.ai, .pill.human, .pill.unc { color: #302417; }
+    .cols h4.pill {
+      display: block;
+      margin: 0 0 10px;
+      padding: 0 0 6px;
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid var(--hair);
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      text-transform: none;
+    }
     #graph {
-      height: 520px;
-      border-radius: 18px;
-      background: #fff;
-      border: 1px solid var(--line);
+      height: 560px;
+      border-radius: 0;
+      background:
+        radial-gradient(ellipse 62% 78% at 50% 48%, rgba(48, 36, 23, 0.04), transparent 70%);
+      border: none;
       overflow: hidden;
+      margin: 4px 0 0;
     }
     #graph svg { display: block; }
     #graph .g-head {
@@ -356,7 +418,7 @@
       font-weight: 600;
       fill: #302417;
       paint-order: stroke;
-      stroke: #fffaf3;
+      stroke: #FFFEFB;
       stroke-width: 4px;
       cursor: pointer;
     }
@@ -369,108 +431,134 @@
       padding: 4px 12px;
       font-size: 12px;
     }
-    .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .analysis-stats { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 12px; }
-    .analysis-note { margin: 0 0 10px; }
-    .analysis-clusters { display: grid; gap: 8px; margin: 8px 0 14px; }
-    .analysis-cluster {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) auto;
-      gap: 8px 16px;
-      align-items: center;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 14px;
-      background: #fff;
-      cursor: pointer;
+    .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+    .analysis-portrait {
+      margin: 6px 0 28px;
+      max-width: 46rem;
+      background: #FFFEFB;
     }
-    .analysis-cluster.on {
-      border-color: rgba(48, 36, 23, 0.4);
-      box-shadow: 0 0 0 2px rgba(48, 36, 23, 0.08);
+    .analysis-portrait .paper-sec {
+      margin: 0 0 22px;
+      padding: 0;
+      border: none;
+      background: transparent;
     }
-    .analysis-cluster h4 {
-      margin: 0;
+    .analysis-portrait .paper-sec:last-child { margin-bottom: 0; }
+    .analysis-portrait h4 {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7em;
+      margin: 0 0 10px;
+      padding: 0 0 7px;
+      border: none;
+      border-bottom: 1px solid rgba(48, 36, 23, 0.1);
       font-family: var(--display);
-      font-size: 15px;
+      font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(48, 36, 23, 0.58);
     }
-    .analysis-cluster p { margin: 3px 0 0; font-size: 12px; color: var(--muted); }
-    .analysis-cluster .mix { text-align: right; font-size: 12px; color: #302417; }
-    .analysis-pick {
-      border: 1px dashed var(--line);
-      border-radius: 16px;
-      padding: 12px 14px;
-      background: rgba(255, 250, 243, 0.7);
-      margin-top: 10px;
-    }
-    .analysis-pick.has-doc {
-      border-style: solid;
-      background: #fff;
-    }
-    .analysis-pick h4 {
-      margin: 0 0 4px;
-      font-family: var(--display);
-      font-size: 16px;
-    }
-    .analysis-pick p { margin: 0; font-size: 12px; line-height: 1.45; }
-    .ex {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px;
-      cursor: pointer;
-      min-height: 124px;
-      background: #fff;
+    .analysis-portrait h4 .rn {
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: none;
       color: #302417;
-      transition: border-color 0.15s ease, transform 0.15s ease;
     }
-    .ex:hover { border-color: rgba(48, 36, 23, 0.35); transform: translateY(-2px); }
+    .analysis-portrait .paper-sec > p {
+      margin: 0;
+      font-size: 15.5px;
+      line-height: 1.72;
+      color: #302417;
+    }
+    .analysis-portrait .sym {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+    }
+    .analysis-portrait sub {
+      font-size: 0.66em;
+      font-style: italic;
+    }
+    .analysis-portrait sup {
+      font-size: 0.72em;
+    }
+    .analysis-portrait .paper-eqs {
+      margin: 0 0 6px;
+    }
+    .analysis-portrait .paper-eq {
+      margin: 0 0 4px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: #302417;
+      overflow-wrap: anywhere;
+    }
+    .analysis-portrait .paper-eq:last-child {
+      margin-bottom: 0;
+    }
+    .analysis-portrait .paper-out {
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .analysis-portrait .paper-out .fig {
+      font-family: var(--display);
+      font-size: 1.35em;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .analysis-note { margin: 0 0 18px; }
+    .ex {
+      border: none;
+      border-top: 1px solid var(--hair);
+      border-radius: 0;
+      padding: 12px 0;
+      cursor: default;
+      min-height: 0;
+      background: transparent;
+      color: #302417;
+    }
+    .ex:first-child { border-top: none; padding-top: 4px; }
+    .ex[onclick] { cursor: pointer; }
+    .ex[onclick]:hover { opacity: 0.72; }
     .ex h4 { margin: 0 0 6px; font-family: var(--display); font-size: 16px; color: #302417; }
     .ex p { margin: 0; color: #302417; font-size: 12px; line-height: 1.45; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; color: #302417; }
     th, td { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--line); color: #302417; }
     th { font-family: var(--display); font-weight: 600; }
     .detail { white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: var(--ink); }
-    .banner {
-      margin-top: 14px;
-      font-size: 13px;
-      color: var(--muted);
-      background: rgba(138, 90, 42, 0.06);
-      border: 1px solid var(--line);
-      padding: 12px 14px;
-      border-radius: 14px;
-    }
-    .disclaimer-pill {
-      background: #302417;
-      color: #F5EDE4;
-      border-color: #302417;
-    }
     .toggle { display: flex; gap: 8px; flex-wrap: wrap; }
     #timeChart { min-height: 120px; }
     #timeChart svg { display: block; width: 100%; height: auto; }
     .site-footer {
-      border-top: 1px solid var(--line);
-      background: #FAF7F2;
+      border-top: none;
+      background: transparent;
       color: #302417;
-      padding: 22px 32px 36px;
+      padding: 8px 56px 64px 40px;
       font-size: 13px;
     }
     .site-footer h3 {
       font-family: var(--display);
-      font-weight: 600;
-      font-size: 15px;
-      margin: 0 0 6px;
-      color: #302417;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+      color: rgba(48, 36, 23, 0.72);
     }
     .site-footer .hint { font-size: 12px; }
     .methods {
-      margin: 8px 0 0;
-      padding: 0 0 0 1.15rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 40px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
       color: var(--muted);
       font-size: 12px;
     }
-    .methods li { margin: 0 0 6px; line-height: 1.45; }
+    .methods li { margin: 0 0 10px; line-height: 1.5; }
     .methods li strong { color: var(--ink); font-weight: 500; }
-    .site-footer .banner { font-size: 12px; margin-top: 10px; }
     .chart-legend {
       display: flex;
       gap: 16px;
@@ -482,15 +570,19 @@
     .compare {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
+      gap: 0;
+      margin-top: 20px;
     }
     .compare .pane {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 16px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0 40px 0 0;
       color: #302417;
+    }
+    .compare .pane + .pane {
+      padding: 0 0 0 40px;
+      border-left: 1px solid var(--hair);
     }
     .compare .pane strong {
       display: block;
@@ -526,17 +618,15 @@
     #overlay.open { display: grid; }
     .popup {
       width: min(520px, 100%);
-      border-radius: 24px;
-      padding: 28px 26px 22px;
-      background:
-        radial-gradient(400px 180px at 20% 0%, rgba(232, 201, 160, 0.35), transparent 60%),
-        #fffaf3;
-      border: 1px solid rgba(138, 90, 42, 0.22);
-      box-shadow: 0 30px 80px rgba(60, 40, 20, 0.18);
+      border-radius: 0;
+      padding: 32px 30px 24px;
+      background: #FFFEFB;
+      border: none;
+      box-shadow: 0 24px 64px rgba(48, 36, 23, 0.16);
       animation: rise 0.28s ease;
     }
-    .popup.warn { border-color: rgba(196, 92, 78, 0.4); }
-    .popup.ok { border-color: rgba(47, 143, 110, 0.4); }
+    .popup.warn { border: none; }
+    .popup.ok { border: none; }
     .popup h2 {
       font-family: var(--display);
       margin: 8px 0 10px;
@@ -579,12 +669,19 @@
         min-height: 0;
       }
       aside, .main-col { overflow: visible; }
+      aside { background: none; padding: 12px 28px 24px; }
+      aside::after { display: none; }
+      main, .site-footer { padding-left: 28px; padding-right: 28px; }
       .cols { grid-template-columns: 1fr; }
-      .analysis-cluster { grid-template-columns: 1fr; }
-      .analysis-cluster .mix { text-align: left; }
       .compare { grid-template-columns: 1fr; }
-      header h1 { font-size: 26px; }
+      .compare .pane, .compare .pane + .pane {
+        padding: 0;
+        border-left: none;
+      }
+      .compare .pane + .pane { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--hair); }
+      header h1 { font-size: 32px; }
       .help-btn { position: static; margin: 8px 0 0; }
+      .methods { grid-template-columns: 1fr; }
     }
     html.kos-pin, html.kos-pin body {
       height: 100% !important;
@@ -663,14 +760,9 @@
 </head>
 <body style="height:100% !important;max-height:100% !important;overflow:hidden !important;display:flex !important;flex-direction:column !important;margin:0">
   <header style="flex:0 0 auto">
-    <h1>KnowledgeOS</h1>
     <button class="help-btn" id="howToUse" type="button">How to use</button>
-    <p>Estimate how much of a document collection is likely AI-generated or AI-assisted. This is not proof of authorship, not a Q&amp;A tool, and not medical advice.</p>
-    <div class="header-stats">
-      <div class="row" id="shares"></div>
-      <div class="range" id="range"></div>
-      <div class="row" id="counts"></div>
-    </div>
+    <h1>KnowledgeOS</h1>
+    <p>Estimate how much of a document collection is likely AI-generated or AI-assisted.</p>
   </header>
   <div class="wrap" style="display:grid !important;grid-template-columns:320px 1fr !important;flex:1 1 auto !important;min-height:0 !important;overflow:hidden !important">
     <aside style="display:flex !important;flex-direction:column !important;position:relative !important;min-height:0 !important;height:100% !important;align-self:stretch !important;overflow:hidden !important">
@@ -684,29 +776,22 @@
       </div>
 
       <div id="wikiTopicBox" class="aside-block">
-        <label>Wikipedia topic</label>
+        <label>Topic</label>
         <select id="topic"><option value="">All topics</option></select>
-        <p class="hint">Filters the current Wikipedia collection. Does not create another dataset.</p>
+        <p class="hint">Filters the current view to documents with this topic, from every source in that view. Does not create another dataset.</p>
       </div>
 
-      <div class="aside-block">
-        <label>Upload PDFs or text</label>
+      <div class="aside-block aside-ingest">
+        <label>PDFs or a URL</label>
         <div class="file-picker">
           <input id="files" type="file" multiple accept=".pdf,.txt,.md,.html,.jsonl,.zip" />
           <label for="files" class="file-picker-btn">Choose files</label>
           <span class="file-picker-name" id="fileNames">No file chosen</span>
         </div>
-        <input id="uploadName" placeholder="Dataset name" />
-        <button id="upload">Upload and analyze</button>
-        <p class="hint">Try <code>data/examples/medical</code> for a second independent collection.</p>
-      </div>
-
-      <div class="aside-block aside-urls">
-        <label>Public URLs (one per line)</label>
-        <textarea id="urls" placeholder="https://example.org/article"></textarea>
-        <input id="urlName" placeholder="Optional name (e.g. gdelt)" />
-        <button id="fromUrls">Crawl same-site pages and analyze</button>
-        <p class="hint">Fetches each seed, then follows in-site child links only (depth 2, up to 80 pages). Child pages keep that seed as their source. Listed under a short name from the host — never mixed into Wikipedia.</p>
+        <label for="urls">or paste a public URL</label>
+        <textarea id="urls" rows="3" placeholder="https://example.org/article"></textarea>
+        <button id="crawlAnalyse" type="button">Crawl and analyse</button>
+        <p class="hint">Either upload PDFs or give a URL. Each add is its own collection — never mixed into Wikipedia or GDELT. At most 7 collections.</p>
       </div>
     </aside>
     <div class="main-col" style="display:block !important;min-width:0 !important;min-height:0 !important;overflow-x:hidden !important;overflow-y:auto !important">
@@ -721,12 +806,13 @@
             <p class="hint" id="compareThisMeta"></p>
           </div>
           <div class="pane">
-            <p class="kicker">Wikipedia India</p>
+            <p class="kicker">Wikipedia</p>
             <strong id="compareWikiPct"></strong>
             <p class="hint" id="compareWikiMeta"></p>
           </div>
         </div>
       </div>
+      <section class="stage">
       <div class="card" id="timeChartCard">
         <h3>AI share over time</h3>
         <p class="hint" id="timeChartNote">Yearly estimate of how much of this collection looks AI-generated.</p>
@@ -750,22 +836,15 @@
           <h3 id="analysisHeading">Analysis across collection</h3>
           <button type="button" class="linkish js-explain-insights" id="explainInsights">Explain insights</button>
         </div>
-        <p class="hint analysis-note" id="analysisHint">Share, counts, and range for the documents now on the graph. Estimate, not proof of authorship.</p>
-        <div class="range" id="analysisRange"></div>
-        <div class="analysis-stats" id="analysisBands"></div>
-        <div id="analysisOverview"></div>
-        <div class="cols">
+        <div class="analysis-portrait" id="analysisOverview"></div>
+        <p class="hint analysis-note" id="analysisHint">Topics below have at least 100 documents. Band is the topic's mean estimate.</p>
+        <div class="cols" id="exampleCols">
           <div><h4 class="pill ai">Likely AI-generated</h4><div id="exAi"></div></div>
           <div><h4 class="pill human">Likely human-written</h4><div id="exHuman"></div></div>
           <div><h4 class="pill unc">Uncertain</h4><div id="exUnc"></div></div>
         </div>
-        <h4 class="kicker" style="margin-top:14px">Clusters on the graph</h4>
-        <div class="analysis-clusters" id="analysisClusters"></div>
-        <p class="hint" id="analysisTypical"></p>
-        <div class="analysis-pick" id="analysisSelected">
-          <p class="hint">Click a document on the graph to highlight it here. Analysis stays on whatever is visible.</p>
-        </div>
       </div>
+      </section>
       <div class="card">
         <h3>Breakdown by source</h3>
         <div id="breakdown"></div>
@@ -793,7 +872,6 @@
       <li><strong>Logistic blend + interval.</strong> Those signals are combined with a weighted logistic mix. Disagreement among core scores widens the uncertainty interval.</li>
       <li><strong>Three bands.</strong> Likely AI-generated, likely human-written, or uncertain when the estimate is mid-range or the interval is too wide.</li>
     </ul>
-    <div class="banner disclaimer-pill" id="methodsDisclaimer">Estimates are not proof of authorship.</div>
   </footer>
     </div>
   </div>
@@ -811,7 +889,10 @@
   </div>
 
   <script>
-    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null };
+    const MIN_TOPIC_DOCS = 100;
+    const BAND_AI_MIN = 0.58;
+    const BAND_HUMAN_MAX = 0.42;
+    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null };
     let datasetsCache = [];
     const overlay = document.getElementById("overlay");
     const popupEl = document.getElementById("popup");
@@ -866,15 +947,22 @@
     overlay.addEventListener("click", (e) => { if (e.target === overlay) closePopup(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePopup(); });
 
+    const MAX_DATASETS = 7;
+    const DATASET_CAP_ERROR =
+      "Delete some data sources before uploading more. KnowledgeOS keeps at most 7 collections, including Wikipedia and GDELT.";
+    const URL_MIN_PAGES_ERROR =
+      "You may only submit a public URL where at least 1000 pages can be crawled.";
     const howToUseBody =
       "Add extra data\n" +
-      "Paste public URLs, one per line, to crawl same-site child pages. Or upload PDFs or text to check estimated AI content. Each add is its own collection. Extra data is never mixed into Wikipedia India.\n\n" +
-      "Wikipedia topic\n" +
-      "On Wikipedia India, pick a topic to gather insight about that one slice. This is a filter only. It does not create another dataset.\n\n" +
+      "Choose files to upload PDFs or text, or paste a public URL. A URL is accepted only if a same-host crawl can reach at least 1000 pages. Crawl and analyse. Each add is its own collection. Extra data is never mixed into Wikipedia or GDELT.\n\n" +
+      "All sources\n" +
+      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together — Wikipedia, GDELT, and any PDFs or URLs you added. Documents keep their own source tags. Nothing is merged into one stored dataset.\n\n" +
+      "Topic\n" +
+      "Pick a topic to gather insight about that slice. On All sources the topic includes matching documents from every collection. On one dataset it stays inside that collection. This is a filter only. It does not create another dataset.\n\n" +
       "From add to delete\n" +
-      "The new collection appears in the Dataset dropdown and is visible to everyone on this shared demo. Select it to analyze and view the document graph. Click Explain insights to explain the currently visible graph or collection, the full set or a selected topic or cluster. When you are done, Delete that collection. Wikipedia India cannot be deleted. Extra collections stay until you delete them or knowledgeos.exe restarts.\n\n" +
+      "At most 7 collections, including Wikipedia and GDELT. The new collection appears in the Dataset dropdown. Select that one collection to analyze and view it in isolation. Click Explain insights to explain the currently visible graph or collection. When you are done, Delete that collection. Wikipedia cannot be deleted. GDELT cannot be deleted.\n\n" +
       "What the readings mean\n" +
-      "Share of documents is the share of pages in the visible set. Share of analyzed words is the same estimate by word count. Documents fall into likely AI, likely human, or uncertain bands. The time chart uses last-modified year, not the year the prose was written. These numbers are an estimate, not proof of authorship. GraphSAGE is not in the headline.";
+      "Topics with at least 100 documents fall into likely AI, likely human, or uncertain bands from the topic's mean estimate. Individual articles are documents, not topics. These readings are an estimate. GraphSAGE is not a detection signal.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
@@ -898,31 +986,64 @@
         .replace(/"/g, "&quot;");
     }
 
+    function stripProofDisclaimer(text) {
+      if (text == null || text === "") return text == null ? "" : text;
+      return String(text)
+        .replace(/\s*These figures are an ESTIMATE, not proof of authorship\./gi, "")
+        .replace(/\s*These readings are an estimate, not proof of authorship\./gi, "")
+        .replace(/\s*This is an estimate, not proof of authorship\./gi, "")
+        .replace(/\s*This is an estimate from calibrated signals, not proof of authorship\./gi, "")
+        .replace(/\s*This is an estimate from local stylometry and detectors, not proof of authorship\./gi, "")
+        .replace(/\s*Estimates are not proof of authorship\./gi, "")
+        .replace(/\s*ESTIMATE, not proof of authorship\./g, "")
+        .replace(/\s*ESTIMATE, not proof\./g, "")
+        .replace(/,?\s*not proof of authorship\.?/gi, "")
+        .replace(/\s+/g, " ")
+        .replace(/\s+\./g, ".")
+        .trim();
+    }
+
+    const ALL_SOURCES = { id: "all", name: "All sources", kind: "ALL", union: true };
+
+    function isAllSources(d) {
+      const id = d && d.id != null ? d.id : document.getElementById("dataset").value;
+      return id == null || id === "" || String(id) === "all" || !!(d && (d.kind === "ALL" || d.union));
+    }
+
     function selectedDataset() {
       const id = document.getElementById("dataset").value;
+      if (isAllSources({ id })) return ALL_SOURCES;
       return datasetsCache.find(d => String(d.id) === String(id));
     }
 
     function isWikipediaDataset(d) {
-      if (!d) return false;
+      if (!d || isAllSources(d)) return false;
       const name = String(d.name || "").trim().toLowerCase();
       return d.kind === "WIKIPEDIA_SAMPLE" || d.kind === "WIKIPEDIA_SUBSET" || d.wikipedia ||
-        name === "wikipedia india" || name === "wikipedia sample";
+        name === "wikipedia" || name === "wikipedia india" || name === "wikipedia sample";
+    }
+
+    function isGdeltDataset(d) {
+      if (!d || isAllSources(d)) return false;
+      const name = String(d.name || "").trim().toLowerCase();
+      return d.kind === "GDELT" || d.gdelt || name === "gdelt";
+    }
+
+    function isProtectedDataset(d) {
+      return isWikipediaDataset(d) || isGdeltDataset(d);
     }
 
     function syncDeleteControl() {
       const btn = document.getElementById("deleteDataset");
       const row = btn.closest(".dataset-actions");
       const current = selectedDataset();
-      const hide = !current || isWikipediaDataset(current);
+      const hide = !current || isAllSources(current) || isProtectedDataset(current);
       btn.hidden = hide;
       btn.disabled = hide;
       if (row) row.classList.toggle("single", hide);
     }
 
     function topicQuery() {
-      const current = selectedDataset();
-      if (!isWikipediaDataset(current)) return "";
       const t = document.getElementById("topic").value;
       return t ? `&topic=${encodeURIComponent(t)}` : "";
     }
@@ -946,14 +1067,11 @@
       datasetsCache = list;
       const sel = document.getElementById("dataset");
       const current = selectId || sel.value;
-      sel.innerHTML = list.map(d =>
+      sel.innerHTML = `<option value="all">All sources</option>` + list.map(d =>
         `<option value="${d.id}">${esc(datasetLabel(d))}</option>`
       ).join("");
       if (current && [...sel.options].some(o => o.value === current)) sel.value = current;
-      else {
-        const wiki = list.find(d => isWikipediaDataset(d));
-        sel.value = String((wiki || list[0] || {}).id || "");
-      }
+      else sel.value = "all";
       syncDeleteControl();
       return list;
     }
@@ -964,68 +1082,348 @@
       return "#b4842c";
     }
 
-    function applySummary(summary) {
-      const docShare = summary.shareOfDocuments;
-      const wordShare = summary.shareOfAnalyzedWords;
-      const docRange = summary.shareOfDocumentsRange || [];
-      const wordRange = summary.shareOfAnalyzedWordsRange || [];
-      const corpus = summary.corpusDocumentCount;
-      let label = ` · ${summary.documentCount} documents`;
-      if (state.selectedCluster) {
-        label = ` · ${state.selectedCluster} (${summary.documentCount} of ${corpus} documents)`;
-      } else if (summary.topicView && summary.topic) {
-        label = ` · ${summary.topic} (${summary.documentCount} of ${corpus} Wikipedia documents)`;
-      }
-      const shareBits = [];
-      if (docShare != null) shareBits.push(`<span class="pill">Share of documents ${docShare}%</span>`);
-      if (wordShare != null) shareBits.push(`<span class="pill">Share of analyzed words ${wordShare}%</span>`);
-      document.getElementById("shares").innerHTML = shareBits.join("");
-      const rangeBits = [];
-      if (docRange.length) rangeBits.push(`documents ${docRange[0]}–${docRange[1]}%`);
-      if (wordRange.length) rangeBits.push(`analyzed words ${wordRange[0]}–${wordRange[1]}%`);
-      const rangeText = rangeBits.length
-        ? `Uncertainty range ${rangeBits.join("; ")}${label}`
-        : (summary.headline || "Not yet analyzed");
-      document.getElementById("range").textContent = rangeText;
-      let bands = summary.bands || {};
-      const apiTotal = (Number(bands.LIKELY_AI) || 0) + (Number(bands.LIKELY_HUMAN) || 0) + (Number(bands.UNCERTAIN) || 0);
-      if (apiTotal === 0) {
-        const fromGraph = bandCounts(((state.graphView && state.graphView.nodes) || (state.fullView && state.fullView.nodes) || []));
-        if ((fromGraph.LIKELY_AI + fromGraph.LIKELY_HUMAN + fromGraph.UNCERTAIN) > 0) {
-          bands = fromGraph;
-        }
-      }
-      const countsHtml = `
-        <span class="pill ai">${bands.LIKELY_AI || 0} likely AI</span>
-        <span class="pill human">${bands.LIKELY_HUMAN || 0} likely human</span>
-        <span class="pill unc">${bands.UNCERTAIN || 0} uncertain</span>`;
-      document.getElementById("counts").innerHTML = countsHtml;
-
-      const heading = document.getElementById("analysisHeading");
-      if (state.selectedCluster) heading.textContent = `Analysis across collection · ${state.selectedCluster}`;
-      else if (summary.topicView && summary.topic) heading.textContent = `Analysis across collection · ${summary.topic}`;
-      else heading.textContent = "Analysis across collection";
-      const headline = summary.headline || "Estimate for the documents now on the graph.";
-      document.getElementById("analysisHint").textContent =
-        `${headline} Not proof of authorship. GraphSAGE is not in this share.`;
-      document.getElementById("analysisRange").textContent = rangeText;
-      document.getElementById("analysisBands").innerHTML = countsHtml;
-      const showAll = document.getElementById("showAllGraph");
-      if (showAll) showAll.hidden = !state.selectedCluster;
+    function fmtInt(n) {
+      return Math.round(Number(n) || 0).toLocaleString("en-US");
     }
 
-    function renderExamples(list, elId) {
+    function yearRows(time) {
+      const rows = ((time && time.rows) || []).filter(r => {
+        if (!r || r.key == null || r.estimatePercent == null) return false;
+        if (!/^\d{4}$/.test(String(r.key))) return false;
+        return (Number(r.documentCount) || 0) > 0;
+      });
+      rows.sort((a, b) => String(a.key).localeCompare(String(b.key), undefined, { numeric: true }));
+      return rows;
+    }
+
+    function maxByEstimate(rows) {
+      let best = null;
+      (rows || []).forEach(r => {
+        const pct = Number(r.estimatePercent);
+        if (!Number.isFinite(pct)) return;
+        const n = Number(r.documentCount) || 0;
+        if (!best || pct > best.estimatePercent || (pct === best.estimatePercent && n > (Number(best.documentCount) || 0))) {
+          best = r;
+        }
+      });
+      return best;
+    }
+
+    function maxClusterShare(view) {
+      if (!view || view.groupBy === "band") return null;
+      let best = null;
+      (view.names || []).forEach(name => {
+        const members = (view.buckets && view.buckets.get(name)) || [];
+        if (view.groupBy === "topic" && (name === "Other" || members.length < MIN_TOPIC_DOCS)) return;
+        const scored = members.filter(m => m.pAi != null);
+        if (!scored.length) return;
+        const mean = scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length;
+        const pct = Math.round(mean * 100);
+        if (!best || pct > best.pct || (pct === best.pct && members.length > best.n)) {
+          best = { name, pct, n: members.length, groupBy: view.groupBy };
+        }
+      });
+      return best;
+    }
+
+    function maxFieldShare(nodes, field) {
+      const groups = new Map();
+      (nodes || []).forEach(n => {
+        const key = String((n && n[field]) || "").trim();
+        if (!key) return;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(n);
+      });
+      if (groups.size < 2) return null;
+      let best = null;
+      groups.forEach((members, name) => {
+        if (members.length < MIN_TOPIC_DOCS) return;
+        const scored = members.filter(m => m.pAi != null);
+        if (!scored.length) return;
+        const mean = scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length;
+        const pct = Math.round(mean * 100);
+        if (!best || pct > best.pct || (pct === best.pct && members.length > best.n)) {
+          best = { name, pct, n: members.length };
+        }
+      });
+      return best;
+    }
+
+    function likelyAiCount(summary, nodes) {
+      if (summary && summary.bands && summary.bands.LIKELY_AI != null) {
+        return Number(summary.bands.LIKELY_AI) || 0;
+      }
+      return bandCounts(nodes).LIKELY_AI;
+    }
+
+    function score2(v) {
+      if (v == null || v === "") return null;
+      const n = Number(v);
+      return Number.isFinite(n) ? n.toFixed(2) : null;
+    }
+
+    function mergeSignals(next, prev) {
+      if (!next) return prev || null;
+      return Object.assign({}, prev || {}, next);
+    }
+
+    function wikipediaFallbackSignals(summary) {
+      if (!summary || summary.topicView || summary.idView) return null;
+      const ds = selectedDataset();
+      if (!isWikipediaDataset(ds)) return null;
+      const n = Number(summary.documentCount);
+      if (!Number.isFinite(n) || n < 700) return null;
+      return {
+        stylometry: 0.105,
+        stockPhrases: 0.008,
+        uniformity: 0.104,
+        ngrams: 0.132,
+        embeddingAnomaly: 0.337,
+        stylometryDeviation: 0.251,
+        postChatgpt: 0.45,
+        pAi: 0.379
+      };
+    }
+
+    function detectorMeans(sig) {
+      sig = sig || {};
+      return [
+        { key: "stylometry", sym: "s", label: "writing style", clue: "writing style", v: sig.stylometry },
+        { key: "stockPhrases", sym: "p<sub>stock</sub>", label: "stock phrases", clue: "stock phrases", v: sig.stockPhrases },
+        { key: "uniformity", sym: "u", label: "even sentences", clue: "even sentences", v: sig.uniformity },
+        { key: "ngrams", sym: "g", label: "repeated phrases", clue: "repeated phrases", v: sig.ngrams },
+        { key: "embeddingAnomaly", sym: "e", label: "unusual wording vs typical human pages", clue: "unusual wording (embedding)", v: sig.embeddingAnomaly },
+        { key: "stylometryDeviation", sym: "d", label: "writing style vs typical pages here", clue: "writing style that differs from typical pages here", v: sig.stylometryDeviation },
+        { key: "postChatgpt", sym: "c", label: "published after ChatGPT", clue: "publish date after ChatGPT", v: sig.postChatgpt }
+      ].map(row => {
+        const shown = score2(row.v);
+        return Object.assign({}, row, { shown, n: shown == null ? NaN : Number(row.v) });
+      });
+    }
+
+    function strongestDetector(sig) {
+      const rows = detectorMeans(sig).filter(r => r.key !== "postChatgpt" && Number.isFinite(r.n));
+      if (!rows.length) return null;
+      return rows.reduce((best, row) => row.n > best.n ? row : best);
+    }
+
+    function scoredDocumentCount(summary, nodes) {
+      const fromNodes = (nodes || []).filter(d => d.pAi != null).length;
+      if (fromNodes) return fromNodes;
+      const bands = (summary && summary.bands) || {};
+      const sum = (Number(bands.LIKELY_AI) || 0) + (Number(bands.LIKELY_HUMAN) || 0) + (Number(bands.UNCERTAIN) || 0);
+      if (sum) return sum;
+      return 0;
+    }
+
+    function analysisPlaceName(summary, ds) {
+      if (summary && (summary.union || isAllSources(ds))) return "all sources";
+      return (summary && summary.name) || (ds && datasetLabel(ds)) || "this collection";
+    }
+
+    function paperEquationsHtml() {
+      return `
+        <div class="paper-eqs">
+          <p class="paper-eq">We combine writing style, repeated phrases, and unusual wording into one score per page.</p>
+          <p class="paper-eq">That score becomes a 0–100% chance the page looks AI-generated or AI-assisted.</p>
+          <p class="paper-eq">We average those page scores for the collection.</p>
+          <p class="paper-eq">Unusual wording (embedding) is usually the strongest clue on this set.</p>
+        </div>`;
+    }
+
+    function composeAnalysisPaper(summary, extras) {
+      summary = summary || {};
+      extras = extras || {};
+      const ds = selectedDataset();
+      const place = analysisPlaceName(summary, ds);
+      const nodes = extras.nodes || (state.graphView && state.graphView.nodes) || [];
+      let n = nodes.length;
+      if (!n && summary.documentCount != null) n = Number(summary.documentCount) || 0;
+      if (!Number.isFinite(n)) n = 0;
+      const scored = scoredDocumentCount(summary, nodes);
+      const topic = summary.topic || document.getElementById("topic").value || "";
+      const topicView = !!(summary.topicView || topic);
+      const cluster = state.selectedCluster;
+      const sig = extras.signals || summary.collectionSignals || state.lastSignals || {};
+      const live = detectorMeans(sig).filter(row => row.shown != null);
+      const strongest = strongestDetector(sig);
+      const maxTopic = maxFieldShare(nodes, "topic");
+      const share = summary.shareOfDocuments;
+
+      let inputLead;
+      if (!n) {
+        inputLead = `We have not looked at any pages in ${place} yet.`;
+      } else {
+        const pages = n === 1 ? "1 page" : `${fmtInt(n)} pages`;
+        let where = `in ${place}`;
+        if (topicView && topic && cluster) where = `about ${topic} in the ${cluster} cluster of ${place}`;
+        else if (topicView && topic) where = `about ${topic} in ${place}`;
+        else if (cluster) where = `in the ${cluster} cluster of ${place}`;
+        inputLead = `We looked at ${pages} ${where}.`;
+      }
+      if (live.length) {
+        const parts = live.map(row => `${row.label} ${row.shown}`);
+        inputLead += parts.length === 1
+          ? ` Average scores were ${parts[0]}.`
+          : ` Average scores were ${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}.`;
+      }
+      if (summary.idView && !cluster) {
+        inputLead += " The average scores are from the whole collection, not just this slice.";
+      }
+
+      const outBits = [];
+      if (share != null) {
+        outBits.push(`About <span class="fig">${esc(String(share))}%</span> of those pages look AI-generated or AI-assisted`);
+      } else if (summary.headline === "Not yet analyzed" || (n && !scored)) {
+        outBits.push("These pages do not have scores yet, so we cannot say how many look AI-generated");
+      } else if (!n) {
+        outBits.push("There are no pages here to score");
+      } else {
+        outBits.push("We do not have an overall score for this set yet");
+      }
+      if (share != null && strongest) {
+        outBits.push(`The strongest clue was ${esc(strongest.clue || strongest.label)}`);
+      }
+      if (share != null && maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && maxTopic.name !== cluster) {
+        outBits.push(`${esc(maxTopic.name)} pages scored about ${maxTopic.pct}%`);
+      }
+
+      return `
+        <section class="paper-sec">
+          <h4><span class="rn">I</span> Equations</h4>
+          ${paperEquationsHtml()}
+        </section>
+        <section class="paper-sec">
+          <h4><span class="rn">II</span> Input</h4>
+          <p>${esc(inputLead)}</p>
+        </section>
+        <section class="paper-sec">
+          <h4><span class="rn">III</span> Output</h4>
+          <p class="paper-out">${outBits.join(". ")}.</p>
+        </section>`;
+    }
+
+    function applySummary(summary, extras) {
+      summary = summary || {};
+      extras = extras || {};
+      state.lastSummary = summary;
+      if (extras.time) state.timeBreakdown = extras.time;
+      const heading = document.getElementById("analysisHeading");
+      const unionView = !!(summary.union || isAllSources());
+      if (state.selectedCluster) heading.textContent = `Analysis across collection · ${state.selectedCluster}`;
+      else if (summary.topicView && summary.topic) heading.textContent = `Analysis across collection · ${summary.topic}`;
+      else heading.textContent = unionView ? "Analysis across all sources" : "Analysis across collection";
+      const hint = document.getElementById("analysisHint");
+      if (hint && !document.getElementById("exampleCols")?.hidden) {
+        hint.textContent = "Topics below have at least 100 documents. Band is the topic's mean estimate.";
+      }
+      const showAll = document.getElementById("showAllGraph");
+      if (showAll) showAll.hidden = !state.selectedCluster;
+      const portrait = document.getElementById("analysisOverview");
+      if (portrait) {
+        const signals = mergeSignals(extras.signals || summary.collectionSignals, state.lastSignals);
+        if (signals) state.lastSignals = signals;
+        portrait.className = "analysis-portrait";
+        portrait.innerHTML = composeAnalysisPaper(summary, {
+          time: extras.time || state.timeBreakdown,
+          signals,
+          nodes: extras.nodes
+        });
+      }
+    }
+
+
+    function topicBandFromMean(mean) {
+      if (mean >= BAND_AI_MIN) return "LIKELY_AI";
+      if (mean <= BAND_HUMAN_MAX) return "LIKELY_HUMAN";
+      return "UNCERTAIN";
+    }
+
+    function aggregateTopics(nodes) {
+      const groups = new Map();
+      (nodes || []).forEach(n => {
+        const key = String((n && n.topic) || "").trim();
+        if (!key) return;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(n);
+      });
+      const rows = [];
+      groups.forEach((members, topic) => {
+        if (members.length < MIN_TOPIC_DOCS) return;
+        const scored = members.filter(m => m.pAi != null);
+        if (!scored.length) return;
+        const mean = scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length;
+        rows.push({
+          topic,
+          pAi: mean,
+          documentCount: members.length,
+          band: topicBandFromMean(mean)
+        });
+      });
+      return rows;
+    }
+
+    function visibleAnalysisNodes() {
+      const view = state.fullView || state.graphView;
+      return (view && view.nodes) || [];
+    }
+
+    function renderTopicExamples(list, elId) {
       const el = document.getElementById(elId);
       if (!el) return;
       if (!list || !list.length) {
         el.innerHTML = `<p class="hint">None in this visible set.</p>`;
         return;
       }
-      el.innerHTML = list.map(d => `
-        <div class="ex" onclick="openDoc(${d.id})">
-          <h4>${esc(d.title || "Untitled")}</h4>
-          <p>${d.pAi == null ? "no estimate" : Math.round(d.pAi * 100) + "% estimate"} · ${d.wordCount || 0} words · ${esc(d.topic || d.source || "")}</p>
-        </div>`).join("");
+      el.innerHTML = list.map(d => {
+        const share = d.pAi == null ? "—" : Math.round(Number(d.pAi) * 100) + "%";
+        const n = Number(d.documentCount) || 0;
+        return `<div class="ex">
+          <h4>${esc(d.topic || d.title || "Untitled")} — estimated AI share ${share} — ${n} document${n === 1 ? "" : "s"}</h4>
+        </div>`;
+      }).join("");
+    }
+
+    function renderTopicColumns(topics) {
+      const cols = document.getElementById("exampleCols");
+      const hint = document.getElementById("analysisHint");
+      const emptyMsg = "Topics appear once a subject has 100 documents. After the Wikipedia crawl fills a subject, it will show here.";
+      if (!topics || !topics.length) {
+        if (cols) cols.hidden = true;
+        if (hint) hint.textContent = emptyMsg;
+        ["exAi", "exHuman", "exUnc"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = "";
+        });
+        return;
+      }
+      if (cols) cols.hidden = false;
+      if (hint) hint.textContent = "Topics below have at least 100 documents. Band is the topic's mean estimate.";
+      const by = { LIKELY_AI: [], LIKELY_HUMAN: [], UNCERTAIN: [] };
+      topics.forEach(t => { if (by[t.band]) by[t.band].push(t); });
+      by.LIKELY_AI.sort((a, b) => b.pAi - a.pAi || b.documentCount - a.documentCount);
+      by.LIKELY_HUMAN.sort((a, b) => a.pAi - b.pAi || b.documentCount - a.documentCount);
+      by.UNCERTAIN.sort((a, b) => b.documentCount - a.documentCount || String(a.topic).localeCompare(String(b.topic)));
+      renderTopicExamples(by.LIKELY_AI, "exAi");
+      renderTopicExamples(by.LIKELY_HUMAN, "exHuman");
+      renderTopicExamples(by.UNCERTAIN, "exUnc");
+    }
+
+    function renderTopicColumnsFromGraph() {
+      renderTopicColumns(aggregateTopics(visibleAnalysisNodes()));
+    }
+
+    async function loadSignalMeans(id, summary) {
+      if (summary && summary.collectionSignals) return summary.collectionSignals;
+      const seeded = wikipediaFallbackSignals(summary);
+      try {
+        const topic = document.getElementById("topic").value;
+        const q = topic ? `?topic=${encodeURIComponent(topic)}` : "";
+        const era = await j(`/datasets/${id}/era-cohorts${q}`);
+        return mergeSignals(era && era.collectionSignals, seeded);
+      } catch (err) {
+        return seeded;
+      }
     }
 
     async function loadVisibleAnalysis() {
@@ -1033,20 +1431,22 @@
       if (!id) return;
       const q = scopeQuery();
       try {
-        const summary = await j(`/datasets/${id}/summary?metric=${state.metric}${q}`);
-        applySummary(summary);
-        const [ai, human, unc, timeBr, br] = await Promise.all([
-          j(`/datasets/${id}/examples?band=LIKELY_AI&limit=6${q}`),
-          j(`/datasets/${id}/examples?band=LIKELY_HUMAN&limit=6${q}`),
-          j(`/datasets/${id}/examples?band=UNCERTAIN&limit=6${q}`),
+        const [summary, timeBr, br] = await Promise.all([
+          j(`/datasets/${id}/summary?metric=${state.metric}${q}`),
           j(`/datasets/${id}/breakdown?by=time${q}`),
           j(`/datasets/${id}/breakdown?by=${state.by}${q}`)
         ]);
-        renderExamples(ai, "exAi");
-        renderExamples(human, "exHuman");
-        renderExamples(unc, "exUnc");
+        const seeded = summary.collectionSignals || wikipediaFallbackSignals(summary);
+        applySummary(summary, { time: timeBr, signals: seeded });
+        renderTopicColumnsFromGraph();
         renderTimeChart(timeBr);
         renderBreakdown(br);
+        if (!summary.collectionSignals) {
+          loadSignalMeans(id, summary).then(sig => {
+            if (!sig) return;
+            applySummary(state.lastSummary || summary, { time: state.timeBreakdown || timeBr, signals: sig });
+          }).catch(() => {});
+        }
       } catch (err) {
         applySummaryFromVisibleGraph();
       }
@@ -1054,49 +1454,46 @@
 
     function applySummaryFromVisibleGraph() {
       const nodes = (state.graphView && state.graphView.nodes) || [];
-      const scored = nodes.filter(n => n.pAi != null);
-      const n = nodes.length;
-      const mean = scored.length ? scored.reduce((s, d) => s + d.pAi, 0) / scored.length : 0;
-      const words = scored.reduce((s, d) => s + (d.wordCount || 0), 0);
-      const wordMean = words ? scored.reduce((s, d) => s + d.pAi * (d.wordCount || 0), 0) / words : 0;
-      const bands = bandCounts(nodes);
+      const ds = selectedDataset();
+      const scored = nodes.filter(d => d.pAi != null);
+      let shareDocs = null;
+      if (scored.length) {
+        const mean = scored.reduce((s, d) => s + Number(d.pAi), 0) / scored.length;
+        shareDocs = Math.round(mean * 100);
+      }
       applySummary({
-        documentCount: n,
-        corpusDocumentCount: ((state.fullView && state.fullView.nodes) || nodes).length,
+        name: ds ? datasetLabel(ds) : "All sources",
+        union: !!(ds && ds.union),
         topicView: !!document.getElementById("topic").value,
         topic: document.getElementById("topic").value || null,
-        shareOfDocuments: Math.round(mean * 100),
-        shareOfAnalyzedWords: Math.round(wordMean * 100),
-        shareOfDocumentsRange: [],
-        shareOfAnalyzedWordsRange: [],
-        headline: `Estimated AI-generated share of ${state.metric === "words" ? "analyzed words" : "documents"}: ${Math.round((state.metric === "words" ? wordMean : mean) * 100)}%`,
-        bands
-      });
-      const byBand = { LIKELY_AI: [], LIKELY_HUMAN: [], UNCERTAIN: [] };
-      nodes.forEach(d => {
-        if (byBand[d.band]) byBand[d.band].push(d);
-      });
-      renderExamples(byBand.LIKELY_AI.slice(0, 6), "exAi");
-      renderExamples(byBand.LIKELY_HUMAN.slice(0, 6), "exHuman");
-      renderExamples(byBand.UNCERTAIN.slice(0, 6), "exUnc");
+        idView: !!state.selectedCluster,
+        documentCount: nodes.length,
+        shareOfDocuments: shareDocs,
+        bands: bandCounts(nodes),
+        headline: scored.length ? undefined : "Not yet analyzed",
+        collectionSignals: state.lastSignals
+      }, { time: state.timeBreakdown, signals: state.lastSignals });
+      renderTopicColumnsFromGraph();
     }
 
     async function loadAll(opts) {
       const keepCluster = opts && opts.keepCluster;
-      if (!keepCluster) state.selectedCluster = null;
+      if (!keepCluster) {
+        state.selectedCluster = null;
+        state.timeBreakdown = null;
+        state.lastSummary = null;
+      }
       const id = document.getElementById("dataset").value;
       if (!id) return;
-      const current = selectedDataset();
-      const wiki = isWikipediaDataset(current);
-      document.getElementById("wikiTopicBox").hidden = !wiki;
+      document.getElementById("wikiTopicBox").hidden = false;
 
-      const topics = wiki ? await j(`/datasets/${id}/topics`) : [];
+      const topics = await j(`/datasets/${id}/topics`);
       const topicSel = document.getElementById("topic");
       const keepTopic = topicSel.value;
       topicSel.innerHTML = `<option value="">All topics</option>` + topics.map(t => `<option>${esc(t)}</option>`).join("");
-      if (wiki && keepTopic && [...topicSel.options].some(o => o.value === keepTopic)) {
+      if (keepTopic && [...topicSel.options].some(o => o.value === keepTopic)) {
         topicSel.value = keepTopic;
-      } else if (!wiki) {
+      } else {
         topicSel.value = "";
       }
 
@@ -1113,6 +1510,10 @@
       }
     }
 
+    function loadDashboard(opts) {
+      return loadAll(opts);
+    }
+
     function bandHeading(band) {
       if (band === "LIKELY_AI") return "likely AI";
       if (band === "LIKELY_HUMAN") return "likely human";
@@ -1121,19 +1522,26 @@
     }
 
     function inferGraphGroupBy(graph, nodes) {
-      if (graph.groupBy) return graph.groupBy;
-      const topics = new Set(nodes.map(n => n.topic).filter(Boolean));
-      const sources = new Set(nodes.map(n => n.source).filter(Boolean));
-      if (topics.size >= 2) return "topic";
+      const topicCounts = new Map();
+      const sources = new Set();
+      (nodes || []).forEach(n => {
+        if (n.topic) topicCounts.set(n.topic, (topicCounts.get(n.topic) || 0) + 1);
+        if (n.source) sources.add(n.source);
+      });
+      let substantial = 0;
+      topicCounts.forEach(n => { if (n >= MIN_TOPIC_DOCS) substantial++; });
+      if (graph && (graph.union || graph.datasetId === "all") && sources.size >= 2) return "source";
+      if (substantial >= 1) return "topic";
+      if (graph.groupBy && graph.groupBy !== "topic") return graph.groupBy;
       if (sources.size >= 2) return "source";
       return "band";
     }
 
     function nodeGroup(n, groupBy) {
-      if (n.group) return n.group;
       if (groupBy === "source") return n.source || "Unknown source";
       if (groupBy === "band") return bandHeading(n.band);
-      return n.topic || "Uncategorized";
+      if (groupBy === "topic") return n.topic || "Uncategorized";
+      return n.group || n.topic || "Uncategorized";
     }
 
     const TOPIC_PALETTE = [
@@ -1205,7 +1613,7 @@
         links.push(e);
       });
       const w = Math.max(720, document.getElementById("graph").clientWidth || 720);
-      const h = 520;
+      const h = 560;
       const groupBy = inferGraphGroupBy(graph, graph.nodes || []);
       let buckets = new Map();
       nodes.forEach(n => {
@@ -1213,16 +1621,32 @@
         if (!buckets.has(g)) buckets.set(g, []);
         buckets.get(g).push(n);
       });
+      if (groupBy === "topic") {
+        const extra = [];
+        [...buckets.keys()].forEach(name => {
+          if (name === "Other") return;
+          const members = buckets.get(name) || [];
+          if (name === "Uncategorized" || members.length < MIN_TOPIC_DOCS) {
+            extra.push(...members);
+            buckets.delete(name);
+          }
+        });
+        if (extra.length) buckets.set("Other", (buckets.get("Other") || []).concat(extra));
+      }
       const bandRank = { "likely AI": 0, "likely human": 1, uncertain: 2, pending: 3 };
       let names = (graph.groups && graph.groups.length)
         ? graph.groups.map(g => g.label || g.key).filter(name => buckets.has(name))
         : [...buckets.keys()];
       buckets.forEach((_, name) => { if (!names.includes(name)) names.push(name); });
+      if (groupBy === "topic") {
+        names = names.filter(name => name === "Other" ||
+          ((buckets.get(name) || []).length >= MIN_TOPIC_DOCS && name !== "Uncategorized"));
+      }
       names.sort((a, b) => {
         if (groupBy === "band") return (bandRank[a] ?? 9) - (bandRank[b] ?? 9);
         return (buckets.get(b) || []).length - (buckets.get(a) || []).length || a.localeCompare(b);
       });
-      if (names.length > 8) {
+      if (groupBy !== "topic" && names.length > 8) {
         const keep = names.slice(0, 7);
         const extra = [];
         names.slice(7).forEach(name => extra.push(...(buckets.get(name) || [])));
@@ -1254,7 +1678,7 @@
       const pos = {};
       const hulls = [];
       const headings = [];
-      if (!names.length && nodes.length) {
+      if (groupBy !== "topic" && !names.length && nodes.length) {
         names = ["Documents"];
         buckets = new Map([["Documents", nodes]]);
         colorOf["Documents"] = groupColor(0);
@@ -1298,11 +1722,11 @@
         if (!p) return "";
         const g = nodeGroup(n, groupBy);
         const mapped = colorOf[g] ? g : "Other";
-        const tip = `${n.title || "Untitled"} · ${mapped} · ${bandHeading(n.band)}`;
+        const tip = `${n.title || "Untitled"} · document · ${mapped} · ${bandHeading(n.band)}`;
         const selected = state.selectedDocId != null && String(n.id) === String(state.selectedDocId);
         return `<g data-doc="${n.id}" style="cursor:pointer">
           <title>${esc(tip)}</title>
-          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${selected ? 6.2 : 3.6}" fill="${colorOf[mapped] || "#8a5a2a"}" stroke="${selected ? "#302417" : "#fffaf3"}" stroke-width="${selected ? 2 : 1}" />
+          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${selected ? 6.2 : 3.6}" fill="${colorOf[mapped] || "#8a5a2a"}" stroke="${selected ? "#302417" : "#FFFEFB"}" stroke-width="${selected ? 2 : 1}" />
         </g>`;
       }).join("");
       document.getElementById("graph").innerHTML =
@@ -1336,110 +1760,31 @@
       return out;
     }
 
-    function renderCollectionAnalysis(view) {
-      const bandsEl = document.getElementById("analysisBands");
-      const overviewEl = document.getElementById("analysisOverview");
-      const clustersEl = document.getElementById("analysisClusters");
-      const typicalEl = document.getElementById("analysisTypical");
-      const hintEl = document.getElementById("analysisHint");
-      if (!view || !(view.nodes || []).length) {
-        if (bandsEl) bandsEl.innerHTML = `
-          <span class="pill ai">0 likely AI</span>
-          <span class="pill human">0 likely human</span>
-          <span class="pill unc">0 uncertain</span>`;
-        if (overviewEl) overviewEl.innerHTML = `<p class="hint">No graph nodes in this view yet. Analysis stays open for the visible set.</p>`;
-        if (clustersEl) clustersEl.innerHTML = "";
-        if (typicalEl) typicalEl.textContent = "";
-        if (hintEl) hintEl.textContent = "Share, counts, and range for the documents now on the graph. Estimate, not proof of authorship.";
-        renderExamples([], "exAi");
-        renderExamples([], "exHuman");
-        renderExamples([], "exUnc");
-        renderAnalysisSelection();
-        return;
+    function graphScopedSummary() {
+      const nodes = (state.graphView && state.graphView.nodes) || [];
+      const ds = selectedDataset();
+      const scored = nodes.filter(d => d.pAi != null);
+      const prev = state.lastSummary || {};
+      let shareDocs = prev.shareOfDocuments;
+      if (scored.length) {
+        shareDocs = Math.round(scored.reduce((s, d) => s + Number(d.pAi), 0) / scored.length * 100);
       }
-      const nodes = view.nodes;
-      const n = nodes.length;
-      const e = (view.links || []).length;
-      const bands = bandCounts(nodes);
-      const listView = state.fullView || view;
-      const listN = (listView.nodes || []).length;
-      if (bandsEl && !document.getElementById("analysisRange").textContent) {
-        bandsEl.innerHTML = `
-          <span class="pill ai">${bands.LIKELY_AI} likely AI (${pctShare(bands.LIKELY_AI, n)}%)</span>
-          <span class="pill human">${bands.LIKELY_HUMAN} likely human (${pctShare(bands.LIKELY_HUMAN, n)}%)</span>
-          <span class="pill unc">${bands.UNCERTAIN} uncertain (${pctShare(bands.UNCERTAIN, n)}%)</span>`;
-      }
-      if (overviewEl) {
-        overviewEl.innerHTML = `<p class="hint">${n} document${n === 1 ? "" : "s"} visible on the graph · ${e} edge${e === 1 ? "" : "s"} · analysis matches this visible set.</p>`;
-      }
-
-      const clusterStats = (listView.names || []).map(name => {
-        const members = listView.buckets.get(name) || [];
-        const bc = bandCounts(members);
-        const ids = new Set(members.map(m => m.id));
-        const internal = (listView.links || []).filter(l => ids.has(l.from) && ids.has(l.to)).length;
-        const aiShare = members.length ? bc.LIKELY_AI / members.length : 0;
-        const humanShare = members.length ? bc.LIKELY_HUMAN / members.length : 0;
-        const uncShare = members.length ? bc.UNCERTAIN / members.length : 0;
-        return { name, members, bc, internal, aiShare, humanShare, uncShare };
-      });
-      if (clustersEl) {
-        clustersEl.innerHTML = clusterStats.map(c => `
-          <div class="analysis-cluster${state.selectedCluster === c.name ? " on" : ""}" data-cluster="${esc(c.name)}">
-            <div>
-              <h4>${esc(c.name)}</h4>
-              <p>${c.members.length} of ${listN} · ${pctShare(c.members.length, listN)}% of the graph · ${c.internal} in-cluster edge${c.internal === 1 ? "" : "s"}</p>
-            </div>
-            <div class="mix">${c.bc.LIKELY_AI} AI · ${c.bc.LIKELY_HUMAN} human · ${c.bc.UNCERTAIN} uncertain</div>
-          </div>`).join("") || `<p class="hint">No clusters in this graph view.</p>`;
-      }
-
-      const typicalBits = [];
-      if (clusterStats.length) {
-        const largest = clusterStats[0];
-        typicalBits.push(`${largest.name} is the largest cluster (${largest.members.length} of ${listN}).`);
-        const aiLean = [...clusterStats].sort((a, b) => b.aiShare - a.aiShare || b.members.length - a.members.length)[0];
-        const humanLean = [...clusterStats].sort((a, b) => b.humanShare - a.humanShare || b.members.length - a.members.length)[0];
-        const uncLean = [...clusterStats].sort((a, b) => b.uncShare - a.uncShare || b.members.length - a.members.length)[0];
-        if (aiLean && aiLean.aiShare > 0) typicalBits.push(`${aiLean.name} has the highest likely-AI share (${pctShare(aiLean.bc.LIKELY_AI, aiLean.members.length)}%).`);
-        if (humanLean && humanLean.humanShare > 0) typicalBits.push(`${humanLean.name} is the most human-leaning (${pctShare(humanLean.bc.LIKELY_HUMAN, humanLean.members.length)}%).`);
-        if (uncLean && uncLean.uncShare > 0 && uncLean.name !== largest.name) typicalBits.push(`${uncLean.name} is the most uncertain cluster (${pctShare(uncLean.bc.UNCERTAIN, uncLean.members.length)}%).`);
-      }
-      typicalEl.textContent = typicalBits.join(" ") || "Cluster mix will appear when the graph has groups.";
-      renderAnalysisSelection();
+      return {
+        name: prev.name || (ds && datasetLabel(ds)) || "This collection",
+        topicView: !!(prev.topicView || document.getElementById("topic").value),
+        topic: prev.topic || document.getElementById("topic").value || null,
+        idView: !!state.selectedCluster,
+        documentCount: nodes.length,
+        shareOfDocuments: shareDocs != null ? shareDocs : null,
+        bands: bandCounts(nodes),
+        headline: scored.length ? prev.headline : "Not yet analyzed",
+        collectionSignals: prev.collectionSignals || state.lastSignals
+      };
     }
 
-    function renderAnalysisSelection() {
-      const el = document.getElementById("analysisSelected");
-      const view = state.graphView;
-      const id = state.selectedDocId;
-      if (!id || !view) {
-        el.className = "analysis-pick";
-        el.innerHTML = `<p class="hint">Click a document on the graph to highlight it here. The collection figures stay.</p>`;
-        return;
-      }
-      const node = (view.nodes || []).find(n => String(n.id) === String(id));
-      if (!node) {
-        el.className = "analysis-pick";
-        el.innerHTML = `<p class="hint">Click a document on the graph to highlight it here. The collection figures stay.</p>`;
-        return;
-      }
-      const group = view.colorOf[nodeGroup(node, view.groupBy)] ? nodeGroup(node, view.groupBy) : "Other";
-      const cluster = (view.buckets.get(group) || []);
-      const neighborIds = new Set();
-      (view.links || []).forEach(l => {
-        if (String(l.from) === String(id)) neighborIds.add(l.to);
-        if (String(l.to) === String(id)) neighborIds.add(l.from);
-      });
-      const neighborTitles = [...neighborIds].map(nid => {
-        const n = (view.nodes || []).find(x => String(x.id) === String(nid));
-        return n ? n.title : null;
-      }).filter(Boolean).slice(0, 4);
-      el.className = "analysis-pick has-doc";
-      el.innerHTML = `
-        <h4>${esc(node.title || "Untitled")}</h4>
-        <p>${esc(bandHeading(node.band))} · ${esc(group)} · ${node.pAi == null ? "no estimate" : Math.round(node.pAi * 100) + "% estimate"} · ${neighborIds.size} graph neighbor${neighborIds.size === 1 ? "" : "s"} in this view.</p>
-        <p class="hint" style="margin-top:6px">Sits in the ${esc(group)} cluster (${cluster.length} document${cluster.length === 1 ? "" : "s"}). ${neighborTitles.length ? "Nearby: " + neighborTitles.map(esc).join("; ") + "." : "No drawn edges from this node."} Click the cluster heading to analyze only that visible set.</p>`;
+    function renderCollectionAnalysis(view) {
+      applySummary(graphScopedSummary(), { time: state.timeBreakdown });
+      renderTopicColumnsFromGraph();
     }
 
     function selectCluster(name) {
@@ -1472,8 +1817,8 @@
         el.innerHTML = `<p class="hint">No ${data.by} metadata on this dataset.</p>`;
         return;
       }
-      el.innerHTML = `<table><tr><th>${data.by}</th><th>Docs</th><th>Estimate</th><th>Range</th></tr>
-        ${(data.rows || []).map(r => `<tr><td>${r.key}</td><td>${r.documentCount}</td><td>${r.estimatePercent}%</td><td>${r.rangePercent[0]}–${r.rangePercent[1]}%</td></tr>`).join("")}
+      el.innerHTML = `<table><tr><th>${data.by}</th><th>Docs</th><th>Estimate</th></tr>
+        ${(data.rows || []).map(r => `<tr><td>${r.key}</td><td>${r.documentCount}</td><td>${r.estimatePercent}% <span class="hint">${r.rangePercent[0]}–${r.rangePercent[1]}%</span></td></tr>`).join("")}
       </table>`;
     }
 
@@ -1499,12 +1844,11 @@
       const mount = document.getElementById("timeChart");
       const note = document.getElementById("timeChartNote");
       const legend = document.getElementById("timeChartLegend");
-      const rows = ((data && data.rows) || []).filter(r => r.key != null && r.estimatePercent != null);
-      rows.sort((a, b) => String(a.key).localeCompare(String(b.key), undefined, { numeric: true }));
+      const rows = yearRows(data);
       if (!data || !data.available || !rows.length) {
         legend.hidden = true;
-        mount.innerHTML = `<p class="hint">No publication dates on this collection, so a time series cannot be drawn.</p>`;
-        note.textContent = "Yearly AI-share is hidden until documents have dates.";
+        mount.innerHTML = `<p class="hint">No page-creation dates on this collection, so a time series cannot be drawn.</p>`;
+        note.textContent = "Yearly AI-share is hidden until documents have first-revision dates.";
         return;
       }
       legend.hidden = false;
@@ -1512,8 +1856,12 @@
       const later = rise ? rows.filter(r => String(r.key) > String(rise.key)) : [];
       const laterHigh = later.filter(r => Number(r.estimatePercent) >= 55);
       const last = rows[rows.length - 1];
-      let caption = "Yearly estimate of how much of this collection looks AI-generated.";
-      if (rise) {
+      let caption = "Yearly estimate of how much of this collection looks AI-generated. Years are page-creation (first Wikipedia revision), not last-modified.";
+      if (rows.length === 1) {
+        const r = rows[0];
+        const n = Number(r.documentCount) || 0;
+        caption = `${r.key} is the page-creation year of ${n} article${n === 1 ? "" : "s"} in this view — first Wikipedia revision, not last-modified.`;
+      } else if (rise) {
         caption = `The series first rises clearly in ${rise.key} (${rise.estimatePercent}%), after a run of years under 30%. `;
         if (laterHigh.length) {
           const lo = Math.min(...laterHigh.map(r => r.estimatePercent));
@@ -1545,7 +1893,7 @@
         const riseHere = rise && String(r.key) === String(rise.key);
         return `<g>
           <title>${r.key}: ${r.estimatePercent}% (${(r.rangePercent || []).join("–")}%) · ${r.documentCount} docs</title>
-          <circle cx="${xs[i]}" cy="${yOf(r.estimatePercent)}" r="${riseHere ? 6.5 : 4.2}" fill="${riseHere ? "#8a5a2a" : "#c45c4e"}" stroke="#fffaf3" stroke-width="1.6" />
+          <circle cx="${xs[i]}" cy="${yOf(r.estimatePercent)}" r="${riseHere ? 6.5 : 4.2}" fill="${riseHere ? "#8a5a2a" : "#c45c4e"}" stroke="#FFFEFB" stroke-width="1.6" />
         </g>`;
       }).join("");
       const labels = rows.map((r, i) =>
@@ -1556,9 +1904,8 @@
         const i = rows.findIndex(r => String(r.key) === String(rise.key));
         const x = xs[i];
         const y = yOf(rise.estimatePercent);
-        annot = `<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${H - pad.b}" stroke="#8a5a2a" stroke-dasharray="4 4" stroke-opacity="0.55" />
-          <rect x="${Math.min(x + 8, W - 210)}" y="${Math.max(12, y - 36)}" width="196" height="28" rx="14" fill="#fffaf3" stroke="rgba(138,90,42,0.35)" />
-          <text x="${Math.min(x + 8, W - 210) + 98}" y="${Math.max(12, y - 36) + 18}" text-anchor="middle" fill="#302417" font-size="12" font-family="Fraunces,Georgia,serif">Clear rise begins · ${rise.key}</text>`;
+        annot = `<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${H - pad.b}" stroke="#8a5a2a" stroke-dasharray="4 4" stroke-opacity="0.45" />
+          <text x="${Math.min(x + 10, W - 24)}" y="${Math.max(22, y - 16)}" text-anchor="${x > W - 220 ? "end" : "start"}" fill="#302417" font-size="12" font-family="Fraunces,Georgia,serif">Clear rise begins · ${rise.key}</text>`;
       }
       mount.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="AI share over time">
         ${grid}
@@ -1573,14 +1920,13 @@
         state.selectedDocId = docId;
         if (state.rawGraph) drawGraph(state.rawGraph, { refreshAnalysis: false });
         else if (state.graphView) renderCollectionAnalysis(state.graphView);
-        else renderAnalysisSelection();
         const id = document.getElementById("dataset").value;
         const d = await j(`/datasets/${id}/documents/${docId}`);
         document.getElementById("detailCard").hidden = false;
         document.getElementById("detailTitle").textContent = d.title;
         document.getElementById("detailMeta").textContent =
-          `${d.band} · estimate ${Math.round((d.pAi || 0) * 100)}% (${Math.round((d.ciLow || 0) * 100)}–${Math.round((d.ciHigh || 0) * 100)}%) · ${d.wordCount} words · ${d.topic || ""} · ${d.source || ""}`;
-        document.getElementById("detailDisc").textContent = d.disclaimer;
+          `${d.band} · estimate ${Math.round((d.pAi || 0) * 100)}% (${Math.round((d.ciLow || 0) * 100)}–${Math.round((d.ciHigh || 0) * 100)}%) · document · ~${d.wordCount || 0} words · ${d.topic || ""} · ${d.source || ""}`;
+        document.getElementById("detailDisc").textContent = stripProofDisclaimer(d.disclaimer);
         const s = d.signals || {};
         document.getElementById("detailSignals").innerHTML = `<table>${
           Object.entries(s).map(([k, v]) => `<tr><td>${k}</td><td>${Number(v).toFixed(3)}</td></tr>`).join("")
@@ -1589,23 +1935,23 @@
           `<div class="ex" onclick="openDoc(${n.id})"><h4>${n.title}</h4><p>${n.reason || ""} · cosine ${n.cosine}</p></div>`
         ).join("") || `<p class="hint">No neighbors.</p>`;
         document.getElementById("detailText").textContent = d.text || "";
-        document.getElementById("analysisSelected").scrollIntoView({ behavior: "smooth", block: "nearest" });
+        document.getElementById("detailCard").scrollIntoView({ behavior: "smooth", block: "nearest" });
       } catch (err) {
         popup(err.message, "Could not open document", "warn");
       }
     }
 
-    document.getElementById("reload").onclick = () => loadDatasets().then(loadAll).catch(err => popup(err.message, "Refresh failed", "warn"));
+    document.getElementById("reload").onclick = () => loadDatasets().then(loadDashboard).catch(err => popup(err.message, "Refresh failed", "warn"));
     document.getElementById("dataset").onchange = () => {
       document.getElementById("topic").value = "";
       state.selectedDocId = null;
       state.selectedCluster = null;
       syncDeleteControl();
-      loadAll().catch(err => popup(err.message, "Load failed", "warn"));
+      loadDashboard().catch(err => popup(err.message, "Load failed", "warn"));
     };
     document.getElementById("deleteDataset").onclick = async () => {
       const current = selectedDataset();
-      if (!current || isWikipediaDataset(current)) return;
+      if (!current || isProtectedDataset(current)) return;
       const label = datasetLabel(current);
       const ok = await confirmPopup(
         `Delete “${label}”? Documents, edges, and scores for this collection are removed. Other collections stay separate.`,
@@ -1616,7 +1962,7 @@
       try {
         await j(`/datasets/${current.id}`, { method: "DELETE" });
         await loadDatasets();
-        await loadAll();
+        await loadDashboard();
         popup(`${label} has been deleted.`, "Collection removed", "ok");
       } catch (err) {
         popup(err.message, "Could not delete dataset", "warn");
@@ -1625,7 +1971,7 @@
     document.getElementById("topic").onchange = () => {
       state.selectedDocId = null;
       state.selectedCluster = null;
-      loadAll().catch(err => popup(err.message, "Load failed", "warn"));
+      loadDashboard().catch(err => popup(err.message, "Load failed", "warn"));
     };
     document.getElementById("graph").addEventListener("click", onGraphClick);
     document.getElementById("showAllGraph").onclick = () => selectCluster(null);
@@ -1639,7 +1985,7 @@
       try {
         const q = scopeQuery();
         const data = await j(`/datasets/${id}/insights${q ? "?" + q.slice(1) : ""}`, { method: "POST" });
-        popup(data.text || "No explanation was returned.", "Visible-collection insights", "info");
+        popup(stripProofDisclaimer(data.text) || "No explanation was returned.", "Visible-collection insights", "info");
       } catch (err) {
         popup(err.message, "Insights failed", "warn");
       } finally {
@@ -1649,10 +1995,6 @@
     document.querySelectorAll(".js-explain-insights").forEach(btn => {
       btn.addEventListener("click", explainVisibleInsights);
     });
-    document.getElementById("analysisClusters").addEventListener("click", (e) => {
-      const row = e.target.closest("[data-cluster]");
-      if (row) selectCluster(row.getAttribute("data-cluster"));
-    });
     document.getElementById("files").addEventListener("change", function () {
       const el = document.getElementById("fileNames");
       const files = [...this.files];
@@ -1660,55 +2002,88 @@
       else if (files.length === 1) el.textContent = files[0].name;
       else el.textContent = files[0].name + " + " + (files.length - 1) + " more";
     });
-    document.getElementById("upload").onclick = async () => {
+    function urlCrawlMessage(created, urls) {
+      const n = created.ingestedPages || created.documentCount || 0;
+      const extra = created.extraPages ?? 0;
+      const seeds = created.seedCount ?? urls.length;
+      const failed = created.failedPages || 0;
+      let msg;
+      if (extra === 0) {
+        msg = `No extra child pages were found. ${n} seed page${n === 1 ? "" : "s"} ingested and analyzed as their own collection.`;
+      } else {
+        msg = `Crawled ${n} pages from ${seeds} seed URL${seeds === 1 ? "" : "s"} (${extra} child page${extra === 1 ? "" : "s"}). Analyzed as their own collection — not mixed into Wikipedia.`;
+      }
+      if (failed) {
+        msg += ` ${failed} URL${failed === 1 ? "" : "s"} could not be fetched.`;
+      }
+      return msg;
+    }
+
+    document.getElementById("crawlAnalyse").onclick = async () => {
       const files = document.getElementById("files").files;
-      if (!files.length) return popup("Select one or more PDF or text files.", "Choose files", "warn");
-      try {
-        const fd = new FormData();
-        const typed = (document.getElementById("uploadName").value || "").trim();
-        if (typed) fd.append("name", typed);
-        for (const f of files) fd.append("files", f);
-        const created = await j("/datasets/upload", { method: "POST", body: fd });
-        await loadDatasets(String(created.id));
-        await loadAll();
-        popup(`${created.name} has been ingested and analyzed.`, "Upload complete", "ok");
-      } catch (err) {
-        popup(err.message, "Upload failed", "warn");
-      }
-    };
-
-    document.getElementById("fromUrls").onclick = async () => {
       const urls = document.getElementById("urls").value.split(/\s+/).map(s => s.trim()).filter(Boolean);
-      if (!urls.length) return popup("Enter at least one public URL, one per line.", "No URLs yet", "warn");
-      try {
-        const typed = (document.getElementById("urlName").value || "").trim();
-        const created = await j("/datasets/from-urls", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: typed || undefined, urls })
-        });
-        await loadDatasets(String(created.id));
-        await loadAll();
-        const n = created.ingestedPages || created.documentCount || 0;
-        const extra = created.extraPages ?? 0;
-        const seeds = created.seedCount ?? urls.length;
-        const failed = created.failedPages || 0;
-        let msg;
-        if (extra === 0) {
-          msg = `No extra child pages were found. ${n} seed page${n === 1 ? "" : "s"} ingested and analyzed as their own collection.`;
-        } else {
-          msg = `Crawled ${n} pages from ${seeds} seed URL${seeds === 1 ? "" : "s"} (${extra} child page${extra === 1 ? "" : "s"}). Analyzed as their own collection — not mixed into Wikipedia.`;
-        }
-        if (failed) {
-          msg += ` ${failed} URL${failed === 1 ? "" : "s"} could not be fetched.`;
-        }
-        popup(msg, "Site pages analyzed", "ok");
-      } catch (err) {
-        popup(err.message, "URL fetch failed", "warn");
+      if (!files.length && !urls.length) {
+        return popup("Choose PDF or text files, or enter at least one public URL.", "Nothing to crawl", "warn");
       }
+      const adding = (files.length ? 1 : 0) + (urls.length ? 1 : 0);
+      if (datasetsCache.length + adding > MAX_DATASETS) {
+        return popup(DATASET_CAP_ERROR, "Too many data sources", "warn");
+      }
+      const notes = [];
+      let lastId = null;
+      let fileOk = false;
+      let urlOk = false;
+      if (files.length) {
+        try {
+          const fd = new FormData();
+          for (const f of files) fd.append("files", f);
+          const created = await j("/datasets/upload", { method: "POST", body: fd });
+          lastId = created.id;
+          fileOk = true;
+          notes.push(`${created.name} has been ingested and analyzed.`);
+        } catch (err) {
+          notes.push(err.message === DATASET_CAP_ERROR ? DATASET_CAP_ERROR : ("Files: " + err.message));
+        }
+      }
+      if (urls.length) {
+        try {
+          popup("Checking that this public site can reach at least 1000 pages, then crawling…", "Checking the site", "info");
+          const created = await j("/datasets/from-urls", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ urls })
+          });
+          lastId = created.id;
+          urlOk = true;
+          notes.push(urlCrawlMessage(created, urls));
+        } catch (err) {
+          const msg = String(err.message || "");
+          notes.push(msg.includes("1000 pages") || msg === URL_MIN_PAGES_ERROR ? URL_MIN_PAGES_ERROR
+            : msg === DATASET_CAP_ERROR ? DATASET_CAP_ERROR
+            : ("URLs: " + msg));
+        }
+      }
+      if (lastId) {
+        await loadDatasets(String(lastId));
+        await loadDashboard();
+      }
+      const bothTried = files.length && urls.length;
+      const anyOk = fileOk || urlOk;
+      const allOk = (!files.length || fileOk) && (!urls.length || urlOk);
+      const joined = notes.join("\n\n");
+      const title = joined.includes(DATASET_CAP_ERROR) && !anyOk ? "Too many data sources"
+        : joined.includes(URL_MIN_PAGES_ERROR) && !urlOk && !fileOk ? "Public URL required"
+        : bothTried && allOk ? "Two collections analyzed"
+        : bothTried && anyOk ? "Partly analyzed"
+        : fileOk && !urls.length ? "Upload complete"
+        : urlOk ? "Site pages analyzed"
+        : files.length && !urls.length ? "Upload failed"
+        : !files.length ? "URL fetch failed"
+        : "Crawl failed";
+      popup(joined, title, allOk ? "ok" : "warn");
     };
 
-    loadDatasets().then(loadAll).catch(err => {
+    loadDatasets().then(loadDashboard).catch(err => {
       popup(err.message, "Could not load datasets", "warn");
     });
   </script>

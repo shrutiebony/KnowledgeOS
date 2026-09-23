@@ -9,8 +9,28 @@ namespace kos {
 
 inline constexpr const char* KIND_WIKI = "WIKIPEDIA_SAMPLE";
 inline constexpr const char* KIND_WIKI_SUBSET = "WIKIPEDIA_SUBSET";
+inline constexpr const char* KIND_GDELT = "GDELT";
 inline constexpr const char* KIND_UPLOAD = "USER_UPLOAD";
 inline constexpr const char* KIND_URLS = "USER_URLS";
+inline constexpr const char* KIND_ALL = "ALL";
+// Virtual GET scope: union of every stored collection. Not a datasets row.
+inline constexpr int64_t DATASET_ALL = 0;
+
+inline constexpr int MAX_DATASETS = 7;
+inline constexpr int URL_MIN_REACHABLE_PAGES = 1000;
+inline constexpr const char* DATASET_CAP_ERROR =
+    "Delete some data sources before uploading more. KnowledgeOS keeps at most 7 collections, including Wikipedia and GDELT.";
+inline constexpr const char* URL_MIN_PAGES_ERROR =
+    "You may only submit a public URL where at least 1000 pages can be crawled.";
+
+// Omit Wikipedia topics / graph headings with fewer than this many documents.
+inline constexpr int MIN_TOPIC_DOCUMENTS = 100;
+// 50/50 page-creation split: before this year vs this year and later.
+inline constexpr int ERA_SPLIT_YEAR = 2019;
+inline constexpr int ERA_COHORT_SIZE = 50;
+inline constexpr const char* ERA_CUTOFF = "2019-01-01";
+inline constexpr double TOPIC_BAND_AI_MIN = 0.58;
+inline constexpr double TOPIC_BAND_HUMAN_MAX = 0.42;
 
 inline constexpr const char* BAND_AI = "LIKELY_AI";
 inline constexpr const char* BAND_HUMAN = "LIKELY_HUMAN";
@@ -46,6 +66,7 @@ struct Document {
     std::string source;
     std::string topic;
     std::string published_at;
+    std::string created_at;
     std::string text;
     int word_count = 0;
     std::vector<float> embedding;

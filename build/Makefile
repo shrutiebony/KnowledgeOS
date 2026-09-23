@@ -288,6 +288,30 @@ src_cpp\embedding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.s
 .PHONY : src_cpp\embedding.cpp.s
 
+src_cpp\gdelt_crawl.obj: src_cpp\gdelt_crawl.cpp.obj
+.PHONY : src_cpp\gdelt_crawl.obj
+
+# target to build an object file
+src_cpp\gdelt_crawl.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj
+.PHONY : src_cpp\gdelt_crawl.cpp.obj
+
+src_cpp\gdelt_crawl.i: src_cpp\gdelt_crawl.cpp.i
+.PHONY : src_cpp\gdelt_crawl.i
+
+# target to preprocess a source file
+src_cpp\gdelt_crawl.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.i
+.PHONY : src_cpp\gdelt_crawl.cpp.i
+
+src_cpp\gdelt_crawl.s: src_cpp\gdelt_crawl.cpp.s
+.PHONY : src_cpp\gdelt_crawl.s
+
+# target to generate assembly for a file
+src_cpp\gdelt_crawl.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.s
+.PHONY : src_cpp\gdelt_crawl.cpp.s
+
 src_cpp\html.obj: src_cpp\html.cpp.obj
 .PHONY : src_cpp\html.obj
 
@@ -653,6 +677,9 @@ help:
 	@echo ... src_cpp/embedding.obj
 	@echo ... src_cpp/embedding.i
 	@echo ... src_cpp/embedding.s
+	@echo ... src_cpp/gdelt_crawl.obj
+	@echo ... src_cpp/gdelt_crawl.i
+	@echo ... src_cpp/gdelt_crawl.s
 	@echo ... src_cpp/html.obj
 	@echo ... src_cpp/html.i
 	@echo ... src_cpp/html.s

@@ -51,7 +51,7 @@ static std::string header_value(HINTERNET req, DWORD info) {
     return trim(narrow(buf));
 }
 
-HttpResponse http_get(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
+static HttpResponse http_get_once(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
     HttpResponse out;
     out.final_url = url;
     auto nurl = normalize_url(url);
@@ -100,6 +100,8 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
         WinHttpCloseHandle(session);
         return out;
     }
+    DWORD policy = WINHTTP_OPTION_REDIRECT_POLICY_ALWAYS;
+    WinHttpSetOption(req, WINHTTP_OPTION_REDIRECT_POLICY, &policy, sizeof(policy));
     WinHttpAddRequestHeaders(req, L"Accept: text/html,application/xhtml+xml,application/json,*/*\r\nAccept-Language: en",
                              static_cast<DWORD>(-1), WINHTTP_ADDREQ_FLAG_ADD);
     if (!WinHttpSendRequest(req, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0) ||
@@ -116,6 +118,7 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
     out.status = static_cast<int>(status);
     out.content_type = header_value(req, WINHTTP_QUERY_CONTENT_TYPE);
     out.last_modified = header_value(req, WINHTTP_QUERY_LAST_MODIFIED);
+    out.location = header_value(req, WINHTTP_QUERY_LOCATION);
 
     wchar_t final_buf[2048];
     DWORD flen = sizeof(final_buf);
@@ -142,7 +145,7 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
 
 #else
 
-HttpResponse http_get(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
+static HttpResponse http_get_once(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
     HttpResponse out;
     out.final_url = url;
     auto nurl = normalize_url(url);
@@ -187,7 +190,7 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
     out.body = res->body.substr(0, static_cast<size_t>(std::max(0, max_bytes)));
     if (res->has_header("Content-Type")) out.content_type = res->get_header_value("Content-Type");
     if (res->has_header("Last-Modified")) out.last_modified = res->get_header_value("Last-Modified");
-    if (res->has_header("Location")) out.final_url = res->get_header_value("Location");
+    if (res->has_header("Location")) out.location = res->get_header_value("Location");
     return out;
 #else
     out.error = "HTTPS client not compiled";
@@ -196,5 +199,20 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
 }
 
 #endif
+
+HttpResponse http_get(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
+    std::string current = url;
+    HttpResponse out;
+    for (int hop = 0; hop < 6; ++hop) {
+        out = http_get_once(current, user_agent, timeout_ms, max_bytes);
+        if (out.status < 300 || out.status >= 400) return out;
+        if (out.location.empty()) return out;
+        auto next = resolve_url(out.final_url.empty() ? current : out.final_url, out.location);
+        if (!next || *next == current) return out;
+        current = *next;
+        out.final_url = current;
+    }
+    return out;
+}
 
 }  // namespace kos

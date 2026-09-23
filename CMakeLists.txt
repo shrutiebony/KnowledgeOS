@@ -40,6 +40,7 @@ add_executable(knowledgeos
   src_cpp/pdf.cpp
   src_cpp/url_crawl.cpp
   src_cpp/wiki_crawl.cpp
+  src_cpp/gdelt_crawl.cpp
   src_cpp/ingest.cpp
   src_cpp/insights.cpp
   src_cpp/server.cpp

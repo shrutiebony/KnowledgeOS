@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/db.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/detectors.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/embedding.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj.d"
+  "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/gdelt_crawl.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/gdelt_crawl.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/gdelt_crawl.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/html.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/http_client.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/ingest.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj.d"

@@ -67,6 +67,16 @@ static int64_t path_id(const httplib::Request& req, const char* key) {
     return std::stoll(req.path_params.at(key));
 }
 
+static bool is_all_scope(const std::string& s) {
+    return s.empty() || kos::iequals(s, "all");
+}
+
+static int64_t parse_scope_id(const httplib::Request& req) {
+    auto it = req.path_params.find("id");
+    if (it == req.path_params.end() || is_all_scope(it->second)) return kos::DATASET_ALL;
+    return std::stoll(it->second);
+}
+
 static std::vector<int64_t> parse_ids(const httplib::Request& req) {
     std::vector<int64_t> out;
     if (!req.has_param("ids")) return out;
@@ -85,14 +95,16 @@ static std::string param(const httplib::Request& req, const char* key, const std
 
 static json list_datasets(Store& store) {
     auto all = store.all_datasets();
-    std::vector<kos::Dataset> wiki, other;
+    std::vector<kos::Dataset> wiki, gdelt, other;
     for (const auto& d : all) {
         if (d.kind == kos::KIND_WIKI_SUBSET) continue;
         if (kos::is_protected_wikipedia(d)) wiki.push_back(d);
+        else if (kos::is_gdelt_dataset(d)) gdelt.push_back(d);
         else other.push_back(d);
     }
     json out = json::array();
     for (const auto& d : wiki) out.push_back(kos::dataset_brief(store, d));
+    for (const auto& d : gdelt) out.push_back(kos::dataset_brief(store, d));
     for (const auto& d : other) out.push_back(kos::dataset_brief(store, d));
     return out;
 }
@@ -107,8 +119,9 @@ int main() {
         return 1;
     }
     int pruned = kos::prune_extra_datasets(store);
-    if (pruned) std::cerr << "Pruned " << pruned << " leftover collection(s).\n";
-    kos::seed_wikipedia_india(store, cfg);
+    if (pruned) std::cerr << "Renamed " << pruned << " leftover Wikipedia collection(s).\n";
+    kos::seed_wikipedia(store, cfg);
+    kos::seed_gdelt(store, cfg);
 
     httplib::Server svr;
     svr.set_payload_max_length(64 * 1024 * 1024);
@@ -142,7 +155,11 @@ int main() {
                 return;
             }
             if (kos::is_protected_wikipedia(*ds)) {
-                send_error(res, "Wikipedia India cannot be deleted.", 403);
+                send_error(res, "Wikipedia cannot be deleted.", 403);
+                return;
+            }
+            if (kos::is_gdelt_dataset(*ds)) {
+                send_error(res, "GDELT cannot be deleted.", 403);
                 return;
             }
             std::string name = ds->name;
@@ -235,10 +252,14 @@ int main() {
         }
     });
 
-    svr.Get("/datasets/:id/summary", [&](const httplib::Request& req, httplib::Response& res) {
+    auto require_scope = [&](int64_t id) {
+        if (id != kos::DATASET_ALL) need_ds(id);
+    };
+
+    auto get_summary = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
             send_json(res, kos::summary_json(store, id, param(req, "metric", "documents"), param(req, "topic"),
                                             parse_ids(req)));
         } catch (const std::runtime_error& e) {
@@ -246,24 +267,29 @@ int main() {
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/summary", get_summary);
+    svr.Get("/summary", get_summary);
 
-    svr.Get("/datasets/:id/graph", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_graph = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
-            send_json(res, kos::graph_json(store, id, param(req, "topic"), parse_ids(req)));
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            send_json(res, kos::graph_json(store, id, param(req, "topic"), parse_ids(req),
+                                          cfg.graph_k, cfg.graph_min_cosine));
         } catch (const std::runtime_error& e) {
             send_error(res, e.what(), 404);
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/graph", get_graph);
+    svr.Get("/graph", get_graph);
 
-    svr.Get("/datasets/:id/examples", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_examples = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
             std::string band = param(req, "band");
             int limit = 6;
             if (req.has_param("limit")) {
@@ -275,12 +301,14 @@ int main() {
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/examples", get_examples);
+    svr.Get("/examples", get_examples);
 
-    svr.Get("/datasets/:id/breakdown", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_breakdown = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
             std::string by = param(req, "by", "source");
             auto rows = kos::breakdown_rows(store, id, by, param(req, "topic"), parse_ids(req));
             send_json(res, json{{"by", by}, {"available", !rows.empty()}, {"rows", rows}});
@@ -289,14 +317,16 @@ int main() {
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/breakdown", get_breakdown);
+    svr.Get("/breakdown", get_breakdown);
 
-    svr.Get("/datasets/:id/documents/:docId", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_document = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
+            int64_t id = parse_scope_id(req);
             int64_t doc_id = path_id(req, "docId");
-            need_ds(id);
-            send_json(res, kos::explanation_json(store, id, doc_id));
+            require_scope(id);
+            send_json(res, kos::explanation_json(store, id, doc_id, cfg.graph_k, cfg.graph_min_cosine));
         } catch (const std::invalid_argument& e) {
             send_error(res, e.what(), 400);
         } catch (const std::runtime_error& e) {
@@ -304,31 +334,51 @@ int main() {
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/documents/:docId", get_document);
+    svr.Get("/documents/:docId", get_document);
 
-    svr.Get("/datasets/:id/topics", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_topics = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
-            send_json(res, store.distinct_topics(id));
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            send_json(res, kos::topics_for_dataset(store, id));
         } catch (const std::runtime_error& e) {
             send_error(res, e.what(), 404);
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Get("/datasets/:id/topics", get_topics);
+    svr.Get("/topics", get_topics);
 
-    svr.Post("/datasets/:id/insights", [&](const httplib::Request& req, httplib::Response& res) {
+    auto get_era = [&](const httplib::Request& req, httplib::Response& res) {
         try {
-            int64_t id = path_id(req, "id");
-            need_ds(id);
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            send_json(res, kos::era_cohorts_json(store, id, param(req, "topic")));
+        } catch (const std::runtime_error& e) {
+            send_error(res, e.what(), 404);
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    };
+    svr.Get("/datasets/:id/era-cohorts", get_era);
+    svr.Get("/era-cohorts", get_era);
+
+    auto post_insights = [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
             send_json(res, kos::explain_insights(store, id, param(req, "topic"), parse_ids(req)));
         } catch (const std::runtime_error& e) {
             send_error(res, e.what(), 404);
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }
-    });
+    };
+    svr.Post("/datasets/:id/insights", post_insights);
+    svr.Post("/insights", post_insights);
 
     svr.Post("/datasets/:id/graphsage/train", [&](const httplib::Request& req, httplib::Response& res) {
         try {

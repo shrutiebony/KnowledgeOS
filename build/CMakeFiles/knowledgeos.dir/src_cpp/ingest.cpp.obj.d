@@ -123,10 +123,6 @@ C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/ucrt/math.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/vcruntime_startup.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/stop_token
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/url_crawl.hpp
-C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/json.hpp
-C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/algorithm
-C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_heap_algorithms.hpp
-C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_minmax.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/functional
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/unordered_map
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/xhash
@@ -134,6 +130,10 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/list
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/xbit_ops.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/xnode_handle.h
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/json.hpp
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/algorithm
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_heap_algorithms.hpp
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_minmax.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/iterator
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/array
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/forward_list
@@ -187,11 +187,12 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/ostream
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/any
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/analysis.hpp
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/gdelt_crawl.hpp
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/unordered_set
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/html.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/pdf.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/wiki_crawl.hpp
-C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/unordered_set
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/miniz.h
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/miniz_export.h
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/miniz_common.h

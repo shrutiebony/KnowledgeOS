@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 #include <ctime>
 #include <optional>
 #include <sstream>
@@ -257,7 +258,7 @@ inline bool skippable_url(const std::string& url) {
         ".tar", ".gz", ".tgz", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico",
         ".bmp", ".mp3", ".mp4", ".m4a", ".wav", ".webm", ".avi", ".mov", ".wmv", ".css",
         ".js", ".mjs", ".map", ".json", ".woff", ".woff2", ".ttf", ".eot", ".otf", ".exe",
-        ".dmg", ".apk", ".iso"
+        ".dmg", ".apk", ".iso", ".csv", ".tsv", ".zip", ".gz"
     };
     for (const char* e : exts) {
         if (lower.find(e) != std::string::npos) {
@@ -275,6 +276,33 @@ inline bool skippable_url(const std::string& url) {
         }
     }
     return false;
+}
+
+inline bool is_private_or_local_host(std::string host) {
+    host = ascii_lower(trim(host));
+    if (host.empty()) return true;
+    if (host.rfind("www.", 0) == 0) host = host.substr(4);
+    if (!host.empty() && host.front() == '[' && host.back() == ']') host = host.substr(1, host.size() - 2);
+    if (host == "localhost" || host == "0.0.0.0" || host == "::1" || host == "127.0.0.1") return true;
+    if (host.size() >= 6 && host.compare(host.size() - 6, 6, ".local") == 0) return true;
+    int a = 0, b = 0, c = 0, d = 0;
+    char extra = 0;
+    if (std::sscanf(host.c_str(), "%d.%d.%d.%d%c", &a, &b, &c, &d, &extra) == 4) {
+        if (a == 10) return true;
+        if (a == 127) return true;
+        if (a == 0) return true;
+        if (a == 169 && b == 254) return true;
+        if (a == 192 && b == 168) return true;
+        if (a == 172 && b >= 16 && b <= 31) return true;
+    }
+    return false;
+}
+
+inline bool is_public_http_url(const std::string& url) {
+    auto n = normalize_url(url);
+    if (!n) return false;
+    auto h = host_of(*n);
+    return h && !is_private_or_local_host(*h);
 }
 
 inline std::optional<std::string> resolve_url(const std::string& base, std::string href) {

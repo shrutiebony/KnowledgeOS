@@ -11,10 +11,9 @@ services:
       SERVER_PORT: "8080"
       KNOWLEDGEOS_DB: "/data/knowledgeos.db"
       KNOWLEDGEOS_WEB: "/app/web"
-      # Default crawl cap is 2000 Wikipedia pages (RAM + egress).
-      # Uncomment for a lighter first run:
-      # KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL: "false"
-      # KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES: "80"
+      # Wikipedia and GDELT seed in the background. URL ingest gates on 1000 reachable pages.
+      # KNOWLEDGEOS_WIKIPEDIA_CRAWL: "false"
+      # KNOWLEDGEOS_GDELT_CRAWL: "false"
     volumes:
       - ./data:/data
     restart: unless-stopped

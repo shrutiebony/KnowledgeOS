@@ -33,14 +33,19 @@ public:
     Document insert_document(Document d);
     std::optional<Document> get_document(int64_t id, bool include_text = true);
     std::vector<Document> docs_by_dataset(int64_t dataset_id, bool include_text);
+    std::vector<Document> all_docs(bool include_text);
     std::vector<Document> docs_by_ids(const std::vector<int64_t>& ids, bool include_text);
     void save_document(const Document& d);
     void save_documents(const std::vector<Document>& docs);
     void delete_documents(int64_t dataset_id);
+    int delete_docs_below_word_count(int64_t dataset_id, int min_words);
     int64_t count_docs(int64_t dataset_id);
+    int64_t count_all_docs();
     int64_t count_unscored(int64_t dataset_id);
     std::vector<std::string> distinct_topics(int64_t dataset_id);
     int update_published_at_if_null(int64_t doc_id, const std::string& date);
+    int update_created_at_if_null(int64_t doc_id, const std::string& date);
+    int update_topic(int64_t doc_id, const std::string& topic);
 
     void delete_edges(int64_t dataset_id);
     void insert_edges(const std::vector<DocumentEdge>& edges);

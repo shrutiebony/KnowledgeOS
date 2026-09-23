@@ -10,6 +10,7 @@ struct HttpResponse {
     std::string final_url;
     std::string content_type;
     std::string last_modified;
+    std::string location;
     std::string error;
 };
 

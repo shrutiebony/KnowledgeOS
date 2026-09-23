@@ -11,6 +11,19 @@ static bool is_name_char(char c) {
 
 static std::string lower_copy(std::string s) { return ascii_lower(s); }
 
+static bool has_class_token(const std::string& clsl, const char* name) {
+    std::string n = name;
+    size_t i = 0;
+    while (i < clsl.size()) {
+        while (i < clsl.size() && std::isspace(static_cast<unsigned char>(clsl[i]))) ++i;
+        size_t j = i;
+        while (j < clsl.size() && !std::isspace(static_cast<unsigned char>(clsl[j]))) ++j;
+        if (j > i && clsl.compare(i, j - i, n) == 0) return true;
+        i = j;
+    }
+    return false;
+}
+
 ParsedHtml parse_html(const std::string& html) {
     ParsedHtml out;
     struct Frame {
@@ -24,7 +37,6 @@ ParsedHtml parse_html(const std::string& html) {
     };
     std::vector<Frame> stack;
     bool in_title = false;
-    int skip_depth = 0;
     std::string title_buf, body_buf, wiki_buf, footer_buf;
     bool any_wiki = false;
 
@@ -40,12 +52,16 @@ ParsedHtml parse_html(const std::string& html) {
         for (const auto& f : stack) if (f.lastmod) return true;
         return false;
     };
+    auto in_skip = [&]() {
+        for (const auto& f : stack) if (f.skip) return true;
+        return false;
+    };
 
     auto append_text = [&](const std::string& t) {
         if (t.empty()) return;
         std::string dec = html_unescape(t);
         if (in_title) title_buf += dec;
-        if (skip_depth > 0) return;
+        if (in_skip()) return;
         if (!body_buf.empty() && !std::isspace(static_cast<unsigned char>(body_buf.back())) &&
             !std::isspace(static_cast<unsigned char>(dec[0]))) {
             body_buf.push_back(' ');
@@ -167,13 +183,22 @@ ParsedHtml parse_html(const std::string& html) {
             }
 
             bool skip = tag == "script" || tag == "style" || tag == "noscript" ||
-                        clsl.find("mw-editsection") != std::string::npos ||
+                        has_class_token(clsl, "mw-editsection") ||
                         (tag == "sup" && clsl.find("reference") != std::string::npos) ||
-                        clsl.find("reflist") != std::string::npos ||
-                        clsl.find("mw-references-wrap") != std::string::npos ||
-                        clsl.find("navbox") != std::string::npos ||
-                        clsl.find("vertical-navbox") != std::string::npos ||
-                        idl == "toc" || clsl.find("toc") == 0;
+                        has_class_token(clsl, "reflist") ||
+                        has_class_token(clsl, "mw-references-wrap") ||
+                        has_class_token(clsl, "navbox") ||
+                        has_class_token(clsl, "vertical-navbox") ||
+                        has_class_token(clsl, "infobox") ||
+                        has_class_token(clsl, "hatnote") ||
+                        has_class_token(clsl, "sidebar") ||
+                        has_class_token(clsl, "shortdescription") ||
+                        has_class_token(clsl, "sistersitebox") ||
+                        has_class_token(clsl, "mw-indicators") ||
+                        has_class_token(clsl, "thumb") ||
+                        idl == "toc" || has_class_token(clsl, "toc") ||
+                        idl == "catlinks" || idl == "mw-hidden-catlinks" ||
+                        idl == "mw-navigation" || idl == "footer";
             bool wiki = idl == "mw-content-text" || clsl.find("mw-parser-output") != std::string::npos;
             bool cats = idl == "mw-normal-catlinks";
             bool lastmod = idl == "footer-info-lastmod" || clsl.find("mw-last-modified") != std::string::npos ||

@@ -80,7 +80,7 @@ clean: CMakeFiles\knowledgeos.dir\clean
 CMakeFiles\sqlite3.dir\all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=22,23 "Built target sqlite3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=23,24 "Built target sqlite3"
 .PHONY : CMakeFiles\sqlite3.dir\all
 
 # Build rule for subdir invocation for target.
@@ -97,7 +97,7 @@ sqlite3: CMakeFiles\sqlite3.dir\rule
 # codegen rule for target.
 CMakeFiles\sqlite3.dir\codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=22,23 "Finished codegen for target sqlite3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=23,24 "Finished codegen for target sqlite3"
 .PHONY : CMakeFiles\sqlite3.dir\codegen
 
 # clean rule for target.
@@ -112,7 +112,7 @@ CMakeFiles\sqlite3.dir\clean:
 CMakeFiles\miniz.dir\all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\miniz.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\miniz.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\miniz.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\miniz.dir\build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=17,18,19,20,21 "Built target miniz"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=18,19,20,21,22 "Built target miniz"
 .PHONY : CMakeFiles\miniz.dir\all
 
 # Build rule for subdir invocation for target.
@@ -129,7 +129,7 @@ miniz: CMakeFiles\miniz.dir\rule
 # codegen rule for target.
 CMakeFiles\miniz.dir\codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\miniz.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\miniz.dir\codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=17,18,19,20,21 "Finished codegen for target miniz"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=18,19,20,21,22 "Finished codegen for target miniz"
 .PHONY : CMakeFiles\miniz.dir\codegen
 
 # clean rule for target.
@@ -145,12 +145,12 @@ CMakeFiles\knowledgeos.dir\all: CMakeFiles\sqlite3.dir\all
 CMakeFiles\knowledgeos.dir\all: CMakeFiles\miniz.dir\all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target knowledgeos"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Built target knowledgeos"
 .PHONY : CMakeFiles\knowledgeos.dir\all
 
 # Build rule for subdir invocation for target.
 CMakeFiles\knowledgeos.dir\rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles 23
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles 24
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles 0
 .PHONY : CMakeFiles\knowledgeos.dir\rule
@@ -162,7 +162,7 @@ knowledgeos: CMakeFiles\knowledgeos.dir\rule
 # codegen rule for target.
 CMakeFiles\knowledgeos.dir\codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Finished codegen for target knowledgeos"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Finished codegen for target knowledgeos"
 .PHONY : CMakeFiles\knowledgeos.dir\codegen
 
 # clean rule for target.

@@ -12,6 +12,7 @@
 
 #include <cstdlib>
 #include <filesystem>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -135,8 +136,8 @@ static std::string fallback_insights(const json& payload) {
         << " uncertain.";
 
     const char* caveat =
-        "The time chart bins pages by last-modified year, not the year the prose was written. "
-        "A later date can mean an edit, not a new article.";
+        "The time chart bins pages by first-revision / page-creation year, not last-modified. "
+        "Last-modified piles into the crawl year and is not used for this split.";
     json time = payload.value("time", json::object());
     json rows = time.value("rows", json::array());
     if (!time.value("available", false) || rows.empty()) {
@@ -158,8 +159,9 @@ static std::string fallback_insights(const json& payload) {
     if (edges) out << ", with " << edges << " similarity edge" << (edges == 1 ? "" : "s");
     out << ". A heading labels a cluster of similar pages; clicking it only filters the same collection.";
 
-    out << "\n\nThese figures are an ESTIMATE from local stylometry and detectors, not proof of authorship. "
-           "GraphSAGE is not in this share. No medical judgment is made.";
+    out << "\n\nThe collection percent is the mean of document p_ai scores (stylometry + stock-phrase / "
+           "uniformity / n-gram detectors + embedding vs a human-leaning centroid, logistic blend). "
+           "These figures are an ESTIMATE, not proof of authorship. GraphSAGE is not in this share.";
     return out.str();
 }
 
@@ -364,8 +366,12 @@ static json slim_graph(const json& graph) {
 
 nlohmann::json explain_insights(Store& store, int64_t dataset_id, const std::string& topic,
                                 const std::vector<int64_t>& ids) {
-    auto ds = store.get_dataset(dataset_id);
-    if (!ds) throw std::runtime_error("dataset not found");
+    const bool union_view = dataset_id == DATASET_ALL;
+    std::optional<Dataset> ds;
+    if (!union_view) {
+        ds = store.get_dataset(dataset_id);
+        if (!ds) throw std::runtime_error("dataset not found");
+    }
     json summary = summary_json(store, dataset_id, "documents", topic, ids);
     json graph = slim_graph(graph_json(store, dataset_id, topic, ids));
     auto time_rows = breakdown_rows(store, dataset_id, "time", topic, ids);
@@ -375,9 +381,17 @@ nlohmann::json explain_insights(Store& store, int64_t dataset_id, const std::str
     time["rows"] = time_rows;
 
     json payload;
-    payload["datasetId"] = ds->id;
-    payload["name"] = ds->name;
-    payload["kind"] = ds->kind;
+    if (union_view) {
+        payload["datasetId"] = "all";
+        payload["name"] = "All sources";
+        payload["kind"] = KIND_ALL;
+        payload["union"] = true;
+    } else {
+        payload["datasetId"] = ds->id;
+        payload["name"] = ds->name;
+        payload["kind"] = ds->kind;
+        payload["union"] = false;
+    }
     std::string view_topic = trim(topic);
     if (view_topic.empty()) payload["topic"] = nullptr;
     else payload["topic"] = view_topic;
@@ -389,11 +403,16 @@ nlohmann::json explain_insights(Store& store, int64_t dataset_id, const std::str
     payload["time"] = time;
     payload["disclaimer"] =
         "Estimates are not proof of authorship. GraphSAGE is not in the headline share. "
-        "No medical judgment. Wikipedia topic or cluster is a view.";
+        "No medical judgment. Wikipedia topic is a view of the same collection.";
 
     json result;
-    result["datasetId"] = ds->id;
-    result["name"] = ds->name;
+    if (union_view) {
+        result["datasetId"] = "all";
+        result["name"] = "All sources";
+    } else {
+        result["datasetId"] = ds->id;
+        result["name"] = ds->name;
+    }
     if (view_topic.empty()) result["topic"] = nullptr;
     else result["topic"] = view_topic;
     result["topicView"] = !view_topic.empty();

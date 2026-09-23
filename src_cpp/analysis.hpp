@@ -56,17 +56,22 @@ nlohmann::json analyze_dataset(Store& store, const Config& cfg, int64_t dataset_
 void mean_aggregate_graphsage(Store& store, Dataset& dataset);
 nlohmann::json train_graphsage(Store& store, int64_t dataset_id, const std::string& labels_path);
 
+nlohmann::json era_traits_json(Store& store, int64_t dataset_id, const std::string& topic);
 nlohmann::json summary_json(Store& store, int64_t dataset_id, const std::string& metric,
                             const std::string& topic, const std::vector<int64_t>& ids);
 nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& topic,
-                          const std::vector<int64_t>& ids);
+                          const std::vector<int64_t>& ids, int graph_k = 8,
+                          double graph_min_cosine = 0.32);
 nlohmann::json examples_json(Store& store, int64_t dataset_id, const std::string& band, int limit,
                              const std::string& topic, const std::vector<int64_t>& ids);
 nlohmann::json breakdown_rows(Store& store, int64_t dataset_id, const std::string& by,
                               const std::string& topic, const std::vector<int64_t>& ids);
-nlohmann::json explanation_json(Store& store, int64_t dataset_id, int64_t doc_id);
+nlohmann::json explanation_json(Store& store, int64_t dataset_id, int64_t doc_id, int graph_k = 8,
+                                double graph_min_cosine = 0.32);
 nlohmann::json explain_insights(Store& store, int64_t dataset_id, const std::string& topic,
                                 const std::vector<int64_t>& ids);
+nlohmann::json era_cohorts_json(Store& store, int64_t dataset_id, const std::string& topic);
+std::vector<std::string> topics_for_dataset(Store& store, int64_t dataset_id);
 
 std::vector<Document> docs_for_view(Store& store, int64_t dataset_id, const std::string& topic,
                                     const std::vector<int64_t>& ids);

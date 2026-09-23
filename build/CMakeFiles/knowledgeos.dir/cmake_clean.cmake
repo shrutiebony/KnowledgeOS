@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/gdelt_crawl.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/gdelt_crawl.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj"
