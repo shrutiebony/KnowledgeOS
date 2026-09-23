@@ -141,7 +141,7 @@ Open the shared demo at [https://full-definition-hundreds-bye.trycloudflare.com]
 **Or upload PDF / text.** Choose `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, or `.zip`, optional dataset name, then **Upload and analyze**. 
 Either path writes a **new** collection. Pages from that crawl or upload stay in that collection only. They are never appended to Wikipedia India.
 ### 2. It appears for every visitor
-It shows up in the **Dataset** dropdown for **all** visitors on this process, you on localhost and anyone on the public tunnel. This is a shared demo, not a private instance. Pick the new name and **Refresh**.
+It shows up in the **Dataset** dropdown for **all** visitors on this process, you on localhost and anyone on the public tunnel. Pick the new name and **Refresh**.
 
 ### 3. Open it
 Selecting that collection scopes every panel to its documents only:
@@ -155,5 +155,4 @@ Click a document to highlight it in analysis and open the detail card (signals, 
 ### 4. Explain insights on the visible set
 **Explain insights** (on the graph card and on Analysis across collection) posts the insights. It reads the **visible** set, the whole extra collection, or the cluster you clicked, and opens a short estimate in the popup.
 ### 5. Delete it
-Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India). All Documents, edges, and scores that dataset are removed; other collections stay separate. Wikipedia India is refused (`403`).
-
+Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India). All Documents, edges, and scores that dataset are removed; other collections stay separate. Wikipedia India can't be deleted.
