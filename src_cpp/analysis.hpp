@@ -65,6 +65,8 @@ nlohmann::json examples_json(Store& store, int64_t dataset_id, const std::string
 nlohmann::json breakdown_rows(Store& store, int64_t dataset_id, const std::string& by,
                               const std::string& topic, const std::vector<int64_t>& ids);
 nlohmann::json explanation_json(Store& store, int64_t dataset_id, int64_t doc_id);
+nlohmann::json explain_insights(Store& store, int64_t dataset_id, const std::string& topic,
+                                const std::vector<int64_t>& ids);
 
 std::vector<Document> docs_for_view(Store& store, int64_t dataset_id, const std::string& topic,
                                     const std::vector<int64_t>& ids);

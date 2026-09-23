@@ -360,6 +360,30 @@ src_cpp\ingest.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.s
 .PHONY : src_cpp\ingest.cpp.s
 
+src_cpp\insights.obj: src_cpp\insights.cpp.obj
+.PHONY : src_cpp\insights.obj
+
+# target to build an object file
+src_cpp\insights.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj
+.PHONY : src_cpp\insights.cpp.obj
+
+src_cpp\insights.i: src_cpp\insights.cpp.i
+.PHONY : src_cpp\insights.i
+
+# target to preprocess a source file
+src_cpp\insights.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.i
+.PHONY : src_cpp\insights.cpp.i
+
+src_cpp\insights.s: src_cpp\insights.cpp.s
+.PHONY : src_cpp\insights.s
+
+# target to generate assembly for a file
+src_cpp\insights.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.s
+.PHONY : src_cpp\insights.cpp.s
+
 src_cpp\pdf.obj: src_cpp\pdf.cpp.obj
 .PHONY : src_cpp\pdf.obj
 
@@ -638,6 +662,9 @@ help:
 	@echo ... src_cpp/ingest.obj
 	@echo ... src_cpp/ingest.i
 	@echo ... src_cpp/ingest.s
+	@echo ... src_cpp/insights.obj
+	@echo ... src_cpp/insights.i
+	@echo ... src_cpp/insights.s
 	@echo ... src_cpp/pdf.obj
 	@echo ... src_cpp/pdf.i
 	@echo ... src_cpp/pdf.s

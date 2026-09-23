@@ -41,6 +41,7 @@ add_executable(knowledgeos
   src_cpp/url_crawl.cpp
   src_cpp/wiki_crawl.cpp
   src_cpp/ingest.cpp
+  src_cpp/insights.cpp
   src_cpp/server.cpp
 )
 
@@ -59,4 +60,7 @@ add_custom_command(TARGET knowledgeos POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${CMAKE_SOURCE_DIR}/web
           $<TARGET_FILE_DIR:knowledgeos>/web
-  COMMENT "Copy dashboard next to knowledgeos binary")
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${CMAKE_SOURCE_DIR}/tools
+          $<TARGET_FILE_DIR:knowledgeos>/tools
+  COMMENT "Copy dashboard and tools next to knowledgeos binary")

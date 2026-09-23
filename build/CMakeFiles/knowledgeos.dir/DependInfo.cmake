@@ -17,6 +17,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/html.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/http_client.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/ingest.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj.d"
+  "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/insights.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/pdf.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/server.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/stylometry.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/stylometry.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/stylometry.cpp.obj.d"

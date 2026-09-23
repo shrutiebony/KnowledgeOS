@@ -318,6 +318,18 @@ int main() {
         }
     });
 
+    svr.Post("/datasets/:id/insights", [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = path_id(req, "id");
+            need_ds(id);
+            send_json(res, kos::explain_insights(store, id, param(req, "topic"), parse_ids(req)));
+        } catch (const std::runtime_error& e) {
+            send_error(res, e.what(), 404);
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    });
+
     svr.Post("/datasets/:id/graphsage/train", [&](const httplib::Request& req, httplib::Response& res) {
         try {
             int64_t id = path_id(req, "id");

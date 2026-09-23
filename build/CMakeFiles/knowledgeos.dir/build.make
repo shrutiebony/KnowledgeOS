@@ -321,10 +321,30 @@ CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.s: cmake_force
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.s /c C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\ingest.cpp
 <<
 
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: CMakeFiles\knowledgeos.dir\flags.make
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: CMakeFiles\knowledgeos.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.obj"
+	$(CMAKE_COMMAND) -E cmake_cl_compile_depends --dep-file=CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj.d --working-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~2\18\BUILDT~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /showIncludes /FoCMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj /FdCMakeFiles\knowledgeos.dir\ /FS -c C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp
+<<
+
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.i"
+	C:\PROGRA~2\MICROS~2\18\BUILDT~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe > CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.i @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp
+<<
+
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.s"
+	C:\PROGRA~2\MICROS~2\18\BUILDT~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.s /c C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp
+<<
+
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: CMakeFiles\knowledgeos.dir\flags.make
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\server.cpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: CMakeFiles\knowledgeos.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj"
 	$(CMAKE_COMMAND) -E cmake_cl_compile_depends --dep-file=CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj.d --working-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~2\18\BUILDT~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe @<<
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /showIncludes /FoCMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj /FdCMakeFiles\knowledgeos.dir\ /FS -c C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\server.cpp
 <<
@@ -356,6 +376,7 @@ knowledgeos_OBJECTS = \
 "CMakeFiles\knowledgeos.dir\src_cpp\url_crawl.cpp.obj" \
 "CMakeFiles\knowledgeos.dir\src_cpp\wiki_crawl.cpp.obj" \
 "CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj" \
+"CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj" \
 "CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj"
 
 # External object files for target knowledgeos
@@ -374,17 +395,19 @@ knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\pdf.cpp.obj
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\url_crawl.cpp.obj
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\wiki_crawl.cpp.obj
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj
+knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\build.make
 knowledgeos.exe: sqlite3.lib
 knowledgeos.exe: miniz.lib
 knowledgeos.exe: CMakeFiles\knowledgeos.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable knowledgeos.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable knowledgeos.exe"
 	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\knowledgeos.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\mt.exe --manifests -- C:\PROGRA~2\MICROS~2\18\BUILDT~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\link.exe /nologo @CMakeFiles\knowledgeos.dir\objects1.rsp @<<
  /out:knowledgeos.exe /implib:knowledgeos.lib /pdb:C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\knowledgeos.pdb /version:0.0 /machine:x64 /INCREMENTAL:NO /subsystem:console  sqlite3.lib miniz.lib ws2_32.lib winhttp.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  
 <<
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Copy dashboard next to knowledgeos binary"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Copy dashboard and tools next to knowledgeos binary"
 	echo >nul && "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/web C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/web
+	echo >nul && "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/tools C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/tools
 
 # Rule to build all files generated by this target.
 CMakeFiles\knowledgeos.dir\build: knowledgeos.exe

@@ -222,6 +222,69 @@
         0 0 0 2px rgba(48, 36, 23, 0.22),
         0 3px 8px rgba(48, 36, 23, 0.2);
     }
+    .file-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .file-picker input[type="file"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0 !important;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+      opacity: 0;
+    }
+    .file-picker-btn {
+      display: inline-block;
+      flex: 0 0 auto;
+      width: auto;
+      margin: 0;
+      padding: 5px 12px;
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      text-transform: none;
+      color: #F5EDE4;
+      background: #302417;
+      cursor: pointer;
+      border-radius: 999px;
+      border: 1.5px solid rgba(48, 36, 23, 0.7);
+      box-shadow:
+        0 1px 0 rgba(245, 237, 228, 0.12) inset,
+        0 -1px 0 rgba(20, 12, 6, 0.28) inset,
+        0 0 0 2px rgba(48, 36, 23, 0.22),
+        0 3px 8px rgba(48, 36, 23, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .file-picker-btn:hover {
+      transform: translateY(-1px);
+      background: #302417;
+      color: #F5EDE4;
+      box-shadow:
+        0 1px 0 rgba(245, 237, 228, 0.2) inset,
+        0 -1px 0 rgba(20, 12, 6, 0.32) inset,
+        0 0 0 2px rgba(245, 237, 228, 0.16),
+        0 5px 12px rgba(48, 36, 23, 0.22);
+    }
+    .file-picker-name {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #302417;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .toggle button { width: auto; margin: 0; padding: 4px 12px; font-size: 12px; line-height: 1.2; background: #302417; color: #F5EDE4; }
     .toggle button.on {
       color: #F5EDE4;
@@ -248,6 +311,16 @@
       font-weight: 600;
       margin: 0 0 8px;
     }
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 8px;
+      flex-wrap: wrap;
+    }
+    .card-head h3 { margin: 0; flex: 1 1 160px; }
+    .card-head .linkish { margin: 0; }
     .headline {
       font-family: var(--display);
       font-size: clamp(28px, 4vw, 44px);
@@ -471,7 +544,7 @@
       color: #302417;
     }
     .popup p { margin: 0; color: #302417; line-height: 1.55; }
-    #popupBody { white-space: pre-wrap; color: #302417; }
+    #popupBody { white-space: pre-wrap; color: #302417; max-height: 60vh; overflow-y: auto; }
     .popup .mark {
       width: 42px;
       height: 42px;
@@ -618,7 +691,11 @@
 
       <div class="aside-block">
         <label>Upload PDFs or text</label>
-        <input id="files" type="file" multiple accept=".pdf,.txt,.md,.html,.jsonl,.zip" />
+        <div class="file-picker">
+          <input id="files" type="file" multiple accept=".pdf,.txt,.md,.html,.jsonl,.zip" />
+          <label for="files" class="file-picker-btn">Choose files</label>
+          <span class="file-picker-name" id="fileNames">No file chosen</span>
+        </div>
         <input id="uploadName" placeholder="Dataset name" />
         <button id="upload">Upload and analyze</button>
         <p class="hint">Try <code>data/examples/medical</code> for a second independent collection.</p>
@@ -660,13 +737,19 @@
         <div id="timeChart"></div>
       </div>
       <div class="card">
-        <h3>Document graph</h3>
+        <div class="card-head">
+          <h3>Document graph</h3>
+          <button type="button" class="linkish js-explain-insights" id="explainInsightsGraph">Explain insights</button>
+        </div>
         <p class="hint" id="graphHint">Circular network: unlabeled dots are documents, colored and clustered by Wikipedia subheading (or source / band if a topic is already selected). One heading sits at each cluster. Hover a dot for the document title. Edges are embedding similarity. Click a heading or cluster to analyze that visible set.</p>
         <button type="button" class="linkish" id="showAllGraph" hidden>Show all</button>
         <div id="graph"></div>
       </div>
       <div class="card" id="collectionAnalysisCard">
-        <h3 id="analysisHeading">Analysis across collection</h3>
+        <div class="card-head">
+          <h3 id="analysisHeading">Analysis across collection</h3>
+          <button type="button" class="linkish js-explain-insights" id="explainInsights">Explain insights</button>
+        </div>
         <p class="hint analysis-note" id="analysisHint">Share, counts, and range for the documents now on the graph. Estimate, not proof of authorship.</p>
         <div class="range" id="analysisRange"></div>
         <div class="analysis-stats" id="analysisBands"></div>
@@ -784,10 +867,14 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePopup(); });
 
     const howToUseBody =
-      "How to use\n" +
-      "Pick Wikipedia India, then optionally a topic to view that slice of the same collection. Topics are not a second dataset. Upload PDFs or text. Paste public URLs. KnowledgeOS crawls same-site child pages only and saves them as their own collection. Then wait for analysis.\n\n" +
-      "How to read results\n" +
-      "Share of documents and share of analyzed words are both shown. An uncertainty range is shown with the document count. The document graph is a circular network colored by topic or category; document titles appear on hover, not on every node. Analysis across collection is always visible from that graph. Click a node to highlight that document in the same panel. A time chart appears if dates exist. Estimates are not proof of authorship. GraphSAGE is not in the share number.";
+      "Add extra data\n" +
+      "Paste public URLs, one per line, to crawl same-site child pages. Or upload PDFs or text to check estimated AI content. Each add is its own collection. Extra data is never mixed into Wikipedia India.\n\n" +
+      "Wikipedia topic\n" +
+      "On Wikipedia India, pick a topic to gather insight about that one slice. This is a filter only. It does not create another dataset.\n\n" +
+      "From add to delete\n" +
+      "The new collection appears in the Dataset dropdown and is visible to everyone on this shared demo. Select it to analyze and view the document graph. Click Explain insights to explain the currently visible graph or collection, the full set or a selected topic or cluster. When you are done, Delete that collection. Wikipedia India cannot be deleted. Extra collections stay until you delete them or knowledgeos.exe restarts.\n\n" +
+      "What the readings mean\n" +
+      "Share of documents is the share of pages in the visible set. Share of analyzed words is the same estimate by word count. Documents fall into likely AI, likely human, or uncertain bands. The time chart uses last-modified year, not the year the prose was written. These numbers are an estimate, not proof of authorship. GraphSAGE is not in the headline.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
@@ -1542,9 +1629,36 @@
     };
     document.getElementById("graph").addEventListener("click", onGraphClick);
     document.getElementById("showAllGraph").onclick = () => selectCluster(null);
+
+    async function explainVisibleInsights() {
+      const id = document.getElementById("dataset").value;
+      if (!id) return popup("Pick a collection first.", "Explain insights", "warn");
+      const buttons = document.querySelectorAll(".js-explain-insights");
+      buttons.forEach(b => { b.disabled = true; });
+      popup("Reading the numbers on this visible set…", "Explain insights", "info");
+      try {
+        const q = scopeQuery();
+        const data = await j(`/datasets/${id}/insights${q ? "?" + q.slice(1) : ""}`, { method: "POST" });
+        popup(data.text || "No explanation was returned.", "Visible-collection insights", "info");
+      } catch (err) {
+        popup(err.message, "Insights failed", "warn");
+      } finally {
+        buttons.forEach(b => { b.disabled = false; });
+      }
+    }
+    document.querySelectorAll(".js-explain-insights").forEach(btn => {
+      btn.addEventListener("click", explainVisibleInsights);
+    });
     document.getElementById("analysisClusters").addEventListener("click", (e) => {
       const row = e.target.closest("[data-cluster]");
       if (row) selectCluster(row.getAttribute("data-cluster"));
+    });
+    document.getElementById("files").addEventListener("change", function () {
+      const el = document.getElementById("fileNames");
+      const files = [...this.files];
+      if (!files.length) el.textContent = "No file chosen";
+      else if (files.length === 1) el.textContent = files[0].name;
+      else el.textContent = files[0].name + " + " + (files.length - 1) + " more";
     });
     document.getElementById("upload").onclick = async () => {
       const files = document.getElementById("files").files;

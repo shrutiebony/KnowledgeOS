@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/insights.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj"
