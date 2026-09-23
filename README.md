@@ -155,4 +155,4 @@ Click a document to highlight it in analysis and open the detail card (signals, 
 ### 4. Explain insights on the visible set
 **Explain insights** (on the graph card and on Analysis across collection) posts the insights. It reads the **visible** set, the whole extra collection, or the cluster you clicked, and opens a short estimate in the popup.
 ### 5. Delete it
-Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India). All Documents, edges, and scores that dataset are removed; other collections stay separate. Wikipedia India can't be deleted.
+Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India). All Documents, edges, and scores that dataset are removed; other collections stay separate.
