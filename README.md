@@ -5,6 +5,16 @@ Collection-level estimate of how much of a document set looks AI-generated or AI
 
 Collections are independent. 3 sources of data are being used : Wikipedia India, a URL crawl named GDELT while allowing the user to give any public URL of choice or upload PDFs to check the amount of AI generated text in either a particular topic at hand or in their specific PDF.
 
+## Where it is running
+
+Runtime is still **C++20** + **CMake** (`knowledgeos.exe`). The shared demo is a Cloudflare quick tunnel in front of that process on a PC — not GCP / Cloud Run.
+
+| | URL |
+| --- | --- |
+| Public (Cloudflare quick tunnel) | [https://full-definition-hundreds-bye.trycloudflare.com](https://full-definition-hundreds-bye.trycloudflare.com) |
+| Local | [http://localhost:8080](http://localhost:8080) |
+
+Honest limits: the PC must stay on; the tunnel URL can change when the tunnel is restarted; there is **no auth**; every visitor on that process (localhost and the public tunnel) shares the same datasets. This is a shared demo, not a private instance.
 
 ## Architecture
 
@@ -112,12 +122,25 @@ Same product UI as before.
 
 There is **no POST that creates a Wikipedia subset dataset**. `topic=` and `ids=` are view filters only.
 
+## Lifecycle of one collection (PDF upload or URL crawl)
+
+One upload or same-site URL crawl is its own dataset. It is never mixed into Wikipedia India.
+
+1. **Create** — Upload PDFs (or text / ZIP) or crawl same-site URLs. That writes a new independent collection in SQLite `./data/knowledgeos.db` (`USER_UPLOAD` or `USER_URLS`). Wikipedia topic filter is Wikipedia-only and does **not** create a dataset.
+2. **Visible** — `GET /datasets` lists it for **every visitor** on that process (localhost and the public tunnel share the same list).
+3. **Use** — Select it in the Dataset dropdown. Analysis, graph, and examples are scoped to that collection only.
+4. **Persist** — No hour TTL while `knowledgeos.exe` is running. The collection stays until you delete it, the process restarts (see prune), or the database file is gone.
+5. **Delete** — The dashboard **Delete** button (and `DELETE /datasets/{id}`) removes any collection except Wikipedia India. Documents, edges, and scores for that collection go away; others stay separate. Wikipedia India is refused (`403`). A collection named `GDELT` can be deleted this way even though it survives startup prune.
+6. **Startup prune** — Restarting `knowledgeos.exe` deletes leftover collections that are **not** named `Wikipedia India` or `GDELT`. Restarting only the Cloudflare tunnel does **not** prune.
+7. **Reboot / delete `knowledgeos.db`** — User collections are gone.
+
 ## REST APIs (same JSON field names as the dashboard)
 
 | Method | Path | Notes |
 | --- | --- | --- |
 | GET | `/health` | `{"status":"ok"}` |
 | GET | `/datasets` | Wikipedia first, then unique user collections. Brief: `id`, `name`, `kind`, `analysisState`, `documentCount`, `topics`, `graphSageStatus`, `wikipedia`. |
+| DELETE | `/datasets/{id}` | Removes that collection and its documents / edges / scores. Wikipedia India is protected (`403`). |
 | POST | `/datasets/upload` | multipart `files` + optional `name`. |
 | POST | `/datasets/from-urls` | JSON `{name, urls}`. Extra fields: `seedCount`, `extraPages`, `ingestedPages`, `failedPages`, `crawlMaxDepth`, `crawlMaxPages`. |
 | POST | `/datasets/{id}/analyze` | Re-score the collection. |

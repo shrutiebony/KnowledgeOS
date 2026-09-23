@@ -36,6 +36,7 @@ Dataset ingest_uploads(Store& store, const std::string& name, const std::vector<
 UrlIngestResult ingest_urls(Store& store, const Config& cfg, const std::string& name,
                             const std::vector<std::string>& urls);
 void delete_dataset_and_contents(Store& store, const Dataset& dataset);
+bool is_protected_wikipedia(const Dataset& dataset);
 int prune_extra_datasets(Store& store);
 void seed_wikipedia_india(Store& store, const Config& cfg);
 nlohmann::json dataset_brief(Store& store, const Dataset& dataset);

@@ -377,6 +377,12 @@ void delete_dataset_and_contents(Store& store, const Dataset& dataset) {
     store.delete_dataset(dataset.id);
 }
 
+bool is_protected_wikipedia(const Dataset& dataset) {
+    if (dataset.kind == KIND_WIKI || dataset.kind == KIND_WIKI_SUBSET) return true;
+    std::string name = ascii_lower(trim(dataset.name));
+    return name == "wikipedia india" || name == "wikipedia sample";
+}
+
 int prune_extra_datasets(Store& store) {
     int removed = 0;
     for (const auto& d : store.all_datasets()) {
@@ -397,7 +403,7 @@ nlohmann::json dataset_brief(Store& store, const Dataset& dataset) {
     m["documentCount"] = store.count_docs(dataset.id);
     m["topics"] = nlohmann::json::array();
     m["graphSageStatus"] = dataset.graph_sage_status;
-    m["wikipedia"] = dataset.kind == KIND_WIKI;
+    m["wikipedia"] = is_protected_wikipedia(dataset);
     return m;
 }
 

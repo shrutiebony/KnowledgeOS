@@ -17,7 +17,6 @@
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
-#include <unordered_set>
 #include <vector>
 
 #ifdef _WIN32
@@ -86,20 +85,15 @@ static std::string param(const httplib::Request& req, const char* key, const std
 
 static json list_datasets(Store& store) {
     auto all = store.all_datasets();
-    std::vector<kos::Dataset> wiki, user;
+    std::vector<kos::Dataset> wiki, other;
     for (const auto& d : all) {
-        if (d.kind == kos::KIND_WIKI) wiki.push_back(d);
-        else if (d.kind == kos::KIND_WIKI_SUBSET) continue;
-        else if (d.kind == kos::KIND_UPLOAD || d.kind == kos::KIND_URLS) user.push_back(d);
+        if (d.kind == kos::KIND_WIKI_SUBSET) continue;
+        if (kos::is_protected_wikipedia(d)) wiki.push_back(d);
+        else other.push_back(d);
     }
     json out = json::array();
     for (const auto& d : wiki) out.push_back(kos::dataset_brief(store, d));
-    std::unordered_set<std::string> seen;
-    for (const auto& d : user) {
-        std::string key = kos::ascii_lower(d.name);
-        if (!seen.insert(key).second) continue;
-        out.push_back(kos::dataset_brief(store, d));
-    }
+    for (const auto& d : other) out.push_back(kos::dataset_brief(store, d));
     return out;
 }
 
@@ -134,6 +128,33 @@ int main() {
     svr.Get("/datasets", [&](const httplib::Request&, httplib::Response& res) {
         try {
             send_json(res, list_datasets(store));
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    });
+
+    svr.Delete("/datasets/:id", [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = path_id(req, "id");
+            auto ds = store.get_dataset(id);
+            if (!ds) {
+                send_error(res, "dataset not found", 404);
+                return;
+            }
+            if (kos::is_protected_wikipedia(*ds)) {
+                send_error(res, "Wikipedia India cannot be deleted.", 403);
+                return;
+            }
+            std::string name = ds->name;
+            std::string kind = ds->kind;
+            kos::delete_dataset_and_contents(store, *ds);
+            send_json(res, json{
+                {"ok", true},
+                {"id", id},
+                {"name", name},
+                {"kind", kind},
+                {"deleted", true}
+            });
         } catch (const std::exception& e) {
             send_error(res, e.what(), 500);
         }

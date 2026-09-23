@@ -130,6 +130,24 @@
     }
     aside .hint { margin: 0; font-size: 12px; line-height: 1.45; }
     aside button { margin-top: 2px; }
+    aside .dataset-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    aside .dataset-actions button { margin-top: 2px; }
+    aside .dataset-actions #deleteDataset[hidden] { display: none; }
+    aside .dataset-actions.single { grid-template-columns: 1fr; }
+    button:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow:
+        0 1px 0 rgba(245, 237, 228, 0.08) inset,
+        0 -1px 0 rgba(20, 12, 6, 0.2) inset,
+        0 0 0 2px rgba(48, 36, 23, 0.12),
+        0 2px 6px rgba(48, 36, 23, 0.1);
+    }
     .main-col {
       min-width: 0;
       min-height: 0;
@@ -467,6 +485,14 @@
     }
     .popup.warn .mark { color: var(--ai); background: rgba(196, 92, 78, 0.12); }
     .popup.ok .mark { color: var(--human); background: rgba(47, 143, 110, 0.12); }
+    .popup-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .popup-actions.confirm { grid-template-columns: 1fr 1fr; }
+    .popup-actions button { margin-top: 0; width: 100%; }
     @keyframes rise {
       from { opacity: 0; transform: translateY(14px) scale(0.98); }
       to { opacity: 1; transform: none; }
@@ -578,7 +604,10 @@
       <div class="aside-block">
         <label>Dataset</label>
         <select id="dataset"></select>
-        <button class="primary" id="reload">Refresh</button>
+        <div class="dataset-actions single">
+          <button class="primary" id="reload" type="button">Refresh</button>
+          <button id="deleteDataset" type="button" hidden>Delete</button>
+        </div>
       </div>
 
       <div id="wikiTopicBox" class="aside-block">
@@ -691,7 +720,10 @@
       <div class="mark" id="popupMark">!</div>
       <h2 id="popupTitle">Notice</h2>
       <p id="popupBody"></p>
-      <button class="primary" id="popupClose" type="button">Close</button>
+      <div class="popup-actions" id="popupActions">
+        <button class="primary" id="popupClose" type="button">Close</button>
+        <button id="popupConfirm" type="button" hidden>Delete</button>
+      </div>
     </div>
   </div>
 
@@ -700,20 +732,54 @@
     let datasetsCache = [];
     const overlay = document.getElementById("overlay");
     const popupEl = document.getElementById("popup");
+    const popupClose = document.getElementById("popupClose");
+    const popupConfirmBtn = document.getElementById("popupConfirm");
+    const popupActions = document.getElementById("popupActions");
+    let popupResolver = null;
 
+    function finishPopup(result) {
+      const resolve = popupResolver;
+      popupResolver = null;
+      overlay.classList.remove("open");
+      popupConfirmBtn.hidden = true;
+      popupActions.classList.remove("confirm");
+      popupClose.textContent = "Close";
+      if (resolve) resolve(result);
+    }
     function popup(message, title = "Notice", kind = "info") {
+      finishPopup(false);
       document.getElementById("popupTitle").textContent = title;
       document.getElementById("popupBody").textContent = String(message || "");
       document.getElementById("popupMark").textContent = kind === "ok" ? "✓" : kind === "warn" ? "!" : "✦";
       popupEl.className = "popup" + (kind === "info" ? "" : " " + kind);
+      popupConfirmBtn.hidden = true;
+      popupActions.classList.remove("confirm");
+      popupClose.textContent = "Close";
       overlay.classList.add("open");
-      document.getElementById("popupClose").focus();
+      popupClose.focus();
+    }
+    function confirmPopup(message, title = "Delete collection", confirmLabel = "Delete") {
+      return new Promise((resolve) => {
+        finishPopup(false);
+        popupResolver = resolve;
+        document.getElementById("popupTitle").textContent = title;
+        document.getElementById("popupBody").textContent = String(message || "");
+        document.getElementById("popupMark").textContent = "!";
+        popupEl.className = "popup warn";
+        popupConfirmBtn.hidden = false;
+        popupConfirmBtn.textContent = confirmLabel;
+        popupActions.classList.add("confirm");
+        popupClose.textContent = "Cancel";
+        overlay.classList.add("open");
+        popupConfirmBtn.focus();
+      });
     }
     window.alert = function (message) {
       popup(message, "Notice", "warn");
     };
-    function closePopup() { overlay.classList.remove("open"); }
-    document.getElementById("popupClose").onclick = closePopup;
+    function closePopup() { finishPopup(false); }
+    popupClose.onclick = closePopup;
+    popupConfirmBtn.onclick = () => finishPopup(true);
     overlay.addEventListener("click", (e) => { if (e.target === overlay) closePopup(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePopup(); });
 
@@ -751,7 +817,20 @@
     }
 
     function isWikipediaDataset(d) {
-      return d && (d.kind === "WIKIPEDIA_SAMPLE" || d.wikipedia);
+      if (!d) return false;
+      const name = String(d.name || "").trim().toLowerCase();
+      return d.kind === "WIKIPEDIA_SAMPLE" || d.kind === "WIKIPEDIA_SUBSET" || d.wikipedia ||
+        name === "wikipedia india" || name === "wikipedia sample";
+    }
+
+    function syncDeleteControl() {
+      const btn = document.getElementById("deleteDataset");
+      const row = btn.closest(".dataset-actions");
+      const current = selectedDataset();
+      const hide = !current || isWikipediaDataset(current);
+      btn.hidden = hide;
+      btn.disabled = hide;
+      if (row) row.classList.toggle("single", hide);
     }
 
     function topicQuery() {
@@ -785,9 +864,10 @@
       ).join("");
       if (current && [...sel.options].some(o => o.value === current)) sel.value = current;
       else {
-        const wiki = list.find(d => d.kind === "WIKIPEDIA_SAMPLE");
-        sel.value = String((wiki || list[0]).id);
+        const wiki = list.find(d => isWikipediaDataset(d));
+        sel.value = String((wiki || list[0] || {}).id || "");
       }
+      syncDeleteControl();
       return list;
     }
 
@@ -1433,7 +1513,27 @@
       document.getElementById("topic").value = "";
       state.selectedDocId = null;
       state.selectedCluster = null;
+      syncDeleteControl();
       loadAll().catch(err => popup(err.message, "Load failed", "warn"));
+    };
+    document.getElementById("deleteDataset").onclick = async () => {
+      const current = selectedDataset();
+      if (!current || isWikipediaDataset(current)) return;
+      const label = datasetLabel(current);
+      const ok = await confirmPopup(
+        `Delete “${label}”? Documents, edges, and scores for this collection are removed. Other collections stay separate.`,
+        "Delete collection",
+        "Delete"
+      );
+      if (!ok) return;
+      try {
+        await j(`/datasets/${current.id}`, { method: "DELETE" });
+        await loadDatasets();
+        await loadAll();
+        popup(`${label} has been deleted.`, "Collection removed", "ok");
+      } catch (err) {
+        popup(err.message, "Could not delete dataset", "warn");
+      }
     };
     document.getElementById("topic").onchange = () => {
       state.selectedDocId = null;
