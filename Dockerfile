@@ -1,4 +1,4 @@
-# Multi-stage C++ build. Java/Maven is legacy and is not used.
+# Multi-stage C++ build.
 FROM debian:bookworm-slim AS build
 WORKDIR /src
 

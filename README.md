@@ -6,11 +6,11 @@ This is **not** proof of authorship, not a Q&A / RAG system, and not HITS. Graph
 
 Collections are independent. Wikipedia India, a URL crawl named GDELT, PDF/text uploads, and other URL crawls do not share graphs or baselines.
 
-The dashboard is the existing `web/index.html` (copied from `src/main/resources/static/index.html`). The UI was not redesigned.
+The dashboard is `web/index.html`. The UI was not redesigned.
 
 ## Architecture
 
-**C++20** + **CMake 3.20+**. SQLite file store at `./data/knowledgeos.db` (Docker: `/data/knowledgeos.db`). HTTP via cpp-httplib. Java / Spring Boot under `src/main/java` is **legacy** and is not required to run the product.
+**C++20** + **CMake 3.20+** is the only runtime. SQLite file store at `./data/knowledgeos.db` (Docker: `/data/knowledgeos.db`). HTTP via cpp-httplib.
 
 | Piece | What it does |
 | --- | --- |
@@ -19,7 +19,7 @@ The dashboard is the existing `web/index.html` (copied from `src/main/resources/
 | Calibration | Logistic blend of those signals + a modest post-ChatGPT date prior; rank mix; bands `LIKELY_AI` / `LIKELY_HUMAN` / `UNCERTAIN`. GraphSAGE is omitted from the headline. |
 | Graph | Per-collection kNN on embedding cosine (`k=8`, min cosine `0.32`). The UI draws a circular cluster layout (unlabeled dots, subheading labels). |
 | Wikipedia India | On start (if seeding is on): background crawl from India seeds, or a small offline fixture if crawl is off / unreachable. |
-| GraphSAGE | Gated. Mean-aggregation fallback only. `usedInHeadline` is always false. |
+| GraphSAGE | Gated. Mean-aggregation fallback only. `usedInHeadline` is always false. Optional offline helper: `tools/graphsage/graphsage_embed.py`. |
 
 On each process start, leftover collections that are **not** named `Wikipedia India` or `GDELT` are pruned. New uploads and URL crawls still work during that run.
 
@@ -97,7 +97,7 @@ or
 docker compose up --build
 ```
 
-Cloud Run / containers honor `PORT`.
+Cloud Run uses the same C++ `Dockerfile`. Containers honor `PORT`.
 
 ## How to use the dashboard
 
@@ -158,7 +158,3 @@ Bands: AI if `p >= 0.58`, human if `p <= 0.42`, otherwise uncertain (or if the i
 | `KNOWLEDGEOS_BAND_HUMAN_MAX` | `0.42` | |
 | `KNOWLEDGEOS_BAND_MAX_INTERVAL` | `0.50` | Wider interval → uncertain. |
 | `KNOWLEDGEOS_CALIBRATE_RANK_MIX` | `0.38` | Mix of raw p(AI) with collection rank. |
-
-## Java (legacy)
-
-The Spring Boot tree (`src/main/java`, `pom.xml`) is kept as the previous implementation. Do not use `mvn spring-boot:run` for the current product. The C++ binary is the source of truth for serving the dashboard.

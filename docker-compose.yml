@@ -1,6 +1,6 @@
 # Local: docker compose up --build
 # Dashboard: http://localhost:8080
-# H2 files persist in ./data (mapped to the image VOLUME /data).
+# SQLite file persists at ./data/knowledgeos.db (mapped to the image VOLUME /data).
 services:
   knowledgeos:
     build: .

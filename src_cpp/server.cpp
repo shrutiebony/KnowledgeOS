@@ -48,7 +48,6 @@ static std::string find_web(const Config& cfg) {
     if (!cfg.web_dir.empty()) cands.push_back(cfg.web_dir);
     cands.push_back(fs::current_path() / "web");
     cands.push_back(fs::path(exe_dir()) / "web");
-    cands.push_back(fs::current_path() / "src/main/resources/static");
     cands.push_back(fs::path(exe_dir()) / "../web");
     for (const auto& p : cands) {
         if (fs::exists(p / "index.html")) return fs::weakly_canonical(p).string();
