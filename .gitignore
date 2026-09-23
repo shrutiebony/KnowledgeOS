@@ -1,0 +1,8 @@
+target/
+data/knowledgeos.mv.db
+data/knowledgeos.trace.db
+.idea/
+*.iml
+.DS_Store
+__pycache__/
+.venv/

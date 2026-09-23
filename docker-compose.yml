@@ -1,0 +1,18 @@
+# Local: docker compose up --build
+# Dashboard: http://localhost:8080
+# H2 files persist in ./data (mapped to the image VOLUME /data).
+services:
+  knowledgeos:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      SERVER_PORT: "8080"
+      # Default app properties crawl up to 2000 Wikipedia pages (RAM + egress).
+      # Uncomment for a lighter first run:
+      # KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL: "false"
+      # KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES: "80"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
