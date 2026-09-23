@@ -1,0 +1,39 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/knowledgeos.dir/src_cpp/analysis.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/analysis.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/embedding.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/html.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/http_client.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/ingest.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/pdf.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/server.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/stylometry.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/stylometry.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/url_crawl.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/url_crawl.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/wiki_crawl.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/wiki_crawl.cpp.obj.d"
+  "knowledgeos.exe"
+  "knowledgeos.exe.manifest"
+  "knowledgeos.lib"
+  "knowledgeos.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/knowledgeos.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,32 +1,33 @@
-# Multi-stage build: Maven compiles the Spring Boot 3.3.5 fat JAR, then a
-# slim Temurin 21 JRE image runs it. No secrets are copied or baked in.
-FROM maven:3.9-eclipse-temurin-21 AS build
+# Multi-stage C++ build. Java/Maven is legacy and is not used.
+FROM debian:bookworm-slim AS build
 WORKDIR /src
 
-COPY pom.xml .
-RUN mvn -q -B -DskipTests dependency:go-offline
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake ca-certificates libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY src ./src
-COPY tools ./tools
-RUN mvn -q -B -DskipTests package \
-    && cp target/knowledgeos-1.0.0.jar /src/app.jar
+COPY CMakeLists.txt ./
+COPY src_cpp ./src_cpp
+COPY third_party ./third_party
+COPY web ./web
 
-FROM eclipse-temurin:21-jre
+RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build build -j"$(nproc)"
+
+FROM debian:bookworm-slim
 WORKDIR /app
 
-RUN mkdir -p /data
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libssl3 ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /data
 
-COPY --from=build /src/app.jar /app/app.jar
-COPY --from=build /src/tools /app/tools
+COPY --from=build /src/build/knowledgeos /app/knowledgeos
+COPY --from=build /src/web /app/web
 
-# H2 file store lives on the named volume. Override at runtime if needed.
-# Do not put passwords, API keys, or credentials here.
-ENV SPRING_DATASOURCE_URL="jdbc:h2:file:/data/knowledgeos;AUTO_SERVER=TRUE"
-ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75.0"
-
+ENV KNOWLEDGEOS_DB=/data/knowledgeos.db
+ENV KNOWLEDGEOS_WEB=/app/web
 EXPOSE 8080
 VOLUME ["/data"]
 
-# Cloud Run / Render inject PORT. Local compose uses 8080.
-# Bind all interfaces so the container is reachable.
-ENTRYPOINT ["sh", "-c", "exec java -jar /app/app.jar --server.address=0.0.0.0 --server.port=${PORT:-${SERVER_PORT:-8080}}"]
+ENTRYPOINT ["sh", "-c", "exec /app/knowledgeos"]

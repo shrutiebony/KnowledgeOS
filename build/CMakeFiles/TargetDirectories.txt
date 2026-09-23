@@ -1,0 +1,5 @@
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/CMakeFiles/sqlite3.dir
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/CMakeFiles/miniz.dir
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/CMakeFiles/knowledgeos.dir
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/CMakeFiles/edit_cache.dir
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/build/CMakeFiles/rebuild_cache.dir
