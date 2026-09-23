@@ -162,65 +162,9 @@ Click a document to highlight it in analysis and open the detail card (signals, 
 
 ### 4. Explain insights on the visible set
 
-**Explain insights** (on the graph card and on Analysis across collection) posts `POST /datasets/{id}/insights` with the same `topic=` / `ids=` scope as the graph. It reads the **visible** set — the whole extra collection, or the cluster you clicked — and opens a short estimate in the popup. No API key. GraphSAGE is not in that text.
-
+**Explain insights** (on the graph card and on Analysis across collection) posts `POST /datasets/{id}/insights` with the same `topic=` / `ids=` scope as the graph. It reads the **visible** set — the whole extra collection, or the cluster you clicked, and opens a short estimate in the popup.
 ### 5. Delete it
 
-Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India) calls `DELETE /datasets/{id}`. Documents, edges, and scores for that id go away; other collections stay separate. Wikipedia India is refused (`403`). A collection named `GDELT` can be deleted this way even though it survives startup prune.
-
+Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India) calls `DELETE /datasets/{id}`. Documents, edges, and scores for that id go away; other collections stay separate. Wikipedia India is refused (`403`).
 ### 6. How long it lasts
 
-There is **no hour TTL** while `knowledgeos.exe` is running. The extra collection stays until you delete it or one of these happens:
-
-| What you do | Extra collections (upload / URL) |
-| --- | --- |
-| Leave `knowledgeos.exe` running (tunnel stays up, or you only restart the Cloudflare tunnel) | **Kept.** Tunnel-only restart does not prune. |
-| Restart `knowledgeos.exe` | **Pruned** on startup unless the name is `Wikipedia India` or `GDELT`. |
-| Delete `./data/knowledgeos.db` | **Wiped**, including Wikipedia India. |
-
-## REST APIs (same JSON field names as the dashboard)
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| GET | `/health` | `{"status":"ok"}` |
-| GET | `/datasets` | Wikipedia first, then unique user collections. Brief: `id`, `name`, `kind`, `analysisState`, `documentCount`, `topics`, `graphSageStatus`, `wikipedia`. |
-| DELETE | `/datasets/{id}` | Removes that collection and its documents / edges / scores. Wikipedia India is protected (`403`). |
-| POST | `/datasets/upload` | multipart `files` + optional `name`. |
-| POST | `/datasets/from-urls` | JSON `{name, urls}`. Extra fields: `seedCount`, `extraPages`, `ingestedPages`, `failedPages`, `crawlMaxDepth`, `crawlMaxPages`. |
-| POST | `/datasets/{id}/analyze` | Re-score the collection. |
-| GET | `/datasets/{id}/summary` | `metric=documents\|words`, `topic=`, `ids=`. Shares, ranges, bands, optional URL-vs-Wikipedia comparison. |
-| GET | `/datasets/{id}/graph` | `topic=`, `ids=`. Nodes + edges. |
-| GET | `/datasets/{id}/examples` | `band=LIKELY_AI\|LIKELY_HUMAN\|UNCERTAIN`, `limit=`. |
-| GET | `/datasets/{id}/breakdown` | `by=source\|topic\|time`. `{by, available, rows}`. |
-| GET | `/datasets/{id}/documents/{docId}` | Signals, neighbors, text. |
-| GET | `/datasets/{id}/topics` | Distinct topics (Wikipedia filter). |
-| POST | `/datasets/{id}/insights` | `topic=`, `ids=` — same visible scope as Analysis across collection. Runs `tools/insights/agent.py` on summary/graph/time JSON. `{text, source, llmRequired: false}`. No API key required. |
-| POST | `/datasets/{id}/graphsage/train` | Gated. `{status, message, usedInHeadline: false}`. |
-
-Bands: AI if `p >= 0.58`, human if `p <= 0.42`, otherwise uncertain (or if the interval is wider than `0.50`). Rank mix `0.38`.
-
-## Environment variables
-
-| Env var | Default | Notes |
-| --- | --- | --- |
-| `PORT` / `SERVER_PORT` | `8080` | Listen port. |
-| `KNOWLEDGEOS_DB` | `./data/knowledgeos.db` | SQLite path. |
-| `KNOWLEDGEOS_WEB` | *(auto)* | Directory containing `index.html`. |
-| `KNOWLEDGEOS_EMBED_DIM` | `128` | Hashed embedding size. |
-| `KNOWLEDGEOS_GRAPH_K` | `8` | kNN neighbors per document. |
-| `KNOWLEDGEOS_GRAPH_MIN_COSINE` | `0.32` | |
-| `KNOWLEDGEOS_SEED_WIKIPEDIA` | `true` | If false, skip India seed/crawl entirely. |
-| `KNOWLEDGEOS_CRAWL_MAX_DEPTH` | `2` | Generic URL crawler only. |
-| `KNOWLEDGEOS_CRAWL_MAX_PAGES` | `80` | Generic URL crawler only. |
-| `KNOWLEDGEOS_CRAWL_TIMEOUT_MS` | `12000` | |
-| `KNOWLEDGEOS_CRAWL_DELAY_MS` | `200` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL` / `CRAWL` | `true` | `false` → offline India fixture. |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES` | `2000` | Independent of the generic crawler. |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_DEPTH` | `4` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_DELAY_MS` | `300` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_TIMEOUT_MS` | `15000` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_FLUSH_EVERY` | `25` | Incremental score flush during crawl. |
-| `KNOWLEDGEOS_BAND_AI_MIN` | `0.58` | Band thresholds; not proof. |
-| `KNOWLEDGEOS_BAND_HUMAN_MAX` | `0.42` | |
-| `KNOWLEDGEOS_BAND_MAX_INTERVAL` | `0.50` | Wider interval → uncertain. |
-| `KNOWLEDGEOS_CALIBRATE_RANK_MIX` | `0.38` | Mix of raw p(AI) with collection rank. |
