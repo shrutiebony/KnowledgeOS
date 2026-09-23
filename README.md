@@ -1,6 +1,5 @@
 # KnowledgeOS
 
-**[Live demo](https://full-definition-hundreds-bye.trycloudflare.com)**
 
 Collection-level estimate of how much of a document set looks AI-generated or AI-assisted.
 
