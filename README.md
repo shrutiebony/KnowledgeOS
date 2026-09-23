@@ -119,7 +119,7 @@ Same product UI as the public demo and localhost.
 
 1. **Dataset** — pick a collection, then **Refresh**. Wikipedia India is the seeded corpus. Each upload or URL crawl is its own row. 
 2. **Wikipedia topic** — only on Wikipedia India. A **view** on that same collection. It does not create another dataset.
-3. **Header pills** — share of documents, share of analyzed words, uncertainty range, and band counts (likely AI / likely human / uncertain). Read-only. Estimates, not proof. GraphSAGE is not in these numbers.
+3. **Header pills** — share of documents, share of analyzed words, uncertainty range, and band counts estimates(likely AI / likely human / uncertain). 
 4. **Document graph** — circular layout: unlabeled dots are documents; one subheading sits on each cluster. Hover a dot for the title. Edges are embedding similarity.
 5. **Click a heading or cluster** — the graph zooms to that visible set and **Analysis across collection** follows it. **Explain insights** reads that same visible set and opens a short estimate in the popup (no API key required).
 6. **Click a document** — highlights it in the analysis panel and opens the detail card.
