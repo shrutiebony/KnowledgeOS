@@ -5,7 +5,7 @@
 Collection-level estimate of how much of a document set looks AI-generated or AI-assisted.
 
 
-Collections are independent. 3 sources of data are being used : Wikipedia India, a URL crawl named GDELT while allowing the user to give any public URL of choice or upload PDFs to check the amount of AI generated text in either a particular topic at hand or in their specific PDF.
+Collections are independent. 3 sources of data are being used : Wikipedia India, a URL crawl allowing the user to give any public URL of choice or upload PDFs to check the amount of AI generated text in either a particular topic at hand or in their specific PDF.
 
 ## Experimental / recovered original (not this runtime)
 
