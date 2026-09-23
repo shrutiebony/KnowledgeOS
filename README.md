@@ -121,9 +121,9 @@ Same product UI as the public demo and localhost.
 4. **Document graph** — circular layout: unlabeled dots are documents; one subheading sits on each cluster. Hover a dot for the title. Edges are embedding similarity.
 5. **Click a heading or cluster** — the graph zooms to that visible set and **Analysis across collection** follows it. **Explain insights** reads that same visible set and opens a short estimate in the popup (no API key required).
 6. **Click a document** — highlights it in the analysis panel and opens the detail card.
-7. **Upload PDFs or text** — `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, `.zip`. Creates a `USER_UPLOAD` collection.
-8. **Public URLs** — one URL per line, optional name (e.g. `gdelt`). Same-site children only (depth 2, up to 80 pages). Stored as `USER_URLS`, never mixed into Wikipedia.
-9. **AI share over time** — yearly bins from last-modified (HTTP `Last-Modified` / page meta), not the year the prose was written. Hidden if the collection has no dates.
+7. **Upload PDFs or text** — `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, `.zip`.
+8. **Public URLs** — one URL per line, optional name (e.g. `gdelt`). Same-site children only (depth 2, up to 80 pages). Stored as a separate dataset, never mixed into Wikipedia.
+9. **AI share over time** — yearly bins from last-modified, not the year the prose was written. Hidden if the collection has no dates.
 10. **Delete** — shown for every collection except Wikipedia India.
 
 
@@ -135,8 +135,7 @@ Open the shared demo at [https://full-definition-hundreds-bye.trycloudflare.com]
 
 ### 1. Add it
 
-**Public URL (same-site crawl).** In **Public URLs**, paste one URL per line (optional name, e.g. `gdelt`). **Crawl same-site pages and analyze** calls `POST /datasets/from-urls`. The crawler fetches each seed, then follows in-site child links only (depth 2, up to 80 pages). Stored as kind `USER_URLS`.
-
+**Public URL (same-site crawl).** In **Public URLs**, paste one URL per line (optional name, e.g. `gdelt`). The crawler fetches each seed, then follows in-site child links only (depth 2, up to 80 pages).
 **Or upload PDF / text.** Choose `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, or `.zip`, optional dataset name, then **Upload and analyze**. 
 Either path writes a **new** collection. Pages from that crawl or upload stay in that collection only. They are never appended to Wikipedia India.
 ### 2. It appears for every visitor
