@@ -64,6 +64,8 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
                           double graph_min_cosine = 0.32);
 nlohmann::json examples_json(Store& store, int64_t dataset_id, const std::string& band, int limit,
                              const std::string& topic, const std::vector<int64_t>& ids);
+nlohmann::json ai_common_json(Store& store, int64_t dataset_id, const std::string& topic,
+                              const std::vector<int64_t>& ids);
 nlohmann::json breakdown_rows(Store& store, int64_t dataset_id, const std::string& by,
                               const std::string& topic, const std::vector<int64_t>& ids);
 nlohmann::json explanation_json(Store& store, int64_t dataset_id, int64_t doc_id, int graph_k = 8,

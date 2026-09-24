@@ -9,11 +9,13 @@
 #include "miniz.h"
 
 #include <algorithm>
+#include <atomic>
 #include <cctype>
 #include <iostream>
 #include <map>
 #include <optional>
 #include <regex>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <thread>
@@ -712,7 +714,8 @@ static std::string wiki_title_key(const Document& doc) {
 }
 
 static int apply_revision_dates(Store& store, const std::map<std::string, std::vector<int64_t>>& ids_by_title,
-                                const std::map<std::string, std::string>& revisions, bool created) {
+                                const std::map<std::string, std::string>& revisions, bool created,
+                                bool overwrite = false) {
     int updated = 0;
     for (const auto& [want, date] : revisions) {
         if (date.size() < 4) continue;
@@ -731,8 +734,13 @@ static int apply_revision_dates(Store& store, const std::map<std::string, std::v
         }
         if (it == ids_by_title.end()) continue;
         for (int64_t id : it->second) {
-            int n = created ? store.update_created_at_if_null(id, date)
-                            : store.update_published_at_if_null(id, date);
+            int n = 0;
+            if (created) {
+                n = overwrite ? store.update_created_at(id, date)
+                              : store.update_created_at_if_null(id, date);
+            } else {
+                n = store.update_published_at_if_null(id, date);
+            }
             updated += n;
         }
     }
@@ -754,12 +762,40 @@ static void backfill_dates(Store& store, const Config& cfg, int64_t dataset_id) 
     apply_revision_dates(store, ids_by_title, fetch_last_revisions(titles, cfg), false);
 }
 
+static int wiki_year_prefix(const std::string& date) {
+    if (date.size() < 4) return 0;
+    try {
+        return std::stoi(date.substr(0, 4));
+    } catch (...) {
+        return 0;
+    }
+}
+
+static bool wiki_created_collapsed(const std::vector<Document>& docs) {
+    int n = 0;
+    int bad = 0;
+    std::map<int, int> years;
+    for (const auto& doc : docs) {
+        n++;
+        int y = wiki_year_prefix(doc.created_at);
+        if (y <= 0 || y == 2016) bad++;
+        if (y > 0) years[y]++;
+    }
+    if (n <= 0) return false;
+    if (bad * 2 >= n) return true;
+    return years.size() <= 1;
+}
+
 static int backfill_created_at(Store& store, const Config& cfg, int64_t dataset_id) {
     auto docs = store.docs_by_dataset(dataset_id, false);
+    const bool collapsed = wiki_created_collapsed(docs);
     std::vector<std::string> titles;
     std::map<std::string, std::vector<int64_t>> ids_by_title;
     for (const auto& doc : docs) {
-        if (!doc.created_at.empty() || doc.url.empty()) continue;
+        if (doc.url.empty()) continue;
+        bool need = doc.created_at.empty();
+        if (collapsed) need = true;
+        if (!need) continue;
         std::string key = wiki_title_key(doc);
         if (key.empty()) continue;
         titles.push_back(key);
@@ -767,7 +803,7 @@ static int backfill_created_at(Store& store, const Config& cfg, int64_t dataset_
     }
     if (titles.empty()) return 0;
     std::cerr << "Backfilling Wikipedia first-revision createdAt for " << titles.size() << " pages.\n";
-    int updated = apply_revision_dates(store, ids_by_title, fetch_first_revisions(titles, cfg), true);
+    int updated = apply_revision_dates(store, ids_by_title, fetch_first_revisions(titles, cfg), true, collapsed);
     std::cerr << "First-revision createdAt written for " << updated << " documents.\n";
     return updated;
 }
@@ -780,18 +816,29 @@ static void normalize_stored_wiki_topics(Store& store, int64_t dataset_id) {
     }
 }
 
+static std::atomic<bool> g_wiki_created_backfill_busy{false};
+
+static void start_wiki_created_at_backfill(Store& store, const Config& cfg, int64_t dataset_id) {
+    bool expected = false;
+    if (!g_wiki_created_backfill_busy.compare_exchange_strong(expected, true)) return;
+    std::thread([store_ptr = &store, cfg, dataset_id]() {
+        try {
+            backfill_created_at(*store_ptr, cfg, dataset_id);
+        } catch (const std::exception& e) {
+            std::cerr << "Wikipedia first-revision createdAt backfill failed: " << e.what() << "\n";
+        }
+        g_wiki_created_backfill_busy.store(false);
+    }).detach();
+}
+
 static int prepare_wiki_metadata(Store& store, const Config& cfg, int64_t dataset_id) {
     try {
         normalize_stored_wiki_topics(store, dataset_id);
     } catch (const std::exception& e) {
         std::cerr << "Wikipedia topic normalize failed: " << e.what() << "\n";
     }
-    try {
-        return backfill_created_at(store, cfg, dataset_id);
-    } catch (const std::exception& e) {
-        std::cerr << "Wikipedia first-revision createdAt backfill failed: " << e.what() << "\n";
-        return 0;
-    }
+    start_wiki_created_at_backfill(store, cfg, dataset_id);
+    return 0;
 }
 
 static void ensure_analyzed(Store& store, const Config& cfg, int64_t dataset_id) {
@@ -943,6 +990,11 @@ void seed_wikipedia(Store& store, const Config& cfg) {
         return;
     }
     Dataset dataset = existing ? *existing : create_dataset(store, WIKI_DATASET_NAME, KIND_WIKI);
+    if (!country_topics_incomplete(stored_topic_counts(store, dataset.id), target)) {
+        start_wiki_created_at_backfill(store, cfg, dataset.id);
+    } else {
+        std::cerr << "Skipping Wikipedia revision backfill until country topics are stored.\n";
+    }
     if (!existing) {
         target = std::max({WIKI_MIN_COUNTRY_PAGES, WIKI_MIN_SHARED_PAGES, cfg.wikipedia_max_pages});
         dataset.parent_topic = std::string("countries:") + std::to_string(target);
@@ -987,7 +1039,7 @@ static void crawl_gdelt_and_analyze(Store& store, Config cfg, int64_t dataset_id
         stats = crawl_gdelt(cfg, already, [&](const GdeltPage& page) {
             if (!is_shared_country_topic(page.topic)) return;
             add_document(store, *dataset, page.title, page.text, page.url, GDELT_SOURCE,
-                         page.topic, page.published_at);
+                         page.topic, page.published_at, page.published_at);
             persisted++;
             if (persisted % cfg.gdelt_flush_every == 0) {
                 std::cerr << "GDELT progress: " << persisted << " new pages this run, "
@@ -1039,6 +1091,12 @@ void seed_gdelt(Store& store, const Config& cfg) {
         if (!country_topics_incomplete(stored_topic_counts(store, existing->id), per_topic)) {
             std::cerr << "GDELT country topics already stored (" << store.count_docs(existing->id)
                       << " pages total).\n";
+            int copied = 0;
+            for (const auto& doc : store.docs_by_dataset(existing->id, false)) {
+                if (!doc.created_at.empty() || doc.published_at.empty()) continue;
+                copied += store.update_created_at_if_null(doc.id, doc.published_at);
+            }
+            if (copied) std::cerr << "Copied GDELT article dates onto createdAt for " << copied << " documents.\n";
             if (store.count_unscored(existing->id) > 0) {
                 try { analyze_dataset(store, cfg, existing->id, true); } catch (...) {}
             }
@@ -1047,6 +1105,10 @@ void seed_gdelt(Store& store, const Config& cfg) {
     }
     if (!cfg.gdelt_crawl) {
         if (existing) {
+            for (const auto& doc : store.docs_by_dataset(existing->id, false)) {
+                if (!doc.created_at.empty() || doc.published_at.empty()) continue;
+                store.update_created_at_if_null(doc.id, doc.published_at);
+            }
             try { analyze_dataset(store, cfg, existing->id, true); } catch (...) {}
         }
         return;

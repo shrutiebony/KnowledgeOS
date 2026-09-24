@@ -45,6 +45,7 @@ public:
     std::vector<std::string> distinct_topics(int64_t dataset_id);
     int update_published_at_if_null(int64_t doc_id, const std::string& date);
     int update_created_at_if_null(int64_t doc_id, const std::string& date);
+    int update_created_at(int64_t doc_id, const std::string& date);
     int update_topic(int64_t doc_id, const std::string& topic);
 
     void delete_edges(int64_t dataset_id);

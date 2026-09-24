@@ -2,6 +2,7 @@
 
 #include "util.hpp"
 
+#include <algorithm>
 #include <cstring>
 #include <filesystem>
 #include <stdexcept>
@@ -404,9 +405,22 @@ std::vector<Document> Store::all_docs(bool include_text) {
 
 std::vector<Document> Store::docs_by_ids(const std::vector<int64_t>& ids, bool include_text) {
     std::vector<Document> out;
-    for (int64_t id : ids) {
-        auto d = get_document(id, include_text);
-        if (d) out.push_back(*d);
+    if (ids.empty()) return out;
+    std::lock_guard<std::mutex> lock(mu_);
+    const size_t chunk = 200;
+    for (size_t off = 0; off < ids.size(); off += chunk) {
+        size_t n = std::min(chunk, ids.size() - off);
+        std::string sql = std::string("SELECT ") + DOC_COLS + " FROM documents WHERE id IN (";
+        for (size_t i = 0; i < n; ++i) {
+            if (i) sql += ",";
+            sql += "?";
+        }
+        sql += ")";
+        sqlite3_stmt* st = nullptr;
+        sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+        for (size_t i = 0; i < n; ++i) sqlite3_bind_int64(st, static_cast<int>(i + 1), ids[off + i]);
+        while (sqlite3_step(st) == SQLITE_ROW) out.push_back(read_document(st, include_text));
+        sqlite3_finalize(st);
     }
     return out;
 }
@@ -559,6 +573,18 @@ int Store::update_created_at_if_null(int64_t doc_id, const std::string& date) {
     sqlite3_stmt* st = nullptr;
     sqlite3_prepare_v2(db_, "UPDATE documents SET created_at=? WHERE id=? AND (created_at IS NULL OR created_at='')",
                        -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 2, doc_id);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int Store::update_created_at(int64_t doc_id, const std::string& date) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "UPDATE documents SET created_at=? WHERE id=?", -1, &st, nullptr);
     sqlite3_bind_text(st, 1, date.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int64(st, 2, doc_id);
     sqlite3_step(st);

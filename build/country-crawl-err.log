@@ -1,20 +1,122 @@
-Wikipedia country-topic target: keep 1000 existing pages, aim for 1000 each of United States / Germany / Australia.
+Skipping Wikipedia revision backfill until country topics are stored.
 Started Wikipedia crawl in the background (per-topic maxPages=1000, depth=4).
-Deferring score of Started GDELT crawl in the background (maxPages=1000, depth=8).
-1000 already-stored Wikipedia pages until country crawl flushes.
-Serving UI from C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\web
-KnowledgeOS listening on http://0.0.0.0:8080
+GDELT country topics already stored (3958 pages total).
+Deferring score of 1496 already-stored Wikipedia pages until country crawl flushes.
+Crawling English Wikipedia (United States / Germany / Australia, 1000 each). Already stored=Serving UI from C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\web
+1496 per-topic cap=KnowledgeOS listening on http://0.0.0.0:8080
 Database: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\data\knowledgeos.db
-Crawling English Wikipedia (United States / Germany / Australia, 1000 each). Already stored=1000 per-topic cap=1000 USA=2 Germany=0 Australia=0
-Crawling GDELT (United States / Germany / Australia, 1000 each). Already stored=1058 per-topic cap=1000 USA=100 Germany=0 Australia=0
-Harvesting GDELT DOC API news for United States (have 100, want 1000).
-Wikipedia queued 624 URLs from Category:United_States
-Wikipedia queued 625 URLs from Category:Geography_of_the_United_States
-Wikipedia queued 626 URLs from Category:States_of_the_United_States
-Wikipedia queued 627 URLs from Category:Cities_in_the_United_States
-Wikipedia queued 628 URLs from Category:Populated_places_in_the_United_States
-Wikipedia BFS United States from en.wikipedia.org (have 2, want 1000).
-GDELT DOC API 429, retry in 20000ms
-GDELT DOC API 429, retry in 40000ms
-GDELT DOC API 429, retry in 80000ms
-GDELT DOC API 429, retry in 120000ms
+1000 USA=498 Germany=0 Australia=0
+Wikipedia extracts United States from en.wikipedia.org (have 498, want 1000).
+Wikipedia category extracts Category:Cities in California [United States have 498]
+Wikipedia queued 0 titles from Category:Cities in California
+Wikipedia Category:Cities in California stored +0 now 498
+Wikipedia category extracts Category:Cities in Texas [United States have 498]
+Wikipedia queued 978 titles from Category:Cities in Texas
+Wikipedia stored 1498 [United States 500/1000] (Burleson, Texas)
+Wikipedia stored 1500 [United States 502/1000] (Calvert, Texas)
+Wikipedia stored 1510 [United States 512/1000] (Dayton Lakes, Texas)
+Wikipedia stored 1520 [United States 522/1000] (Edna, Texas)
+Wikipedia stored 1523 [United States 525/1000] (Elgin, Texas)
+Wikipedia stored 1530 [United States 532/1000] (Falls City, Texas)
+Wikipedia stored 1540 [United States 542/1000] (George West, Texas)
+Wikipedia stored 1548 [United States 550/1000] (Haltom City, Texas)
+Wikipedia stored 1550 [United States 552/1000] (Harlingen, Texas)
+Wikipedia stored 1560 [United States 562/1000] (Surfside Beach, Texas)
+Wikipedia stored 1570 [United States 572/1000] (Tyler, Texas)
+Wikipedia stored 1573 [United States 575/1000] (Uvalde, Texas)
+Wikipedia Category:Cities in Texas stored +81 now 579
+Wikipedia category extracts Category:Cities in the Dallas–Fort Worth metroplex [United States have 579]
+Wikipedia queued 19 titles from Category:Cities in the Dallas–Fort Worth metroplex
+Wikipedia Category:Cities in the Dallas–Fort Worth metroplex stored +0 now 579
+Wikipedia category extracts Category:Economies by city in Texas [United States have 579]
+Wikipedia categorymembers failed Category:Economies by city in Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Economies by city in Texas
+Wikipedia Category:Economies by city in Texas stored +0 now 579
+Wikipedia category extracts Category:Former cities in Texas [United States have 579]
+Wikipedia categorymembers failed Category:Former cities in Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Former cities in Texas
+Wikipedia Category:Former cities in Texas stored +0 now 579
+Wikipedia category extracts Category:Histories of cities in Texas [United States have 579]
+Wikipedia categorymembers failed Category:Histories of cities in Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Histories of cities in Texas
+Wikipedia Category:Histories of cities in Texas stored +0 now 579
+Wikipedia category extracts Category:Timelines of cities in Texas [United States have 579]
+Wikipedia queued 24 titles from Category:Timelines of cities in Texas
+Wikipedia Category:Timelines of cities in Texas stored +1 now 580
+Wikipedia category extracts Category:Categories by city in Texas [United States have 580]
+Wikipedia queued 0 titles from Category:Categories by city in Texas
+Wikipedia Category:Categories by city in Texas stored +0 now 580
+Wikipedia category extracts Category:Burials in Texas by populated place [United States have 580]
+Wikipedia queued 0 titles from Category:Burials in Texas by populated place
+Wikipedia Category:Burials in Texas by populated place stored +0 now 580
+Wikipedia category extracts Category:Cemeteries in Texas by populated place [United States have 580]
+Wikipedia queued 0 titles from Category:Cemeteries in Texas by populated place
+Wikipedia Category:Cemeteries in Texas by populated place stored +0 now 580
+Wikipedia category extracts Category:Economies by city in Texas [United States have 580]
+Wikipedia queued 0 titles from Category:Economies by city in Texas
+Wikipedia Category:Economies by city in Texas stored +0 now 580
+Wikipedia category extracts Category:Histories of cities in Texas [United States have 580]
+Wikipedia queued 25 titles from Category:Histories of cities in Texas
+Wikipedia Category:Histories of cities in Texas stored +0 now 580
+Wikipedia category extracts Category:Skyscrapers in Texas by city [United States have 580]
+Wikipedia categorymembers failed Category:Skyscrapers in Texas by city HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Skyscrapers in Texas by city
+Wikipedia Category:Skyscrapers in Texas by city stored +0 now 580
+Wikipedia category extracts Category:Tourist attractions in Texas by populated place [United States have 580]
+Wikipedia categorymembers failed Category:Tourist attractions in Texas by populated place HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Tourist attractions in Texas by populated place
+Wikipedia Category:Tourist attractions in Texas by populated place stored +0 now 580
+Wikipedia category extracts Category:Abilene, Texas [United States have 580]
+Wikipedia categorymembers failed Category:Abilene, Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Abilene, Texas
+Wikipedia Category:Abilene, Texas stored +0 now 580
+Wikipedia category extracts Category:Organizations based in Abilene, Texas [United States have 580]
+Wikipedia queued 7 titles from Category:Organizations based in Abilene, Texas
+Wikipedia stored 1580 [United States 582/1000] (Abilene High School (Texas))
+Wikipedia Category:Organizations based in Abilene, Texas stored +6 now 586
+Wikipedia category extracts Category:People from Abilene, Texas [United States have 586]
+Wikipedia queued 99 titles from Category:People from Abilene, Texas
+Wikipedia stored 1590 [United States 592/1000] (Isaac Cline)
+Wikipedia stored 1598 [United States 600/1000] (Clay J. Cockerell)
+Wikipedia stored 1600 [United States 602/1000] (John H. Gibson)
+Wikipedia stored 1610 [United States 612/1000] (Jane Hall (journalist))
+Wikipedia stored 1620 [United States 622/1000] (Jack Pope)
+Wikipedia stored 1623 [United States 625/1000] (Miss Mona Superhero)
+Wikipedia stored 1630 [United States 632/1000] (Reverend L.T. Thomas)
+Wikipedia Category:People from Abilene, Texas stored +51 now 637
+Wikipedia category extracts Category:Sports in Abilene, Texas [United States have 637]
+Wikipedia queued 6 titles from Category:Sports in Abilene, Texas
+Wikipedia Category:Sports in Abilene, Texas stored +0 now 637
+Wikipedia category extracts Category:Addison, Texas [United States have 637]
+Wikipedia categorymembers failed Category:Addison, Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Addison, Texas
+Wikipedia Category:Addison, Texas stored +0 now 637
+Wikipedia category extracts Category:Albany, Texas [United States have 637]
+Wikipedia categorymembers failed Category:Albany, Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Albany, Texas
+Wikipedia Category:Albany, Texas stored +0 now 637
+Wikipedia category extracts Category:Alice, Texas [United States have 637]
+Wikipedia queued 14 titles from Category:Alice, Texas
+Wikipedia Category:Alice, Texas stored +1 now 638
+Wikipedia category extracts Category:People from Alice, Texas [United States have 638]
+Wikipedia queued 22 titles from Category:People from Alice, Texas
+Wikipedia stored 1640 [United States 642/1000] (J. Frank Dobie)
+Wikipedia stored 1648 [United States 650/1000] (Wayne Tyrone)
+Wikipedia Category:People from Alice, Texas stored +13 now 651
+Wikipedia category extracts Category:Alpine, Texas [United States have 651]
+Wikipedia queued 17 titles from Category:Alpine, Texas
+Wikipedia stored 1650 [United States 652/1000] (1957 NAIA World Series)
+Wikipedia Category:Alpine, Texas stored +10 now 661
+Wikipedia category extracts Category:Alpine Cowboys players [United States have 661]
+Wikipedia queued 8 titles from Category:Alpine Cowboys players
+Wikipedia Category:Alpine Cowboys players stored +0 now 661
+Wikipedia category extracts Category:People from Alpine, Texas [United States have 661]
+Wikipedia categorymembers failed Category:People from Alpine, Texas HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:People from Alpine, Texas
+Wikipedia Category:People from Alpine, Texas stored +0 now 661
+Wikipedia category extracts Category:Sul Ross State University [United States have 661]
+Wikipedia categorymembers failed Category:Sul Ross State University HTTP 429  bytes=278
+Wikipedia queued 0 titles from Category:Sul Ross State University
+Wikipedia Category:Sul Ross State University stored +0 now 661
+Wikipedia category extracts Category:Amarillo, Texas [United States have 661]
+Wikipedia categorymembers failed Category:Amarillo, Texas HTTP 429  bytes=278

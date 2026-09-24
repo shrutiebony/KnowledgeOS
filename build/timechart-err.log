@@ -1,0 +1,11 @@
+Backfilling Wikipedia first-revision createdAt for 1180 pages.
+Wikipedia revision query 429, retry in 8000ms
+Wikipedia revision query 429, retry in 16000ms
+First-revision dates: 1/1176 titles
+Wikipedia revision query 429, retry in 8000ms
+Wikipedia revision query 429, retry in 16000ms
+Serving UI from C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\web
+KnowledgeOS listening on http://0.0.0.0:8080
+Database: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\data\knowledgeos.db
+Wikipedia revision query 429, retry in 32000ms
+Wikipedia revision query 429, retry in 8000ms

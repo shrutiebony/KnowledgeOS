@@ -189,9 +189,10 @@ CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\wiki_crawl.hpp
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\set"
 
 
@@ -1221,6 +1222,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz.h
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_export.h
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_common.h
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_tdef.h
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_tinfl.h
+CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque"
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iostream"
 CMakeFiles\knowledgeos.dir\src_cpp\gdelt_crawl.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
@@ -1867,6 +1875,7 @@ CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\Know
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iostream"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\regex"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\set"
 
 
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp
@@ -3665,11 +3674,15 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz.h:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any":
 
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\threadpoollegacyapiset.h":
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp:
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set":
+
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\wiki_crawl.hpp:
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set":
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\calibration.cpp:
 
@@ -3681,11 +3694,17 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\embedding.cpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.cpp:
 
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\threadpoollegacyapiset.h":
-
-C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp:
-
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\http_client.hpp:
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_export.h:
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_common.h:
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\apiquery2.h":
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_tdef.h:
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h:
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\synchapi.h":
 
@@ -3732,10 +3751,6 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\http_client.cpp:
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\winbase.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\shared\apisetcconv.h":
-
-C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_tdef.h:
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\apiquery2.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\libloaderapi.h":
 
@@ -3820,12 +3835,6 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\ingest.cpp:
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\ingest.hpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\url_crawl.hpp:
-
-C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_export.h:
-
-C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_common.h:
-
-C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h:
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\io.h":
 

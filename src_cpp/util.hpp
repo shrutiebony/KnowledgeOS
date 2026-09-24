@@ -398,6 +398,20 @@ inline std::string now_iso() {
     return buf;
 }
 
+inline int iso_year(const std::string& date) {
+    if (date.size() < 4) return 0;
+    try {
+        int y = std::stoi(date.substr(0, 4));
+        return (y >= 1900 && y <= 2100) ? y : 0;
+    } catch (...) {
+        return 0;
+    }
+}
+
+inline int utc_year_now() {
+    return iso_year(now_iso());
+}
+
 inline std::vector<std::string> split_csv(const std::string& s) {
     std::vector<std::string> out;
     std::string cur;

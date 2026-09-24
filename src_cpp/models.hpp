@@ -29,6 +29,8 @@ inline constexpr int MIN_TOPIC_DOCUMENTS = 100;
 inline constexpr int ERA_SPLIT_YEAR = 2019;
 inline constexpr int ERA_COHORT_SIZE = 50;
 inline constexpr const char* ERA_CUTOFF = "2019-01-01";
+// AI-share time chart: never extend the year axis left of this year.
+inline constexpr int TIME_CHART_MIN_YEAR = 2015;
 inline constexpr double TOPIC_BAND_AI_MIN = 0.58;
 inline constexpr double TOPIC_BAND_HUMAN_MAX = 0.42;
 
@@ -65,6 +67,7 @@ struct Document {
     std::string url;
     std::string source;
     std::string topic;
+    std::string subtopic;
     std::string published_at;
     std::string created_at;
     std::string text;

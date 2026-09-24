@@ -136,8 +136,8 @@ static std::string fallback_insights(const json& payload) {
         << " uncertain.";
 
     const char* caveat =
-        "The time chart bins pages by first-revision / page-creation year, not last-modified. "
-        "Last-modified piles into the crawl year and is not used for this split.";
+        "The time chart bins each document by first-revision year when that date is stored, otherwise the document date. "
+        "Combined All sources unions years from every collection. The series runs from 2015 through the latest dated year in the visible set.";
     json time = payload.value("time", json::object());
     json rows = time.value("rows", json::array());
     if (!time.value("available", false) || rows.empty()) {
@@ -150,9 +150,10 @@ static std::string fallback_insights(const json& payload) {
     json graph = payload.value("graph", json::object());
     std::string group_by = graph.value("groupBy", std::string("topic"));
     std::string group_label = "heading";
-    if (group_by == "topic") group_label = "Wikipedia subheading (topic)";
-    else if (group_by == "source") group_label = "source";
-    else if (group_by == "band") group_label = "estimate band";
+    if (group_by == "topic") group_label = "country";
+    else if (group_by == "dataset") group_label = "collection";
+    else if (group_by == "source") group_label = "collection";
+    else if (group_by == "band") group_label = "country";
     int nodes = graph.value("nodeCount", 0);
     int edges = graph.value("edgeCount", 0);
     out << "\n\nThe graph groups " << nodes << " document" << (nodes == 1 ? "" : "s") << " by " << group_label;
@@ -160,8 +161,8 @@ static std::string fallback_insights(const json& payload) {
     out << ". A heading labels a cluster of similar pages; clicking it only filters the same collection.";
 
     out << "\n\nThe collection percent is the mean of document p_ai scores (stylometry + stock-phrase / "
-           "uniformity / n-gram detectors + embedding vs a human-leaning centroid, logistic blend). "
-           "These figures are an ESTIMATE, not proof of authorship. GraphSAGE is not in this share.";
+           "uniformity / n-gram detectors + embedding vs the pre-2019 writing centroid in this visible set, "
+           "logistic blend). Pages before 2019 stay near zero. GraphSAGE is not in this share.";
     return out.str();
 }
 

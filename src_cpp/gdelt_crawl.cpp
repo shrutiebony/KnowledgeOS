@@ -5,6 +5,7 @@
 #include "wiki_crawl.hpp"
 
 #include "json.hpp"
+#include "miniz.h"
 
 #include <algorithm>
 #include <cctype>
@@ -124,6 +125,8 @@ static int topic_count_of(const std::map<std::string, int>& counts, const std::s
     return it == counts.end() ? 0 : it->second;
 }
 
+static bool country_topics_need_pages(const std::map<std::string, int>& topic_counts, int per_topic);
+
 static bool store_gdelt_page(GdeltCrawlStats& stats, std::unordered_set<std::string>& already,
                              std::unordered_set<std::string>& stored_keys, std::map<std::string, int>& topic_counts,
                              int per_topic, const std::string& url, const std::string& title, const std::string& text,
@@ -164,10 +167,17 @@ static bool store_gdelt_page(GdeltCrawlStats& stats, std::unordered_set<std::str
     }
 }
 
+static bool g_doc_api_cool = false;
+
 static HttpResponse gdelt_doc_get(const std::string& api, const Config& cfg) {
-    int backoff = std::max(20000, cfg.gdelt_delay_ms * 4);
     HttpResponse res;
-    for (int attempt = 0; attempt < 6; ++attempt) {
+    if (g_doc_api_cool) {
+        res.error = "DOC API cooling after 429";
+        res.status = 429;
+        return res;
+    }
+    int backoff = std::max(45000, cfg.gdelt_delay_ms * 8);
+    for (int attempt = 0; attempt < 3; ++attempt) {
         res = http_get(api, UA, cfg.gdelt_timeout_ms, 2'000'000);
         if (res.status != 429 && res.status != 503 && res.status < 400 && !res.body.empty() && res.error.empty()) {
             return res;
@@ -175,9 +185,235 @@ static HttpResponse gdelt_doc_get(const std::string& api, const Config& cfg) {
         std::cerr << "GDELT DOC API " << (res.status ? std::to_string(res.status) : res.error)
                   << ", retry in " << backoff << "ms\n" << std::flush;
         std::this_thread::sleep_for(std::chrono::milliseconds(backoff));
-        backoff = std::min(backoff * 2, 120000);
+        backoff = std::min(backoff * 2, 180000);
+    }
+    if (res.status == 429 || res.status == 503) {
+        g_doc_api_cool = true;
+        std::cerr << "GDELT DOC API still 429 — skipping remaining DOC queries, using GKG files instead.\n"
+                  << std::flush;
     }
     return res;
+}
+
+static std::string unzip_first_file(const std::string& bytes) {
+    mz_zip_archive zip{};
+    if (!mz_zip_reader_init_mem(&zip, bytes.data(), bytes.size(), 0)) return "";
+    std::string out;
+    mz_uint n = mz_zip_reader_get_num_files(&zip);
+    for (mz_uint i = 0; i < n; ++i) {
+        if (mz_zip_reader_is_file_a_directory(&zip, i)) continue;
+        size_t sz = 0;
+        void* p = mz_zip_reader_extract_to_heap(&zip, i, &sz, 0);
+        if (!p) continue;
+        out.assign(static_cast<char*>(p), sz);
+        mz_free(p);
+        break;
+    }
+    mz_zip_reader_end(&zip);
+    return out;
+}
+
+static std::vector<std::string> split_tab(const std::string& line) {
+    std::vector<std::string> fields;
+    std::string cur;
+    for (char c : line) {
+        if (c == '\t') {
+            fields.push_back(std::move(cur));
+            cur.clear();
+        } else if (c != '\r') {
+            cur.push_back(c);
+        }
+    }
+    fields.push_back(std::move(cur));
+    return fields;
+}
+
+static std::string prev_gkg_stamp(const std::string& stamp) {
+    if (stamp.size() < 12) return "";
+    int y = std::stoi(stamp.substr(0, 4));
+    int m = std::stoi(stamp.substr(4, 2));
+    int d = std::stoi(stamp.substr(6, 2));
+    int h = std::stoi(stamp.substr(8, 2));
+    int mi = std::stoi(stamp.substr(10, 2));
+    mi -= 15;
+    if (mi < 0) {
+        mi += 60;
+        h--;
+    }
+    if (h < 0) {
+        h += 24;
+        add_days(y, m, d, -1);
+    }
+    char buf[16];
+    std::snprintf(buf, sizeof(buf), "%04d%02d%02d%02d%02d00", y, m, d, h, mi);
+    return buf;
+}
+
+static std::string latest_gkg_stamp(const Config& cfg) {
+    static const char* urls[] = {
+        "http://data.gdeltproject.org/gdeltv2/lastupdate.txt",
+        "https://data.gdeltproject.org/gdeltv2/lastupdate.txt"};
+    for (const char* u : urls) {
+        auto res = http_get(u, UA, std::max(cfg.gdelt_timeout_ms, 20000), 200000);
+        if (res.status >= 400 || res.body.empty()) continue;
+        auto pos = res.body.find(".gkg.csv.zip");
+        if (pos == std::string::npos) pos = res.body.find(".gkg.CSV.zip");
+        if (pos == std::string::npos || pos < 14) continue;
+        std::string stamp = res.body.substr(pos - 14, 14);
+        bool digits = true;
+        for (char c : stamp) if (!std::isdigit(static_cast<unsigned char>(c))) digits = false;
+        if (digits) return stamp;
+    }
+    return "20260923213000";
+}
+
+static std::string gkg_country_topic(const std::string& loc, const std::string& v2,
+                                     const std::map<std::string, int>& topic_counts, int per_topic) {
+    bool usa = v2.find("#US#") != std::string::npos || loc.find("United States") != std::string::npos;
+    bool de = v2.find("#GM#") != std::string::npos || loc.find("Germany") != std::string::npos;
+    bool au = loc.find("Australia") != std::string::npos || v2.find("Australia#AS#") != std::string::npos ||
+              v2.find("#AS#AS") != std::string::npos;
+    struct Cand {
+        const char* topic;
+        bool hit;
+    };
+    const Cand cs[] = {{SHARED_TOPIC_USA, usa}, {SHARED_TOPIC_GERMANY, de}, {SHARED_TOPIC_AUSTRALIA, au}};
+    int hits = 0;
+    const char* only = nullptr;
+    for (const auto& c : cs) {
+        if (!c.hit) continue;
+        hits++;
+        only = c.topic;
+    }
+    if (hits == 1 && topic_count_of(topic_counts, only) < per_topic) return only;
+    if (hits > 1) {
+        int best_need = 0;
+        const char* best = nullptr;
+        for (const auto& c : cs) {
+            if (!c.hit) continue;
+            int need = per_topic - topic_count_of(topic_counts, c.topic);
+            if (need > best_need) {
+                best_need = need;
+                best = c.topic;
+            }
+        }
+        if (best) return best;
+    }
+    return "";
+}
+
+static std::string title_from_news_url(const std::string& url, const std::string& source) {
+    auto path = url_path(url);
+    std::string slug;
+    if (path && path->size() > 1) {
+        auto slash = path->rfind('/');
+        slug = slash == std::string::npos ? path->substr(1) : path->substr(slash + 1);
+        slug = url_decode(slug);
+        for (char& c : slug) {
+            if (c == '-' || c == '_') c = ' ';
+        }
+        if (slug.size() > 80) slug.resize(80);
+    }
+    if (slug.empty()) return source.empty() ? url : source;
+    if (!source.empty()) return source + ": " + slug;
+    return slug;
+}
+
+static void harvest_gdelt_gkg(const Config& cfg, GdeltCrawlStats& stats, std::unordered_set<std::string>& already,
+                              std::unordered_set<std::string>& stored_keys, std::map<std::string, int>& topic_counts,
+                              int per_topic, const std::function<void(const GdeltPage&)>& on_page,
+                              std::string& last_error) {
+    if (!country_topics_need_pages(topic_counts, per_topic)) return;
+    std::string stamp = latest_gkg_stamp(cfg);
+    std::cerr << "Harvesting GDELT GKG files from data.gdeltproject.org (stamp " << stamp << "; have USA="
+              << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Germany="
+              << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << " Australia="
+              << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << ").\n"
+              << std::flush;
+    const int delay = std::max(cfg.gdelt_delay_ms, 4000);
+    const int max_files = 160;
+    int empty_files = 0;
+    for (int i = 0; i < max_files && country_topics_need_pages(topic_counts, per_topic) && !stamp.empty(); ++i) {
+        if (i > 0) std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        std::string http = "http://data.gdeltproject.org/gdeltv2/" + stamp + ".gkg.csv.zip";
+        std::string https = "https://data.gdeltproject.org/gdeltv2/" + stamp + ".gkg.csv.zip";
+        stats.fetched++;
+        auto res = http_get(http, UA, std::max(cfg.gdelt_timeout_ms, 60000), 40'000'000);
+        if (res.status >= 400 || res.body.empty() || !res.error.empty()) {
+            res = http_get(https, UA, std::max(cfg.gdelt_timeout_ms, 60000), 40'000'000);
+        }
+        if (res.status == 429 || res.status == 503) {
+            last_error = "GKG HTTP " + std::to_string(res.status);
+            std::cerr << "GDELT GKG 429/503, backoff 20s\n" << std::flush;
+            std::this_thread::sleep_for(std::chrono::milliseconds(20000));
+            continue;
+        }
+        if (res.status >= 400 || res.body.empty() || !res.error.empty()) {
+            stats.failed++;
+            last_error = res.error.empty() ? ("GKG HTTP " + std::to_string(res.status)) : res.error;
+            stamp = prev_gkg_stamp(stamp);
+            empty_files++;
+            if (empty_files > 8) break;
+            continue;
+        }
+        std::string csv;
+        try {
+            csv = unzip_first_file(res.body);
+        } catch (...) {
+            stats.failed++;
+            stamp = prev_gkg_stamp(stamp);
+            continue;
+        }
+        res.body.clear();
+        res.body.shrink_to_fit();
+        if (csv.empty()) {
+            stats.failed++;
+            stamp = prev_gkg_stamp(stamp);
+            continue;
+        }
+        int file_stored = 0;
+        size_t pos = 0;
+        while (pos < csv.size() && country_topics_need_pages(topic_counts, per_topic)) {
+            size_t nl = csv.find('\n', pos);
+            std::string line = csv.substr(pos, nl == std::string::npos ? std::string::npos : nl - pos);
+            pos = nl == std::string::npos ? csv.size() : nl + 1;
+            if (line.empty()) continue;
+            auto f = split_tab(line);
+            if (f.size() < 11) continue;
+            std::string url = trim(f[4]);
+            if (url.empty() || url.find("http") != 0) continue;
+            auto canon = normalize_url(url);
+            std::string stored_url = canon.value_or(url);
+            auto key = dedup_key(stored_url);
+            if (key && stored_keys.count(*key)) continue;
+            std::string topic = gkg_country_topic(f[9], f[10], topic_counts, per_topic);
+            if (topic.empty()) continue;
+            std::string source = trim(f[3]);
+            std::string title = title_from_news_url(stored_url, source);
+            std::string text = metadata_text(title, stored_url, f[1], source, topic, "English", topic);
+            if (store_gdelt_page(stats, already, stored_keys, topic_counts, per_topic, stored_url, title, text, topic,
+                                 gdelt_date_iso(f[1]), on_page, last_error)) {
+                file_stored++;
+            }
+        }
+        std::cerr << "GDELT GKG " << stamp << " stored +" << file_stored << " (USA="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Germany="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << " Australia="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << ")\n"
+                  << std::flush;
+        stamp = prev_gkg_stamp(stamp);
+        if (file_stored == 0) {
+            empty_files++;
+            if (empty_files >= 6) {
+                for (int skip = 0; skip < 24 && !stamp.empty(); ++skip) stamp = prev_gkg_stamp(stamp);
+                empty_files = 0;
+                std::cerr << "GDELT GKG skipping ahead to " << stamp << " after duplicate windows.\n"
+                          << std::flush;
+            }
+        } else {
+            empty_files = 0;
+        }
+    }
 }
 
 static void store_gdelt_articles(const nlohmann::json& root, const std::string& campaign_topic,
@@ -212,7 +448,8 @@ static void harvest_gdelt_country(const Config& cfg, const char* topic, const st
                                   std::unordered_set<std::string>& stored_keys, std::map<std::string, int>& topic_counts,
                                   int per_topic, const std::function<void(const GdeltPage&)>& on_page,
                                   std::string& last_error) {
-    static const char* spans[] = {"1w", "1m", "3m"};
+    if (g_doc_api_cool) return;
+    static const char* spans[] = {"3m"};
     if (topic_count_of(topic_counts, topic) >= per_topic) return;
     std::cerr << "Harvesting GDELT DOC API news for " << topic << " (have "
               << topic_count_of(topic_counts, topic) << ", want " << per_topic << ").\n" << std::flush;
@@ -243,13 +480,11 @@ static void harvest_gdelt_country(const Config& cfg, const char* topic, const st
         }
     }
 
-    int y = 2026, m = 9, d = 23;
-    const int window_days = 3;
-    for (int w = 0; w < 80 && topic_count_of(topic_counts, topic) < per_topic; ++w) {
-        int ey = y, em = m, ed = d;
-        add_days(y, m, d, -window_days);
-        std::string end = ymdhms(ey, em, ed, 23, 59, 59);
-        std::string start = ymdhms(y, m, d, 0, 0, 0);
+    int now_y = 2026, now_m = 9, now_d = 23;
+    for (int year = 2017; year <= now_y && !g_doc_api_cool && topic_count_of(topic_counts, topic) < per_topic; ++year) {
+        std::string start = ymdhms(year, 1, 1, 0, 0, 0);
+        std::string end = (year == now_y) ? ymdhms(now_y, now_m, now_d, 23, 59, 59)
+                                         : ymdhms(year, 12, 31, 23, 59, 59);
         for (const char* query : queries) {
             if (topic_count_of(topic_counts, topic) >= per_topic) return;
             std::this_thread::sleep_for(std::chrono::milliseconds(std::max(cfg.gdelt_delay_ms, 2500)));
@@ -319,6 +554,9 @@ GdeltCrawlStats crawl_gdelt(const Config& cfg, std::unordered_set<std::string>& 
     const int per_topic = std::max(cfg.gdelt_max_pages, WIKI_MIN_COUNTRY_PAGES);
 
     if (country_topics_need_pages(topic_counts, per_topic)) {
+        harvest_gdelt_gkg(cfg, stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);
+    }
+    if (country_topics_need_pages(topic_counts, per_topic) && !g_doc_api_cool) {
         harvest_gdelt_country(cfg, SHARED_TOPIC_USA,
                               {"sourcecountry:US sourcelang:english", "\"united states\" sourcelang:english"},
                               stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);

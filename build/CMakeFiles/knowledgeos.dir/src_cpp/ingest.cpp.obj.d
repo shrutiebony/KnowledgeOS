@@ -202,3 +202,4 @@ C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/miniz_tinfl.h
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/miniz_zip.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/iostream
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/regex
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/set

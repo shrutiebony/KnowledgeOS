@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KnowledgeOS — collection AI-share</title>
+  <title>KnowledgeOS, collection AI-share</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet" />
@@ -354,8 +354,7 @@
       margin: 0 0 10px;
       color: rgba(48, 36, 23, 0.72);
     }
-    #collectionAnalysisCard h3,
-    #detailCard h3 {
+    #collectionAnalysisCard h3 {
       font-size: 28px;
       letter-spacing: -0.03em;
       text-transform: none;
@@ -423,8 +422,22 @@
       cursor: pointer;
     }
     #graph .g-head.on { font-weight: 700; }
+    #graph .g-filter {
+      font-family: var(--display);
+      font-size: 16px;
+      font-weight: 600;
+      fill: #302417;
+      paint-order: stroke;
+      stroke: #FFFEFB;
+      stroke-width: 5px;
+    }
     #graph .g-hull { cursor: pointer; }
     #graph .g-bg { cursor: default; }
+    #graphLegend .swatch.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+    }
     button.linkish {
       width: auto;
       margin: 8px 0 0;
@@ -508,6 +521,16 @@
       letter-spacing: -0.03em;
     }
     .analysis-note { margin: 0 0 18px; }
+    .ai-common {
+      margin: 22px 0 0;
+      max-width: 46rem;
+    }
+    .ai-common p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #302417;
+    }
     .ex {
       border: none;
       border-top: 1px solid var(--hair);
@@ -530,6 +553,16 @@
     .toggle { display: flex; gap: 8px; flex-wrap: wrap; }
     #timeChart { min-height: 120px; }
     #timeChart svg { display: block; width: 100%; height: auto; }
+    .reading {
+      padding: 4px 56px 28px 40px;
+      max-width: 44rem;
+    }
+    .reading p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #302417;
+    }
     .site-footer {
       border-top: none;
       background: transparent;
@@ -671,7 +704,7 @@
       aside, .main-col { overflow: visible; }
       aside { background: none; padding: 12px 28px 24px; }
       aside::after { display: none; }
-      main, .site-footer { padding-left: 28px; padding-right: 28px; }
+      main, .reading, .site-footer { padding-left: 28px; padding-right: 28px; }
       .cols { grid-template-columns: 1fr; }
       .compare { grid-template-columns: 1fr; }
       .compare .pane, .compare .pane + .pane {
@@ -791,7 +824,7 @@
         <label for="urls">or paste a public URL</label>
         <textarea id="urls" rows="3" placeholder="https://example.org/article"></textarea>
         <button id="crawlAnalyse" type="button">Crawl and analyse</button>
-        <p class="hint">Either upload PDFs or give a URL. Each add is its own collection — never mixed into Wikipedia or GDELT. At most 7 collections.</p>
+        <p class="hint">Either upload PDFs or give a URL. Each add is its own collection, never mixed into Wikipedia or GDELT. At most 7 collections.</p>
       </div>
     </aside>
     <div class="main-col" style="display:block !important;min-width:0 !important;min-height:0 !important;overflow-x:hidden !important;overflow-y:auto !important">
@@ -827,7 +860,8 @@
           <h3>Document graph</h3>
           <button type="button" class="linkish js-explain-insights" id="explainInsightsGraph">Explain insights</button>
         </div>
-        <p class="hint" id="graphHint">Circular network: unlabeled dots are documents, colored and clustered by Wikipedia subheading (or source / band if a topic is already selected). One heading sits at each cluster. Hover a dot for the document title. Edges are embedding similarity. Click a heading or cluster to analyze that visible set.</p>
+        <p class="hint" id="graphHint">Dots are documents. Each circle is a collection. Lines are similarity.</p>
+        <div class="chart-legend" id="graphLegend" hidden></div>
         <button type="button" class="linkish" id="showAllGraph" hidden>Show all</button>
         <div id="graph"></div>
       </div>
@@ -837,11 +871,15 @@
           <button type="button" class="linkish js-explain-insights" id="explainInsights">Explain insights</button>
         </div>
         <div class="analysis-portrait" id="analysisOverview"></div>
-        <p class="hint analysis-note" id="analysisHint">Topics below have at least 100 documents. Band is the topic's mean estimate.</p>
+        <p class="hint analysis-note" id="analysisHint">Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.</p>
         <div class="cols" id="exampleCols">
           <div><h4 class="pill ai">Likely AI-generated</h4><div id="exAi"></div></div>
           <div><h4 class="pill human">Likely human-written</h4><div id="exHuman"></div></div>
           <div><h4 class="pill unc">Uncertain</h4><div id="exUnc"></div></div>
+        </div>
+        <div class="ai-common" id="aiCommon" hidden>
+          <p id="aiCommonL1"></p>
+          <p id="aiCommonL2"></p>
         </div>
       </div>
       </section>
@@ -849,26 +887,22 @@
         <h3>Breakdown by source</h3>
         <div id="breakdown"></div>
       </div>
-      <div class="card" id="detailCard" hidden>
-        <h3 id="detailTitle"></h3>
-        <p class="hint" id="detailMeta"></p>
-        <p class="hint" id="detailDisc"></p>
-        <div id="detailSignals"></div>
-        <h4>Comparable neighbors</h4>
-        <div id="detailNeighbors"></div>
-        <h4>Text</h4>
-        <div class="detail" id="detailText"></div>
-      </div>
     </main>
+
+  <section class="reading" id="readingSummary" aria-label="What was crawled">
+    <p id="readingL1"></p>
+    <p id="readingL2"></p>
+    <p id="readingL3"></p>
+  </section>
 
   <footer class="site-footer">
     <h3>How we analyze</h3>
     <p class="hint">Each document gets a likelihood estimate from local signals, then a band. Authorship is not proven. GraphSAGE neighborhood embeddings exist for the document graph only and are not a detection signal. HITS is not part of this product.</p>
     <ul class="methods">
-      <li><strong>Stylometry.</strong> Type-token ratio, sentence-length burstiness, and character entropy — formulaic text tends to look more uniform and less bursty.</li>
+      <li><strong>Stylometry.</strong> Type-token ratio, sentence-length burstiness, and character entropy. Formulaic text tends to look more uniform and less bursty.</li>
       <li><strong>Local detectors.</strong> Stock-phrase markers, sentence uniformity, and n-gram repetition, each scored 0–1 on the same document.</li>
-      <li><strong>Embedding anomaly.</strong> Distance from a human-leaning baseline centroid built inside this same dataset (the most human-scoring documents by stylometry).</li>
-      <li><strong>Stylometry deviation.</strong> How far the document’s TTR and burstiness sit from this dataset’s own baseline, not a global internet prior.</li>
+      <li><strong>Embedding anomaly.</strong> Distance from the pre-2019 writing centroid in the same visible collection (or the same topic when a topic is selected). Pages dated before 2019 are the human baseline.</li>
+      <li><strong>Stylometry deviation.</strong> How far the document’s TTR and burstiness sit from that pre-2019 baseline, not a global internet prior.</li>
       <li><strong>Logistic blend + interval.</strong> Those signals are combined with a weighted logistic mix. Disagreement among core scores widens the uncertainty interval.</li>
       <li><strong>Three bands.</strong> Likely AI-generated, likely human-written, or uncertain when the estimate is mid-range or the interval is too wide.</li>
     </ul>
@@ -890,8 +924,62 @@
 
   <script>
     const MIN_TOPIC_DOCS = 100;
+    const OTHER_TOPIC_LABEL = "Other (not a country topic)";
+    const OTHER_SUBJECT_LABEL = "Other (subjects with under 100 pages)";
+    const OTHER_GROUP_LABEL = "Other (remaining groups)";
+    const COUNTRY_TOPICS = new Set(["india", "united states", "germany", "australia", "geography of india", "usa", "us"]);
     const BAND_AI_MIN = 0.58;
     const BAND_HUMAN_MAX = 0.42;
+
+    function isCountryTopic(name) {
+      return COUNTRY_TOPICS.has(String(name || "").trim().toLowerCase());
+    }
+
+    function displayTopic(name) {
+      const t = String(name || "").trim();
+      if (/^geography of india$/i.test(t)) return "India";
+      if (/^computer_science$/i.test(t) || /^computer science$/i.test(t)) return "Computer science";
+      return t;
+    }
+
+    function selectedCountryTopic() {
+      const t = displayTopic(document.getElementById("topic") && document.getElementById("topic").value);
+      return isCountryTopic(t) ? t : "";
+    }
+
+    function uniqueDisplayTopics(topics) {
+      const seen = new Set();
+      const out = [];
+      (topics || []).forEach(t => {
+        const d = displayTopic(t);
+        if (!d || !isCountryTopic(d)) return;
+        const key = d.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        out.push(d);
+      });
+      return out;
+    }
+
+    function isOtherGroup(name) {
+      const t = String(name || "");
+      return t === "Other" || t.startsWith("Other (");
+    }
+
+    function otherGroupLabel(folded, groupBy) {
+      const named = [...new Set((folded || []).map(displayTopic)
+        .filter(n => n && n !== "Other" && !n.startsWith("Other (") && n !== "Uncategorized"))];
+      if (named.length > 0 && named.length <= 2) return `Other (${named.join(", ")})`;
+      if (groupBy === "subtopic") return OTHER_SUBJECT_LABEL;
+      return groupBy === "topic" ? OTHER_TOPIC_LABEL : OTHER_GROUP_LABEL;
+    }
+
+    function displayCluster(name) {
+      if (!name) return "";
+      if (name === "Other") return OTHER_TOPIC_LABEL;
+      if (isOtherGroup(name)) return name;
+      return displayTopic(name);
+    }
     const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null };
     let datasetsCache = [];
     const overlay = document.getElementById("overlay");
@@ -956,13 +1044,13 @@
       "Add extra data\n" +
       "Choose files to upload PDFs or text, or paste a public URL. A URL is accepted only if a same-host crawl can reach at least 1000 pages. Crawl and analyse. Each add is its own collection. Extra data is never mixed into Wikipedia or GDELT.\n\n" +
       "All sources\n" +
-      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together — Wikipedia, GDELT, and any PDFs or URLs you added. Documents keep their own source tags. Nothing is merged into one stored dataset.\n\n" +
+      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together: Wikipedia, GDELT, and any PDFs or URLs you added. Documents keep their own source tags. Nothing is merged into one stored dataset.\n\n" +
       "Topic\n" +
-      "Pick a topic to gather insight about that slice. On All sources the topic includes matching documents from every collection. On one dataset it stays inside that collection. This is a filter only. It does not create another dataset.\n\n" +
+      "Topics are countries: India, United States, Germany, and Australia. Pick a country to gather insight about that slice. Subjects such as computer science stay under a country when they belong there. On All sources the country includes matching documents from every collection. On one dataset it stays inside that collection. This is a filter only. It does not create another dataset.\n\n" +
       "From add to delete\n" +
       "At most 7 collections, including Wikipedia and GDELT. The new collection appears in the Dataset dropdown. Select that one collection to analyze and view it in isolation. Click Explain insights to explain the currently visible graph or collection. When you are done, Delete that collection. Wikipedia cannot be deleted. GDELT cannot be deleted.\n\n" +
       "What the readings mean\n" +
-      "Topics with at least 100 documents fall into likely AI, likely human, or uncertain bands from the topic's mean estimate. Individual articles are documents, not topics. These readings are an estimate. GraphSAGE is not a detection signal.";
+      "Country topics with at least 100 documents fall into likely AI, likely human, or uncertain bands from the country's mean estimate. Individual articles are documents, not topics. These readings are an estimate. GraphSAGE is not a detection signal.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
@@ -1086,13 +1174,139 @@
       return Math.round(Number(n) || 0).toLocaleString("en-US");
     }
 
-    function yearRows(time) {
-      const rows = ((time && time.rows) || []).filter(r => {
-        if (!r || r.key == null || r.estimatePercent == null) return false;
-        if (!/^\d{4}$/.test(String(r.key))) return false;
-        return (Number(r.documentCount) || 0) > 0;
+    function currentChartYear() {
+      return new Date().getFullYear();
+    }
+
+    function yearFromStamp(raw) {
+      if (raw == null || raw === "") return 0;
+      const s = String(raw);
+      if (/^\d{4}/.test(s)) {
+        const y = Number(s.slice(0, 4));
+        if (y >= 1900 && y <= 2100) return y;
+      }
+      const m = s.match(/(?:^|\D)(\d{4})(?:\D|$)/);
+      if (!m) return 0;
+      const y = Number(m[1]);
+      return (y >= 1900 && y <= 2100) ? y : 0;
+    }
+
+    function bestDocYear(d) {
+      if (!d) return 0;
+      const created = yearFromStamp(d.createdAt || d.created_at);
+      if (created) return created;
+      return yearFromStamp(d.publishedAt || d.published_at);
+    }
+
+    function bestDocStamp(d) {
+      if (!d) return "";
+      const created = String(d.createdAt || d.created_at || "");
+      const published = String(d.publishedAt || d.published_at || "");
+      if (yearFromStamp(created)) return created;
+      if (yearFromStamp(published)) return published;
+      return "";
+    }
+
+    function eraSide(d) {
+      const raw = bestDocStamp(d);
+      if (!raw) return "";
+      const y = yearFromStamp(raw);
+      if (!y) return "";
+      if (/^\d{4}-\d{2}/.test(raw)) return raw.slice(0, 10) < "2019-09-01" ? "before" : "after";
+      if (y < 2019) return "before";
+      if (y > 2019) return "after";
+      return "";
+    }
+
+    function eraCompare(nodes) {
+      const before = [];
+      const after = [];
+      (nodes || []).forEach(n => {
+        if (!n || n.pAi == null) return;
+        const side = eraSide(n);
+        if (side === "before") before.push(n);
+        else if (side === "after") after.push(n);
       });
-      rows.sort((a, b) => String(a.key).localeCompare(String(b.key), undefined, { numeric: true }));
+      const mean = list => list.reduce((s, n) => s + Number(n.pAi), 0) / list.length;
+      return {
+        beforeN: before.length,
+        afterN: after.length,
+        beforePct: before.length ? Math.round(mean(before) * 100) : null,
+        afterPct: after.length ? Math.round(mean(after) * 100) : null
+      };
+    }
+
+    function pageCountLabel(n) {
+      return n === 1 ? "1 page" : `${fmtInt(n)} pages`;
+    }
+
+    function yearRowsFromNodes(nodes) {
+      const groups = new Map();
+      (nodes || []).forEach(n => {
+        if (!n || n.pAi == null) return;
+        const y = bestDocYear(n);
+        if (!y) return;
+        if (!groups.has(y)) groups.set(y, []);
+        groups.get(y).push(Number(n.pAi));
+      });
+      const rows = [];
+      groups.forEach((ps, y) => {
+        const mean = ps.reduce((s, v) => s + v, 0) / ps.length;
+        rows.push({
+          key: String(y),
+          documentCount: ps.length,
+          estimatePercent: Math.round(mean * 100),
+          rangePercent: [Math.round(Math.min(...ps) * 100), Math.round(Math.max(...ps) * 100)]
+        });
+      });
+      return rows;
+    }
+
+    function timeChartNodes() {
+      const topicEl = document.getElementById("topic");
+      const topic = topicEl && topicEl.value;
+      if (state.selectedCluster) return (state.graphView && state.graphView.nodes) || [];
+      if (topic) return visibleAnalysisNodes();
+      return (state.fullView && state.fullView.nodes) || visibleAnalysisNodes();
+    }
+
+    function yearRows(time, nodes) {
+      const now = currentChartYear();
+      const TIME_CHART_MIN_YEAR = 2015;
+      const byYear = new Map();
+      const take = r => {
+        if (!r || r.key == null) return;
+        const key = String(r.key);
+        if (!/^\d{4}$/.test(key)) return;
+        const y = Number(key);
+        if (y < TIME_CHART_MIN_YEAR || y > now) return;
+        const n = Number(r.documentCount) || 0;
+        const pct = r.estimatePercent == null || r.estimatePercent === "" ? null : Number(r.estimatePercent);
+        const next = {
+          key,
+          documentCount: n,
+          estimatePercent: Number.isFinite(pct) ? pct : null,
+          rangePercent: Array.isArray(r.rangePercent) ? r.rangePercent : []
+        };
+        const prev = byYear.get(y);
+        if (!prev || n > (Number(prev.documentCount) || 0) ||
+            (prev.estimatePercent == null && next.estimatePercent != null)) {
+          byYear.set(y, next);
+        }
+      };
+      ((time && time.rows) || []).forEach(take);
+      yearRowsFromNodes(nodes || []).forEach(take);
+      const years = [...byYear.keys()].filter(y => {
+        const r = byYear.get(y);
+        return r && ((Number(r.documentCount) || 0) > 0 || r.estimatePercent != null);
+      });
+      if (!years.length) return [];
+      const minY = TIME_CHART_MIN_YEAR;
+      const maxY = Math.max(...years);
+      const rows = [];
+      for (let y = minY; y <= maxY; y++) {
+        rows.push(byYear.get(y) || { key: String(y), documentCount: 0, estimatePercent: null, rangePercent: [] });
+      }
       return rows;
     }
 
@@ -1114,7 +1328,7 @@
       let best = null;
       (view.names || []).forEach(name => {
         const members = (view.buckets && view.buckets.get(name)) || [];
-        if (view.groupBy === "topic" && (name === "Other" || members.length < MIN_TOPIC_DOCS)) return;
+        if ((view.groupBy === "topic" || view.groupBy === "subtopic") && (isOtherGroup(name) || members.length < MIN_TOPIC_DOCS)) return;
         const scored = members.filter(m => m.pAi != null);
         if (!scored.length) return;
         const mean = scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length;
@@ -1129,7 +1343,7 @@
     function maxFieldShare(nodes, field) {
       const groups = new Map();
       (nodes || []).forEach(n => {
-        const key = String((n && n[field]) || "").trim();
+        const key = displayTopic(String((n && n[field]) || "").trim());
         if (!key) return;
         if (!groups.has(key)) groups.set(key, []);
         groups.get(key).push(n);
@@ -1194,7 +1408,7 @@
         { key: "ngrams", sym: "g", label: "repeated phrases", clue: "repeated phrases", v: sig.ngrams },
         { key: "embeddingAnomaly", sym: "e", label: "unusual wording vs typical human pages", clue: "unusual wording (embedding)", v: sig.embeddingAnomaly },
         { key: "stylometryDeviation", sym: "d", label: "writing style vs typical pages here", clue: "writing style that differs from typical pages here", v: sig.stylometryDeviation },
-        { key: "postChatgpt", sym: "c", label: "published after ChatGPT", clue: "publish date after ChatGPT", v: sig.postChatgpt }
+        { key: "postChatgpt", sym: "c", label: "published after Sept 2019", clue: "publish date after Sept 2019", v: sig.postChatgpt }
       ].map(row => {
         const shown = score2(row.v);
         return Object.assign({}, row, { shown, n: shown == null ? NaN : Number(row.v) });
@@ -1221,16 +1435,6 @@
       return (summary && summary.name) || (ds && datasetLabel(ds)) || "this collection";
     }
 
-    function paperEquationsHtml() {
-      return `
-        <div class="paper-eqs">
-          <p class="paper-eq">We combine writing style, repeated phrases, and unusual wording into one score per page.</p>
-          <p class="paper-eq">That score becomes a 0–100% chance the page looks AI-generated or AI-assisted.</p>
-          <p class="paper-eq">We average those page scores for the collection.</p>
-          <p class="paper-eq">Unusual wording (embedding) is usually the strongest clue on this set.</p>
-        </div>`;
-    }
-
     function composeAnalysisPaper(summary, extras) {
       summary = summary || {};
       extras = extras || {};
@@ -1241,25 +1445,25 @@
       if (!n && summary.documentCount != null) n = Number(summary.documentCount) || 0;
       if (!Number.isFinite(n)) n = 0;
       const scored = scoredDocumentCount(summary, nodes);
-      const topic = summary.topic || document.getElementById("topic").value || "";
+      const topic = displayTopic(summary.topic || document.getElementById("topic").value || "");
       const topicView = !!(summary.topicView || topic);
-      const cluster = state.selectedCluster;
+      const cluster = displayCluster(state.selectedCluster);
       const sig = extras.signals || summary.collectionSignals || state.lastSignals || {};
       const live = detectorMeans(sig).filter(row => row.shown != null);
       const strongest = strongestDetector(sig);
       const maxTopic = maxFieldShare(nodes, "topic");
       const share = summary.shareOfDocuments;
+      const era = eraCompare(nodes);
 
       let inputLead;
       if (!n) {
         inputLead = `We have not looked at any pages in ${place} yet.`;
       } else {
-        const pages = n === 1 ? "1 page" : `${fmtInt(n)} pages`;
         let where = `in ${place}`;
         if (topicView && topic && cluster) where = `about ${topic} in the ${cluster} cluster of ${place}`;
         else if (topicView && topic) where = `about ${topic} in ${place}`;
         else if (cluster) where = `in the ${cluster} cluster of ${place}`;
-        inputLead = `We looked at ${pages} ${where}.`;
+        inputLead = `We looked at ${pageCountLabel(n)} ${where}.`;
       }
       if (live.length) {
         const parts = live.map(row => `${row.label} ${row.shown}`);
@@ -1267,39 +1471,25 @@
           ? ` Average scores were ${parts[0]}.`
           : ` Average scores were ${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}.`;
       }
+      if (era.beforeN || era.afterN) {
+        inputLead += ` We compared ${pageCountLabel(era.beforeN)} from before September 2019 with ${pageCountLabel(era.afterN)} from September 2019 or later.`;
+      }
       if (summary.idView && !cluster) {
         inputLead += " The average scores are from the whole collection, not just this slice.";
       }
 
-      const outBits = [];
-      if (share != null) {
-        outBits.push(`About <span class="fig">${esc(String(share))}%</span> of those pages look AI-generated or AI-assisted`);
-      } else if (summary.headline === "Not yet analyzed" || (n && !scored)) {
-        outBits.push("These pages do not have scores yet, so we cannot say how many look AI-generated");
-      } else if (!n) {
-        outBits.push("There are no pages here to score");
-      } else {
-        outBits.push("We do not have an overall score for this set yet");
-      }
-      if (share != null && strongest) {
-        outBits.push(`The strongest clue was ${esc(strongest.clue || strongest.label)}`);
-      }
-      if (share != null && maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && maxTopic.name !== cluster) {
-        outBits.push(`${esc(maxTopic.name)} pages scored about ${maxTopic.pct}%`);
-      }
+      const reading = composeReadingLines(summary, nodes, sig);
 
       return `
         <section class="paper-sec">
-          <h4><span class="rn">I</span> Equations</h4>
-          ${paperEquationsHtml()}
-        </section>
-        <section class="paper-sec">
-          <h4><span class="rn">II</span> Input</h4>
+          <h4><span class="rn">I</span> Input</h4>
           <p>${esc(inputLead)}</p>
         </section>
         <section class="paper-sec">
-          <h4><span class="rn">III</span> Output</h4>
-          <p class="paper-out">${outBits.join(". ")}.</p>
+          <h4><span class="rn">II</span> Output</h4>
+          <p class="paper-out">${esc(reading[0] || "")}</p>
+          <p class="paper-out">${esc(reading[1] || "")}</p>
+          <p class="paper-out">${esc(reading[2] || "")}</p>
         </section>`;
     }
 
@@ -1310,12 +1500,12 @@
       if (extras.time) state.timeBreakdown = extras.time;
       const heading = document.getElementById("analysisHeading");
       const unionView = !!(summary.union || isAllSources());
-      if (state.selectedCluster) heading.textContent = `Analysis across collection · ${state.selectedCluster}`;
-      else if (summary.topicView && summary.topic) heading.textContent = `Analysis across collection · ${summary.topic}`;
+      if (state.selectedCluster) heading.textContent = `Analysis across collection · ${displayCluster(state.selectedCluster)}`;
+      else if (summary.topicView && summary.topic) heading.textContent = `Analysis across collection · ${displayTopic(summary.topic)}`;
       else heading.textContent = unionView ? "Analysis across all sources" : "Analysis across collection";
       const hint = document.getElementById("analysisHint");
       if (hint && !document.getElementById("exampleCols")?.hidden) {
-        hint.textContent = "Topics below have at least 100 documents. Band is the topic's mean estimate.";
+        hint.textContent = "Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.";
       }
       const showAll = document.getElementById("showAllGraph");
       if (showAll) showAll.hidden = !state.selectedCluster;
@@ -1327,9 +1517,10 @@
         portrait.innerHTML = composeAnalysisPaper(summary, {
           time: extras.time || state.timeBreakdown,
           signals,
-          nodes: extras.nodes
+          nodes: extras.nodes || (state.graphView && state.graphView.nodes) || []
         });
       }
+      renderReadingSummary(summary, extras.nodes || (state.graphView && state.graphView.nodes) || []);
     }
 
 
@@ -1340,10 +1531,12 @@
     }
 
     function aggregateTopics(nodes) {
+      const country = selectedCountryTopic();
       const groups = new Map();
       (nodes || []).forEach(n => {
-        const key = String((n && n.topic) || "").trim();
+        const key = displayTopic(String((n && (country ? n.subtopic : n.topic)) || "").trim());
         if (!key) return;
+        if (!country && !isCountryTopic(key)) return;
         if (!groups.has(key)) groups.set(key, []);
         groups.get(key).push(n);
       });
@@ -1379,7 +1572,7 @@
         const share = d.pAi == null ? "—" : Math.round(Number(d.pAi) * 100) + "%";
         const n = Number(d.documentCount) || 0;
         return `<div class="ex">
-          <h4>${esc(d.topic || d.title || "Untitled")} — estimated AI share ${share} — ${n} document${n === 1 ? "" : "s"}</h4>
+          <h4>${esc(displayTopic(d.topic || d.title || "Untitled"))}, estimated AI share ${share}, ${n} document${n === 1 ? "" : "s"}</h4>
         </div>`;
       }).join("");
     }
@@ -1387,7 +1580,7 @@
     function renderTopicColumns(topics) {
       const cols = document.getElementById("exampleCols");
       const hint = document.getElementById("analysisHint");
-      const emptyMsg = "Topics appear once a subject has 100 documents. After the Wikipedia crawl fills a subject, it will show here.";
+      const emptyMsg = "Later pages are scored against pre-2019 writing in this visible set. Country topics appear once a country has 100 documents. After the crawl fills a country, it will show here.";
       if (!topics || !topics.length) {
         if (cols) cols.hidden = true;
         if (hint) hint.textContent = emptyMsg;
@@ -1398,7 +1591,7 @@
         return;
       }
       if (cols) cols.hidden = false;
-      if (hint) hint.textContent = "Topics below have at least 100 documents. Band is the topic's mean estimate.";
+      if (hint) hint.textContent = "Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.";
       const by = { LIKELY_AI: [], LIKELY_HUMAN: [], UNCERTAIN: [] };
       topics.forEach(t => { if (by[t.band]) by[t.band].push(t); });
       by.LIKELY_AI.sort((a, b) => b.pAi - a.pAi || b.documentCount - a.documentCount);
@@ -1411,6 +1604,61 @@
 
     function renderTopicColumnsFromGraph() {
       renderTopicColumns(aggregateTopics(visibleAnalysisNodes()));
+    }
+
+    function quoteCommon(items, key) {
+      return joinWords((items || []).map(row => {
+        const s = String((row && (row[key] || row.phrase || row.word)) || "").trim();
+        return s ? `"${s}"` : "";
+      }).filter(Boolean).slice(0, 4));
+    }
+
+    function renderAiCommon(data) {
+      const box = document.getElementById("aiCommon");
+      const l1 = document.getElementById("aiCommonL1");
+      const l2 = document.getElementById("aiCommonL2");
+      if (!box || !l1 || !l2) return;
+      const n = data && Number(data.documentCount) || 0;
+      box.hidden = false;
+      if (!n) {
+        l1.textContent = "No likely-AI pages in this visible set, so there is no shared wording to report.";
+        l2.textContent = "";
+        return;
+      }
+      const strong = data.strongest || {};
+      let lead = `Across ${pageCountLabel(n)} that look AI-generated, the common mark was ${strong.label || "a mix of writing signals"}`;
+      if (strong.score != null && Number.isFinite(Number(strong.score))) {
+        lead += ` (average ${Number(strong.score).toFixed(2)})`;
+      }
+      lead += ".";
+      const stocks = data.stockPhrases || [];
+      if (stocks.length) {
+        lead += ` Stock phrases that showed up on more than one of those pages were ${quoteCommon(stocks, "phrase")}.`;
+      } else {
+        lead += " Canned stock phrases were rare on those pages.";
+      }
+      l1.textContent = lead;
+      const words = data.words || [];
+      const phrases = data.phrases || [];
+      if (phrases.length && words.length) {
+        l2.textContent = `Repeated phrases included ${quoteCommon(phrases, "phrase")}. Shared words included ${quoteCommon(words, "word")}.`;
+      } else if (phrases.length) {
+        l2.textContent = `Repeated phrases included ${quoteCommon(phrases, "phrase")}.`;
+      } else if (words.length) {
+        l2.textContent = `Shared words included ${quoteCommon(words, "word")}.`;
+      } else {
+        l2.textContent = "No single word or phrase rose above the rest once filler words were set aside.";
+      }
+    }
+
+    async function loadAiCommon() {
+      const id = document.getElementById("dataset").value;
+      if (!id) return;
+      try {
+        renderAiCommon(await j(`/datasets/${id}/ai-common?${scopeQuery().replace(/^&/, "")}`));
+      } catch (err) {
+        renderAiCommon({ documentCount: 0 });
+      }
     }
 
     async function loadSignalMeans(id, summary) {
@@ -1439,7 +1687,8 @@
         const seeded = summary.collectionSignals || wikipediaFallbackSignals(summary);
         applySummary(summary, { time: timeBr, signals: seeded });
         renderTopicColumnsFromGraph();
-        renderTimeChart(timeBr);
+        loadAiCommon().catch(() => {});
+        renderTimeChart(timeBr, timeChartNodes());
         renderBreakdown(br);
         if (!summary.collectionSignals) {
           loadSignalMeans(id, summary).then(sig => {
@@ -1474,6 +1723,7 @@
         collectionSignals: state.lastSignals
       }, { time: state.timeBreakdown, signals: state.lastSignals });
       renderTopicColumnsFromGraph();
+      loadAiCommon().catch(() => {});
     }
 
     async function loadAll(opts) {
@@ -1487,9 +1737,9 @@
       if (!id) return;
       document.getElementById("wikiTopicBox").hidden = false;
 
-      const topics = await j(`/datasets/${id}/topics`);
+      const topics = uniqueDisplayTopics(await j(`/datasets/${id}/topics`));
       const topicSel = document.getElementById("topic");
-      const keepTopic = topicSel.value;
+      const keepTopic = displayTopic(topicSel.value);
       topicSel.innerHTML = `<option value="">All topics</option>` + topics.map(t => `<option>${esc(t)}</option>`).join("");
       if (keepTopic && [...topicSel.options].some(o => o.value === keepTopic)) {
         topicSel.value = keepTopic;
@@ -1521,27 +1771,26 @@
       return "pending";
     }
 
-    function inferGraphGroupBy(graph, nodes) {
-      const topicCounts = new Map();
-      const sources = new Set();
-      (nodes || []).forEach(n => {
-        if (n.topic) topicCounts.set(n.topic, (topicCounts.get(n.topic) || 0) + 1);
-        if (n.source) sources.add(n.source);
-      });
-      let substantial = 0;
-      topicCounts.forEach(n => { if (n >= MIN_TOPIC_DOCS) substantial++; });
-      if (graph && (graph.union || graph.datasetId === "all") && sources.size >= 2) return "source";
-      if (substantial >= 1) return "topic";
-      if (graph.groupBy && graph.groupBy !== "topic") return graph.groupBy;
-      if (sources.size >= 2) return "source";
-      return "band";
+    function collectionName(n) {
+      if (n && n.dataset) return String(n.dataset);
+      const ds = datasetsCache.find(d => String(d.id) === String(n && n.datasetId));
+      if (ds) return datasetLabel(ds);
+      const src = String((n && n.source) || "").toLowerCase();
+      if (src.includes("wikipedia")) return "Wikipedia";
+      if (src.includes("gdelt")) return "GDELT";
+      return (n && n.source) || "Unknown collection";
     }
 
-    function nodeGroup(n, groupBy) {
-      if (groupBy === "source") return n.source || "Unknown source";
-      if (groupBy === "band") return bandHeading(n.band);
-      if (groupBy === "topic") return n.topic || "Uncategorized";
-      return n.group || n.topic || "Uncategorized";
+    function graphFilterTitle() {
+      return selectedCountryTopic() || "";
+    }
+
+    function inferGraphGroupBy() {
+      return "dataset";
+    }
+
+    function nodeGroup(n) {
+      return collectionName(n);
     }
 
     const TOPIC_PALETTE = [
@@ -1555,6 +1804,7 @@
 
     function shortHeading(name) {
       const s = String(name || "");
+      if (isOtherGroup(s)) return s;
       return s.length > 28 ? s.slice(0, 26).trim() + "…" : s;
     }
 
@@ -1582,7 +1832,7 @@
       state.rawGraph = graph;
       let nodes = (graph && graph.nodes) || [];
       if (!nodes.length) {
-        state.fullView = { nodes: [], links: [], groupBy: "topic", names: [], buckets: new Map(), colorOf: {} };
+        state.fullView = { nodes: [], links: [], groupBy: "dataset", names: [], buckets: new Map(), colorOf: {} };
         state.graphView = state.fullView;
         document.getElementById("graph").innerHTML = `<p class="hint">No documents in this view yet.</p>`;
         renderCollectionAnalysis(state.graphView);
@@ -1614,52 +1864,22 @@
       });
       const w = Math.max(720, document.getElementById("graph").clientWidth || 720);
       const h = 560;
-      const groupBy = inferGraphGroupBy(graph, graph.nodes || []);
+      const groupBy = inferGraphGroupBy();
       let buckets = new Map();
       nodes.forEach(n => {
-        const g = nodeGroup(n, groupBy);
+        const g = nodeGroup(n);
+        if (!g || isOtherGroup(g) || g === "Uncategorized") return;
         if (!buckets.has(g)) buckets.set(g, []);
         buckets.get(g).push(n);
       });
-      if (groupBy === "topic") {
-        const extra = [];
-        [...buckets.keys()].forEach(name => {
-          if (name === "Other") return;
-          const members = buckets.get(name) || [];
-          if (name === "Uncategorized" || members.length < MIN_TOPIC_DOCS) {
-            extra.push(...members);
-            buckets.delete(name);
-          }
-        });
-        if (extra.length) buckets.set("Other", (buckets.get("Other") || []).concat(extra));
-      }
-      const bandRank = { "likely AI": 0, "likely human": 1, uncertain: 2, pending: 3 };
-      let names = (graph.groups && graph.groups.length)
-        ? graph.groups.map(g => g.label || g.key).filter(name => buckets.has(name))
-        : [...buckets.keys()];
-      buckets.forEach((_, name) => { if (!names.includes(name)) names.push(name); });
-      if (groupBy === "topic") {
-        names = names.filter(name => name === "Other" ||
-          ((buckets.get(name) || []).length >= MIN_TOPIC_DOCS && name !== "Uncategorized"));
-      }
+      let names = [...buckets.keys()].filter(name => !isOtherGroup(name) && name !== "Uncategorized");
       names.sort((a, b) => {
-        if (groupBy === "band") return (bandRank[a] ?? 9) - (bandRank[b] ?? 9);
         return (buckets.get(b) || []).length - (buckets.get(a) || []).length || a.localeCompare(b);
       });
-      if (groupBy !== "topic" && names.length > 8) {
-        const keep = names.slice(0, 7);
-        const extra = [];
-        names.slice(7).forEach(name => extra.push(...(buckets.get(name) || [])));
-        names.slice(7).forEach(name => buckets.delete(name));
-        if (extra.length) {
-          buckets.set("Other", (buckets.get("Other") || []).concat(extra));
-          if (!keep.includes("Other")) keep.push("Other");
-        }
-        names = keep;
-      }
       const colorOf = {};
       names.forEach((name, i) => { colorOf[name] = groupColor(i); });
       state.fullView = { nodes, links, groupBy, names, buckets, colorOf };
+      if (state.selectedCluster && isOtherGroup(state.selectedCluster)) state.selectedCluster = null;
       if (state.selectedCluster && !buckets.has(state.selectedCluster)) state.selectedCluster = null;
       if (state.selectedCluster && buckets.has(state.selectedCluster)) {
         nodes = buckets.get(state.selectedCluster) || [];
@@ -1678,11 +1898,6 @@
       const pos = {};
       const hulls = [];
       const headings = [];
-      if (groupBy !== "topic" && !names.length && nodes.length) {
-        names = ["Documents"];
-        buckets = new Map([["Documents", nodes]]);
-        colorOf["Documents"] = groupColor(0);
-      }
       names.forEach((name, gi) => {
         const members = buckets.get(name) || [];
         const ga = (2 * Math.PI * gi) / nGroups - Math.PI / 2;
@@ -1717,26 +1932,44 @@
         const op = 0.16 + 0.32 * Math.min(1, e.cosine);
         return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="#8a5a2a" stroke-opacity="${op}" stroke-width="1.15" />`;
       }).join("");
+      const datasetNames = [...new Set(nodes.map(collectionName).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      const datasetColor = {};
+      datasetNames.forEach((name, i) => { datasetColor[name] = groupColor(i + (groupBy === "topic" ? 4 : 0)); });
       const dots = nodes.map(n => {
         const p = pos[n.id];
         if (!p) return "";
-        const g = nodeGroup(n, groupBy);
-        const mapped = colorOf[g] ? g : "Other";
-        const tip = `${n.title || "Untitled"} · document · ${mapped} · ${bandHeading(n.band)}`;
+        const g = nodeGroup(n);
+        const dsName = collectionName(n);
+        const fill = colorOf[g] || colorOf[dsName] || "#8a5a2a";
+        const country = displayTopic(n.topic);
+        const tip = `${n.title || "Untitled"} · ${isCountryTopic(country) ? country : dsName} · ${dsName}`;
         const selected = state.selectedDocId != null && String(n.id) === String(state.selectedDocId);
         return `<g data-doc="${n.id}" style="cursor:pointer">
           <title>${esc(tip)}</title>
-          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${selected ? 6.2 : 3.6}" fill="${colorOf[mapped] || "#8a5a2a"}" stroke="${selected ? "#302417" : "#FFFEFB"}" stroke-width="${selected ? 2 : 1}" />
+          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${selected ? 6.2 : 3.6}" fill="${fill}" stroke="${selected ? "#302417" : "#FFFEFB"}" stroke-width="${selected ? 2 : 1}" />
         </g>`;
       }).join("");
+      const filterTitle = graphFilterTitle();
+      const title = filterTitle
+        ? `<text class="g-filter" x="${cx.toFixed(1)}" y="26" text-anchor="middle">${esc(filterTitle)}</text>`
+        : "";
       document.getElementById("graph").innerHTML =
-        `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Circular document network grouped by ${esc(groupBy)}"><rect class="g-bg" width="${w}" height="${h}" fill="transparent"></rect>${hulls.join("")}${lines}${dots}${headings.join("")}</svg>`;
-      state.graphView = { nodes, links, groupBy, names, buckets, colorOf };
+        `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(filterTitle || "Document graph by collection")}"><rect class="g-bg" width="${w}" height="${h}" fill="transparent"></rect>${hulls.join("")}${lines}${dots}${headings.join("")}${title}</svg>`;
+      state.graphView = { nodes, links, groupBy, names, buckets, colorOf, datasetColor };
       const hint = document.getElementById("graphHint");
       if (hint) {
-        hint.textContent = state.selectedCluster
-          ? `Showing the ${state.selectedCluster} cluster (${nodes.length} document${nodes.length === 1 ? "" : "s"}). Click empty space or Show all to restore the full graph. Analysis below matches this visible set.`
-          : "Circular network: unlabeled dots are documents, colored and clustered by Wikipedia subheading (or source / band if a topic is already selected). One heading sits at each cluster. Hover a dot for the document title. Edges are embedding similarity. Click a heading or cluster to analyze that visible set.";
+        if (state.selectedCluster) {
+          hint.textContent = `Showing the ${displayCluster(state.selectedCluster)} collection (${nodes.length} document${nodes.length === 1 ? "" : "s"}). Click empty space or Show all to restore the full graph. Analysis below matches this visible set.`;
+        } else if (filterTitle) {
+          hint.textContent = `${filterTitle}. Each circle is a collection that has pages for this country. Lines are similarity.`;
+        } else {
+          hint.textContent = "Dots are documents. Each circle is a collection. Lines are similarity.";
+        }
+      }
+      const legend = document.getElementById("graphLegend");
+      if (legend) {
+        legend.hidden = true;
+        legend.innerHTML = "";
       }
       const showAll = document.getElementById("showAllGraph");
       if (showAll) showAll.hidden = !state.selectedCluster;
@@ -1783,7 +2016,11 @@
     }
 
     function renderCollectionAnalysis(view) {
-      applySummary(graphScopedSummary(), { time: state.timeBreakdown });
+      applySummary(graphScopedSummary(), {
+        time: state.timeBreakdown,
+        signals: state.lastSignals,
+        nodes: (view && view.nodes) || (state.graphView && state.graphView.nodes) || []
+      });
       renderTopicColumnsFromGraph();
     }
 
@@ -1794,12 +2031,214 @@
       else loadVisibleAnalysis().catch(err => popup(err.message, "Analysis failed", "warn"));
     }
 
-    function onGraphClick(e) {
-      const nodeEl = e.target.closest("[data-doc]");
-      if (nodeEl) {
-        openDoc(Number(nodeEl.getAttribute("data-doc")));
-        return;
+    function readingScopeLabel() {
+      const country = selectedCountryTopic();
+      const ds = selectedDataset();
+      const cluster = displayCluster(state.selectedCluster);
+      const allDs = isAllSources(ds);
+      if (country && cluster) return `${country} in ${cluster}`;
+      if (country && !allDs) return `${country} in ${datasetLabel(ds)}`;
+      if (country) return country;
+      if (cluster) return `the ${cluster} collection`;
+      if (!allDs) return datasetLabel(ds) || "this collection";
+      return "all sources";
+    }
+
+    function composeReadingLines(summary, nodes, signals) {
+      summary = summary || state.lastSummary || {};
+      nodes = nodes || (state.graphView && state.graphView.nodes) || [];
+      const place = readingScopeLabel();
+      const n = nodes.length || Number(summary.documentCount) || 0;
+      const share = summary.shareOfDocuments;
+      const era = eraCompare(nodes);
+      const strongest = strongestDetector(signals) || strongestDetector(summary.collectionSignals) || strongestDetector(state.lastSignals);
+      const maxTopic = maxFieldShare(nodes, "topic");
+      const country = selectedCountryTopic();
+      const cluster = displayCluster(state.selectedCluster);
+
+      const line1 = n
+        ? (share != null
+          ? `In ${place}, about ${share}% of ${pageCountLabel(n)} look AI-generated or AI-assisted.`
+          : `In ${place}, we looked at ${pageCountLabel(n)} but do not have an overall score yet.`)
+        : `There are no pages to summarize in ${place}.`;
+
+      let line2;
+      if (era.beforePct != null && era.afterPct != null) {
+        const delta = era.afterPct - era.beforePct;
+        if (delta > 0) {
+          line2 = `Pages from before September 2019 scored about ${era.beforePct}%. Pages from September 2019 or later scored about ${era.afterPct}%, a rise of ${delta} points against earlier human pages.`;
+        } else if (delta < 0) {
+          line2 = `Pages from before September 2019 scored about ${era.beforePct}%. Later pages scored about ${era.afterPct}%, ${Math.abs(delta)} points lower.`;
+        } else {
+          line2 = `Pages from before September 2019 and from September 2019 or later scored about the same (${era.beforePct}%).`;
+        }
+      } else {
+        line2 = "There are not enough dated pages on both sides of September 2019 to compare earlier human writing with later pages.";
       }
+
+      let line3;
+      if (strongest && maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && !country && maxTopic.name !== cluster) {
+        line3 = `The strongest clue was ${strongest.clue || strongest.label}. ${maxTopic.name} pages scored about ${maxTopic.pct}%.`;
+      } else if (strongest) {
+        line3 = `The strongest clue on this set was ${strongest.clue || strongest.label}.`;
+      } else if (maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && !country) {
+        line3 = `${maxTopic.name} pages scored about ${maxTopic.pct}%.`;
+      } else {
+        line3 = "Readings stay an estimate from writing style, repeated phrases, and unusual wording versus earlier human pages.";
+      }
+      return [line1, line2, line3];
+    }
+
+    function joinWords(items) {
+      items = (items || []).filter(Boolean);
+      if (!items.length) return "";
+      if (items.length === 1) return items[0];
+      if (items.length === 2) return items[0] + " and " + items[1];
+      return items.slice(0, -1).join(", ") + ", and " + items[items.length - 1];
+    }
+
+    function classifyCorpusSubject(n) {
+      const title = String((n && n.title) || "");
+      const blob = (title + " " + String((n && n.subtopic) || "")).toLowerCase();
+      if (/gdelt/i.test(collectionName(n)) && /gdelt/i.test(title)) return "news and media";
+      const rules = [
+        ["sports", /sport|cricket|football|soccer|hockey|olympi|tennis|rugby|basketball|mlb|nfl|nba|premier league|bundesliga|afl|nrl|athlet|world cup|fifa/],
+        ["food and cooking", /cuisine|food|dish|recipe|cook|restaurant|gastronom|kitchen/],
+        ["schools and universities", /educat|universit|school|college|student|academ|campus/],
+        ["politics and government", /politic|election|parliament|congress|government|minister|president|senate|chancellor|constitution|supreme court|democrat|republican|bundestag|lok sabha|rajya sabha/],
+        ["history", /history|\bwar\b|empire|dynasty|independence|ancient|medieval|colonial|revolution/],
+        ["places and geography", /geograph|river|mountain|climate|ocean|national park|city|cities|state of|province|district|capital/],
+        ["economy and transport", /econom|compan|industry|trade|bank|transport|railway|airport|gdp/],
+        ["arts, language, and culture", /culture|cinema|film|music|literature|language|festival|bollywood|sanskrit|hindi|tamil|kannada|bengali|telugu|marathi/],
+        ["religion", /religion|hindu|islam|christian|sikh|church|temple|buddh/],
+        ["science and technology", /science|technolog|computer|software|physics|chemist|biolog/],
+        ["health", /health|medic|hospital|disease|covid/],
+        ["news and media", /news|announcing|press release|the gdelt project/],
+        ["people", /people of|biography/]
+      ];
+      for (let i = 0; i < rules.length; i++) {
+        if (rules[i][1].test(blob)) return rules[i][0];
+      }
+      return "";
+    }
+
+    function corpusYearSpan(nodes) {
+      let min = 9999;
+      let max = 0;
+      let dated = 0;
+      const years = {};
+      (nodes || []).forEach(n => {
+        const y = bestDocYear(n);
+        if (!y) return;
+        dated += 1;
+        years[y] = (years[y] || 0) + 1;
+        if (y < min) min = y;
+        if (y > max) max = y;
+      });
+      return { min: dated ? min : 0, max: dated ? max : 0, dated, years };
+    }
+
+    function composeCorpusLines(nodes) {
+      nodes = nodes || (state.graphView && state.graphView.nodes) || [];
+      const place = readingScopeLabel();
+      const n = nodes.length;
+      if (!n) {
+        return [
+          `There are no crawled pages to describe in ${place}.`,
+          "No year range is available until pages load.",
+          "No country or subject mix to report yet."
+        ];
+      }
+
+      const colCounts = {};
+      const countryCounts = {};
+      const subCounts = {};
+      nodes.forEach(doc => {
+        const col = collectionName(doc);
+        if (col) colCounts[col] = (colCounts[col] || 0) + 1;
+        const country = displayTopic(doc.topic);
+        if (isCountryTopic(country)) countryCounts[country] = (countryCounts[country] || 0) + 1;
+        const subject = classifyCorpusSubject(doc);
+        if (subject) subCounts[subject] = (subCounts[subject] || 0) + 1;
+      });
+      const cols = Object.entries(colCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const countries = Object.entries(countryCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const subjects = Object.entries(subCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const topSubjects = subjects.slice(0, 3).map(row => row[0]);
+      const thin = ["schools and universities", "sports", "food and cooking"]
+        .filter(name => subCounts[name] && topSubjects.indexOf(name) < 0);
+      const country = selectedCountryTopic();
+      const wikiOnly = cols.length === 1 && /wiki/i.test(cols[0][0]);
+      const newsOnly = cols.length === 1 && /gdelt/i.test(cols[0][0]);
+
+      let line1;
+      if (newsOnly) {
+        line1 = `These ${pageCountLabel(n)} in ${place} are GDELT news and project pages, not Wikipedia encyclopedia articles.`;
+      } else if (wikiOnly) {
+        line1 = `These ${pageCountLabel(n)} in ${place} are Wikipedia encyclopedia articles, not a news crawl.`;
+      } else if (cols.length > 1) {
+        line1 = `These ${pageCountLabel(n)} in ${place} mix ${joinWords(cols.map(row => `${row[0]} (${fmtInt(row[1])})`))}: encyclopedia articles with news and project pages.`;
+      } else {
+        line1 = `These ${pageCountLabel(n)} in ${place} come from ${cols[0] ? cols[0][0] : "this collection"}.`;
+      }
+      if (topSubjects.length) {
+        line1 += ` Titles lean toward ${joinWords(topSubjects)}`;
+        line1 += thin.length ? `, with only thin slices of ${joinWords(thin)}.` : ".";
+      } else {
+        line1 += " It is not a single-subject crawl of food, sports, or schools.";
+      }
+
+      const span = corpusYearSpan(nodes);
+      let line2;
+      if (!span.dated) {
+        line2 = `None of these ${place} pages carry a usable year yet.`;
+      } else if (span.min === span.max) {
+        line2 = `Dated pages (${fmtInt(span.dated)} of ${pageCountLabel(n)}) all sit in ${span.min}.`;
+      } else {
+        const peak = Object.entries(span.years).sort((a, b) => b[1] - a[1] || Number(b[0]) - Number(a[0]))[0];
+        const peakShare = Math.round((peak[1] / span.dated) * 100);
+        line2 = `Dated pages run from ${span.min} to ${span.max}.`;
+        if (peakShare >= 60) {
+          line2 += ` About ${peakShare}% of those dates sit in ${peak[0]}, so the year stamp is piled at the recent end rather than spread evenly.`;
+        } else {
+          line2 += ` The largest year pile is ${peak[0]} (${pageCountLabel(Number(peak[1]))}).`;
+        }
+      }
+
+      let line3;
+      const newsOnlyCountries = countries.filter(([name]) => {
+        return nodes.some(doc => displayTopic(doc.topic) === name) &&
+          !nodes.some(doc => displayTopic(doc.topic) === name && /wiki/i.test(collectionName(doc)));
+      }).map(row => row[0]);
+      if (country && countries.length <= 1) {
+        if (newsOnly) {
+          line3 = `${country} in this view is news-side only: there is no Wikipedia slice here, so the set reads as recent country news rather than a long encyclopedia history.`;
+        } else if (wikiOnly) {
+          line3 = `${country} here is encyclopedia pages on places, languages, politics, and culture, not a dedicated sports, food, or school collection.`;
+        } else {
+          line3 = `${country} mixes Wikipedia background pages with GDELT news. The set is a country brief, not a cuisine, sports, or education corpus.`;
+        }
+      } else if (countries.length) {
+        line3 = `Country weight is ${joinWords(countries.map(row => `${row[0]} ${fmtInt(row[1])}`))}.`;
+        if (newsOnlyCountries.length) {
+          line3 += ` ${joinWords(newsOnlyCountries)} ${newsOnlyCountries.length === 1 ? "has" : "have"} news pages only.`;
+        }
+        line3 += " Taken together this is a country news-and-encyclopedia collection.";
+      } else {
+        line3 = "Pages are not tagged to India, the United States, Germany, or Australia, so the mix is leftover project and site pages rather than a country brief.";
+      }
+      return [line1, line2, line3];
+    }
+
+    function renderReadingSummary(summary, nodes) {
+      const lines = composeCorpusLines(nodes);
+      ["readingL1", "readingL2", "readingL3"].forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = lines[i] || "";
+      });
+    }
+
+    function onGraphClick(e) {
       const clusterEl = e.target.closest("[data-cluster]");
       if (clusterEl) {
         selectCluster(clusterEl.getAttribute("data-cluster"));
@@ -1811,14 +2250,48 @@
       }
     }
 
+    function mergeBreakdownRows(rows) {
+      const map = new Map();
+      (rows || []).forEach(r => {
+        if (!r) return;
+        const key = displayTopic(r.key);
+        if (!key) return;
+        const n = Number(r.documentCount) || 0;
+        const pct = r.estimatePercent == null || r.estimatePercent === "" ? null : Number(r.estimatePercent);
+        const range = Array.isArray(r.rangePercent) ? r.rangePercent.slice() : [];
+        const prev = map.get(key);
+        if (!prev) {
+          map.set(key, { key, documentCount: n, estimatePercent: Number.isFinite(pct) ? pct : null, rangePercent: range });
+          return;
+        }
+        const n1 = Number(prev.documentCount) || 0;
+        const n2 = n;
+        const total = n1 + n2;
+        prev.documentCount = total;
+        if (Number.isFinite(prev.estimatePercent) && Number.isFinite(pct) && total) {
+          prev.estimatePercent = Math.round((prev.estimatePercent * n1 + pct * n2) / total);
+        } else if (prev.estimatePercent == null && Number.isFinite(pct)) {
+          prev.estimatePercent = pct;
+        }
+        const lo = [prev.rangePercent[0], range[0]].filter(v => v != null && Number.isFinite(Number(v)));
+        const hi = [prev.rangePercent[1], range[1]].filter(v => v != null && Number.isFinite(Number(v)));
+        prev.rangePercent = [
+          lo.length ? Math.min(...lo.map(Number)) : undefined,
+          hi.length ? Math.max(...hi.map(Number)) : undefined
+        ];
+      });
+      return [...map.values()];
+    }
+
     function renderBreakdown(data) {
       const el = document.getElementById("breakdown");
       if (!data.available) {
         el.innerHTML = `<p class="hint">No ${data.by} metadata on this dataset.</p>`;
         return;
       }
+      const rows = mergeBreakdownRows(data.rows || []);
       el.innerHTML = `<table><tr><th>${data.by}</th><th>Docs</th><th>Estimate</th></tr>
-        ${(data.rows || []).map(r => `<tr><td>${r.key}</td><td>${r.documentCount}</td><td>${r.estimatePercent}% <span class="hint">${r.rangePercent[0]}–${r.rangePercent[1]}%</span></td></tr>`).join("")}
+        ${rows.map(r => `<tr><td>${esc(r.key)}</td><td>${r.documentCount}</td><td>${r.estimatePercent}% <span class="hint">${(r.rangePercent || [])[0]}–${(r.rangePercent || [])[1]}%</span></td></tr>`).join("")}
       </table>`;
     }
 
@@ -1829,40 +2302,45 @@
     }
 
     function findRiseYear(rows) {
-      const pts = rows.slice().sort((a, b) => String(a.key).localeCompare(String(b.key), undefined, { numeric: true }));
+      const pts = rows.filter(r => r && r.estimatePercent != null)
+        .sort((a, b) => String(a.key).localeCompare(String(b.key), undefined, { numeric: true }));
       for (let i = 0; i < pts.length; i++) {
         const pct = Number(pts[i].estimatePercent);
         if (!(pct >= 40)) continue;
-        const prior = pts.slice(0, i).map(r => Number(r.estimatePercent));
+        const prior = pts.slice(0, i).map(r => Number(r.estimatePercent)).filter(Number.isFinite);
         if (!prior.length) continue;
         if (prior.every(p => p < 30) || median(prior) < 30) return pts[i];
       }
       return null;
     }
 
-    function renderTimeChart(data) {
+    function renderTimeChart(data, nodes) {
       const mount = document.getElementById("timeChart");
       const note = document.getElementById("timeChartNote");
       const legend = document.getElementById("timeChartLegend");
-      const rows = yearRows(data);
-      if (!data || !data.available || !rows.length) {
+      const rows = yearRows(data, nodes || timeChartNodes());
+      const plotted = rows.filter(r => r.estimatePercent != null);
+      if (!rows.length || !plotted.length) {
         legend.hidden = true;
-        mount.innerHTML = `<p class="hint">No page-creation dates on this collection, so a time series cannot be drawn.</p>`;
-        note.textContent = "Yearly AI-share is hidden until documents have first-revision dates.";
+        mount.innerHTML = `<p class="hint">No dated documents in this view, so a time series cannot be drawn.</p>`;
+        note.textContent = "Yearly AI-share uses each document's best date: creation if present, otherwise published or last-modified.";
         return;
       }
       legend.hidden = false;
-      const rise = findRiseYear(rows);
-      const later = rise ? rows.filter(r => String(r.key) > String(rise.key)) : [];
+      const rise = findRiseYear(plotted);
+      const later = rise ? plotted.filter(r => String(r.key) > String(rise.key)) : [];
       const laterHigh = later.filter(r => Number(r.estimatePercent) >= 55);
-      const last = rows[rows.length - 1];
-      let caption = "Yearly estimate of how much of this collection looks AI-generated. Years are page-creation (first Wikipedia revision), not last-modified.";
-      if (rows.length === 1) {
-        const r = rows[0];
+      const last = plotted[plotted.length - 1];
+      const minY = rows[0].key;
+      const maxY = rows[rows.length - 1].key;
+      const span = minY === maxY ? String(minY) : `${minY}–${maxY}`;
+      let caption = `Yearly estimate of how much of this collection looks AI-generated. Each document uses its best date (creation if present, otherwise published or last-modified). The axis runs ${span}.`;
+      if (plotted.length === 1 && minY === maxY) {
+        const r = plotted[0];
         const n = Number(r.documentCount) || 0;
-        caption = `${r.key} is the page-creation year of ${n} article${n === 1 ? "" : "s"} in this view — first Wikipedia revision, not last-modified.`;
+        caption = `${r.key} is the only dated year in this view (${n} document${n === 1 ? "" : "s"}). Dates are creation when present, otherwise published or last-modified.`;
       } else if (rise) {
-        caption = `The series first rises clearly in ${rise.key} (${rise.estimatePercent}%), after a run of years under 30%. `;
+        caption = `The series first rises clearly in ${rise.key} (${rise.estimatePercent}%), after a run of years under 30%. The axis runs ${span}. `;
         if (laterHigh.length) {
           const lo = Math.min(...laterHigh.map(r => r.estimatePercent));
           const hi = Math.max(...laterHigh.map(r => r.estimatePercent));
@@ -1870,7 +2348,7 @@
         }
         if (last && String(last.key) !== String(rise.key) && Number(last.estimatePercent) < 55) {
           const n = last.documentCount || 0;
-          caption += `${last.key} is ${last.estimatePercent}% on only ${n} article${n === 1 ? "" : "s"}, with a wide interval — too thin to treat as a reversal.`;
+          caption += `${last.key} is ${last.estimatePercent}% on only ${n} article${n === 1 ? "" : "s"}, with a wide interval, too thin to treat as a reversal.`;
         }
       }
       note.textContent = caption;
@@ -1880,65 +2358,48 @@
       const innerW = W - pad.l - pad.r;
       const innerH = H - pad.t - pad.b;
       const xs = rows.map((_, i) => pad.l + (rows.length === 1 ? innerW / 2 : i * innerW / (rows.length - 1)));
+      const idxOf = key => rows.findIndex(r => String(r.key) === String(key));
       const yOf = p => pad.t + innerH * (1 - Math.max(0, Math.min(100, Number(p))) / 100);
       const grid = [0, 25, 50, 75, 100].map(g => {
         const y = yOf(g);
         return `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="rgba(42,36,28,0.08)" />
           <text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" fill="#302417" font-size="11" font-family="Literata,Georgia,serif">${g}%</text>`;
       }).join("");
-      const hiPts = rows.map((r, i) => `${xs[i]},${yOf((r.rangePercent || [])[1] ?? r.estimatePercent)}`).join(" ");
-      const loPts = rows.map((r, i) => `${xs[i]},${yOf((r.rangePercent || [])[0] ?? r.estimatePercent)}`).reverse().join(" ");
-      const line = rows.map((r, i) => `${i ? "L" : "M"}${xs[i]},${yOf(r.estimatePercent)}`).join(" ");
-      const dots = rows.map((r, i) => {
+      const bandRows = plotted.filter(r => Array.isArray(r.rangePercent) && r.rangePercent.length >= 2);
+      const hiPts = bandRows.map(r => `${xs[idxOf(r.key)]},${yOf(r.rangePercent[1])}`).join(" ");
+      const loPts = bandRows.map(r => `${xs[idxOf(r.key)]},${yOf(r.rangePercent[0])}`).reverse().join(" ");
+      const line = plotted.map((r, i) => `${i ? "L" : "M"}${xs[idxOf(r.key)]},${yOf(r.estimatePercent)}`).join(" ");
+      const dots = plotted.map(r => {
+        const i = idxOf(r.key);
         const riseHere = rise && String(r.key) === String(rise.key);
+        const lo = (r.rangePercent || [])[0];
+        const hi = (r.rangePercent || [])[1];
+        const range = lo != null && hi != null ? ` (${lo}–${hi}%)` : "";
         return `<g>
-          <title>${r.key}: ${r.estimatePercent}% (${(r.rangePercent || []).join("–")}%) · ${r.documentCount} docs</title>
+          <title>${r.key}: ${r.estimatePercent}%${range} · ${r.documentCount} docs</title>
           <circle cx="${xs[i]}" cy="${yOf(r.estimatePercent)}" r="${riseHere ? 6.5 : 4.2}" fill="${riseHere ? "#8a5a2a" : "#c45c4e"}" stroke="#FFFEFB" stroke-width="1.6" />
         </g>`;
       }).join("");
-      const labels = rows.map((r, i) =>
-        `<text x="${xs[i]}" y="${H - 16}" text-anchor="middle" fill="#302417" font-size="11" font-family="Literata,Georgia,serif">${r.key}</text>`
-      ).join("");
+      const labelStep = rows.length > 16 ? Math.ceil(rows.length / 12) : 1;
+      const labels = rows.map((r, i) => {
+        if (i % labelStep !== 0 && i !== rows.length - 1) return "";
+        return `<text x="${xs[i]}" y="${H - 16}" text-anchor="middle" fill="#302417" font-size="11" font-family="Literata,Georgia,serif">${r.key}</text>`;
+      }).join("");
       let annot = "";
       if (rise) {
-        const i = rows.findIndex(r => String(r.key) === String(rise.key));
+        const i = idxOf(rise.key);
         const x = xs[i];
         const y = yOf(rise.estimatePercent);
         annot = `<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${H - pad.b}" stroke="#8a5a2a" stroke-dasharray="4 4" stroke-opacity="0.45" />
           <text x="${Math.min(x + 10, W - 24)}" y="${Math.max(22, y - 16)}" text-anchor="${x > W - 220 ? "end" : "start"}" fill="#302417" font-size="12" font-family="Fraunces,Georgia,serif">Clear rise begins · ${rise.key}</text>`;
       }
-      mount.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="AI share over time">
+      const band = bandRows.length ? `<polygon points="${hiPts} ${loPts}" fill="rgba(196,92,78,0.16)" />` : "";
+      mount.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="AI share over time ${span}">
         ${grid}
-        <polygon points="${hiPts} ${loPts}" fill="rgba(196,92,78,0.16)" />
+        ${band}
         <path d="${line}" fill="none" stroke="#c45c4e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
         ${annot}${dots}${labels}
       </svg>`;
-    }
-
-    async function openDoc(docId) {
-      try {
-        state.selectedDocId = docId;
-        if (state.rawGraph) drawGraph(state.rawGraph, { refreshAnalysis: false });
-        else if (state.graphView) renderCollectionAnalysis(state.graphView);
-        const id = document.getElementById("dataset").value;
-        const d = await j(`/datasets/${id}/documents/${docId}`);
-        document.getElementById("detailCard").hidden = false;
-        document.getElementById("detailTitle").textContent = d.title;
-        document.getElementById("detailMeta").textContent =
-          `${d.band} · estimate ${Math.round((d.pAi || 0) * 100)}% (${Math.round((d.ciLow || 0) * 100)}–${Math.round((d.ciHigh || 0) * 100)}%) · document · ~${d.wordCount || 0} words · ${d.topic || ""} · ${d.source || ""}`;
-        document.getElementById("detailDisc").textContent = stripProofDisclaimer(d.disclaimer);
-        const s = d.signals || {};
-        document.getElementById("detailSignals").innerHTML = `<table>${
-          Object.entries(s).map(([k, v]) => `<tr><td>${k}</td><td>${Number(v).toFixed(3)}</td></tr>`).join("")
-        }</table>`;
-        document.getElementById("detailNeighbors").innerHTML = (d.neighbors || []).map(n =>
-          `<div class="ex" onclick="openDoc(${n.id})"><h4>${n.title}</h4><p>${n.reason || ""} · cosine ${n.cosine}</p></div>`
-        ).join("") || `<p class="hint">No neighbors.</p>`;
-        document.getElementById("detailText").textContent = d.text || "";
-        document.getElementById("detailCard").scrollIntoView({ behavior: "smooth", block: "nearest" });
-      } catch (err) {
-        popup(err.message, "Could not open document", "warn");
-      }
     }
 
     document.getElementById("reload").onclick = () => loadDatasets().then(loadDashboard).catch(err => popup(err.message, "Refresh failed", "warn"));
@@ -2011,7 +2472,7 @@
       if (extra === 0) {
         msg = `No extra child pages were found. ${n} seed page${n === 1 ? "" : "s"} ingested and analyzed as their own collection.`;
       } else {
-        msg = `Crawled ${n} pages from ${seeds} seed URL${seeds === 1 ? "" : "s"} (${extra} child page${extra === 1 ? "" : "s"}). Analyzed as their own collection — not mixed into Wikipedia.`;
+        msg = `Crawled ${n} pages from ${seeds} seed URL${seeds === 1 ? "" : "s"} (${extra} child page${extra === 1 ? "" : "s"}). Analyzed as their own collection, not mixed into Wikipedia.`;
       }
       if (failed) {
         msg += ` ${failed} URL${failed === 1 ? "" : "s"} could not be fetched.`;

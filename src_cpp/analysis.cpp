@@ -1,10 +1,13 @@
 #include "analysis.hpp"
+#include "gdelt_crawl.hpp"
 #include "util.hpp"
 #include "wiki_crawl.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <cstdio>
+#include <ctime>
 #include <map>
 #include <optional>
 #include <numeric>
@@ -144,14 +147,219 @@ static json view_signals_json(const std::vector<Document>& docs) {
     };
 }
 
+static int year_of_date(const std::string& date) {
+    auto is_year = [](int y) { return y >= 1900 && y <= 2100; };
+    if (date.size() >= 4) {
+        bool digits = true;
+        for (int i = 0; i < 4; ++i) {
+            if (!std::isdigit(static_cast<unsigned char>(date[static_cast<size_t>(i)]))) {
+                digits = false;
+                break;
+            }
+        }
+        if (digits) {
+            try {
+                int y = std::stoi(date.substr(0, 4));
+                if (is_year(y)) return y;
+            } catch (...) {
+            }
+        }
+    }
+    for (size_t i = 0; i + 3 < date.size(); ++i) {
+        if (!std::isdigit(static_cast<unsigned char>(date[i])) ||
+            !std::isdigit(static_cast<unsigned char>(date[i + 1])) ||
+            !std::isdigit(static_cast<unsigned char>(date[i + 2])) ||
+            !std::isdigit(static_cast<unsigned char>(date[i + 3]))) {
+            continue;
+        }
+        const bool left_ok = i == 0 || !std::isdigit(static_cast<unsigned char>(date[i - 1]));
+        const bool right_ok = i + 4 >= date.size() || !std::isdigit(static_cast<unsigned char>(date[i + 4]));
+        if (!left_ok || !right_ok) continue;
+        try {
+            int y = std::stoi(date.substr(i, 4));
+            if (is_year(y)) return y;
+        } catch (...) {
+        }
+    }
+    return 0;
+}
+
+// Best available document date: first-revision / createdAt, else publishedAt.
+static std::string doc_date_of(const Document& d) {
+    if (!d.created_at.empty() && year_of_date(d.created_at) > 0) return d.created_at;
+    if (!d.published_at.empty() && year_of_date(d.published_at) > 0) return d.published_at;
+    return "";
+}
+
+static std::string chart_date_of(const Document& d) { return doc_date_of(d); }
+
+static int doc_year(const Document& d) { return year_of_date(doc_date_of(d)); }
+
+static bool is_pre_2019(const Document& d) {
+    int y = doc_year(d);
+    return y > 0 && y < ERA_SPLIT_YEAR;
+}
+
+static bool is_post_2019(const Document& d) { return doc_year(d) >= ERA_SPLIT_YEAR; }
+
+static double excess_vs(double v, const Stats& s) {
+    return clamp01(0.5 + 0.5 * std::tanh(zscore(v, s) / 2.0));
+}
+
+static double raw_stock_of(const Document& d) {
+    if (d.explanation_json.find("stock_phrase_raw") != std::string::npos) {
+        return parse_signal(d.explanation_json, "stock_phrase_raw");
+    }
+    return parse_signal(d.explanation_json, "stock_phrase_detector");
+}
+
+static void force_pre2019_human(Document& doc, double style) {
+    double p = clamp01(0.025 + 0.04 * clamp01(style));
+    doc.p_ai = p;
+    doc.ci_low = clamp01(p - 0.03);
+    doc.ci_high = clamp01(p + 0.08);
+    doc.band = BAND_HUMAN;
+}
+
+// Score post-2019 pages against the pre-2019 centroid / rates in this document set.
+// Pre-2019 pages are the human baseline: p_ai near 0, likely human.
+// allow_keep_stored: view-time path keeps persisted scores when the visible set has no pre-2019 baseline.
+static void apply_era_scores(std::vector<Document>& docs, const Config& cfg, bool allow_keep_stored) {
+    if (docs.empty()) return;
+
+    std::vector<std::vector<float>> pre_vecs;
+    std::vector<double> pre_style, pre_stock, pre_ngram, pre_uni, pre_ttr, pre_burst;
+    for (const auto& d : docs) {
+        if (!is_pre_2019(d)) continue;
+        if (!d.embedding.empty()) pre_vecs.push_back(d.embedding);
+        pre_style.push_back(nz(d.detector_stylometry));
+        pre_stock.push_back(raw_stock_of(d));
+        pre_ngram.push_back(nz(d.detector_repetition));
+        pre_uni.push_back(nz(d.detector_uniformity));
+        pre_ttr.push_back(nz(d.type_token_ratio));
+        pre_burst.push_back(nz(d.burstiness));
+    }
+    const bool have_pre = !pre_vecs.empty();
+    if (!have_pre && allow_keep_stored) {
+        for (auto& d : docs) {
+            if (is_pre_2019(d)) force_pre2019_human(d, nz(d.detector_stylometry));
+        }
+        return;
+    }
+
+    std::vector<std::vector<float>> fallback;
+    if (!have_pre) {
+        std::vector<int> order(docs.size());
+        std::iota(order.begin(), order.end(), 0);
+        std::sort(order.begin(), order.end(), [&](int a, int b) {
+            return nz(docs[a].detector_stylometry) < nz(docs[b].detector_stylometry);
+        });
+        int baseline_n = std::max(2, std::min(8, static_cast<int>(docs.size()) / 6));
+        for (int i = 0; i < std::min(baseline_n, static_cast<int>(order.size())); ++i) {
+            if (!docs[order[i]].embedding.empty()) fallback.push_back(docs[order[i]].embedding);
+        }
+        if (fallback.empty()) {
+            for (const auto& d : docs) {
+                if (!d.embedding.empty()) fallback.push_back(d.embedding);
+            }
+        }
+    }
+    auto cent = centroid(have_pre ? pre_vecs : fallback);
+
+    std::vector<double> pre_dist;
+    if (have_pre) {
+        for (const auto& v : pre_vecs) pre_dist.push_back(1.0 - cosine(v, cent));
+    }
+    Stats style_s = stats_of(pre_style);
+    Stats stock_s = stats_of(pre_stock);
+    Stats ngram_s = stats_of(pre_ngram);
+    Stats uni_s = stats_of(pre_uni);
+    Stats dist_s = stats_of(pre_dist);
+
+    std::vector<double> all_ttr, all_burst;
+    for (const auto& d : docs) {
+        all_ttr.push_back(nz(d.type_token_ratio));
+        all_burst.push_back(nz(d.burstiness));
+    }
+    Stats ttr_stats = have_pre ? stats_of(pre_ttr) : stats_of(all_ttr);
+    Stats burst_stats = have_pre ? stats_of(pre_burst) : stats_of(all_burst);
+
+    std::vector<double> raw_anomaly(docs.size());
+    for (size_t i = 0; i < docs.size(); ++i) {
+        raw_anomaly[i] = docs[i].embedding.empty() || cent.empty() ? 0.5
+                                                                    : (1.0 - cosine(docs[i].embedding, cent));
+    }
+    auto anomaly_rank = ranks01(raw_anomaly);
+
+    std::vector<Estimate> raw_estimates(docs.size());
+    std::vector<char> pre_flag(docs.size(), 0);
+    std::vector<double> style_raw(docs.size(), 0);
+    for (size_t i = 0; i < docs.size(); ++i) {
+        auto& doc = docs[i];
+        const bool pre = is_pre_2019(doc);
+        pre_flag[i] = pre ? 1 : 0;
+        double style = nz(doc.detector_stylometry);
+        double stock = raw_stock_of(doc);
+        double ngram = nz(doc.detector_repetition);
+        double uni = nz(doc.detector_uniformity);
+        style_raw[i] = style;
+
+        double anomaly = have_pre
+            ? clamp01(0.45 * excess_vs(raw_anomaly[i], dist_s) + 0.55 * anomaly_rank[i])
+            : clamp01(0.45 * clamp01(raw_anomaly[i] * 1.4) + 0.55 * anomaly_rank[i]);
+        double style_in = have_pre ? excess_vs(style, style_s) : style;
+        double stock_in = have_pre ? excess_vs(stock, stock_s) : stock;
+        double ngram_in = have_pre ? excess_vs(ngram, ngram_s) : ngram;
+        double uni_in = have_pre ? excess_vs(uni, uni_s) : uni;
+        double zt = zscore(nz(doc.type_token_ratio), ttr_stats);
+        double zb = zscore(nz(doc.burstiness), burst_stats);
+        double deviation = clamp01((std::abs(zt) + std::abs(zb)) / 6.0);
+        double recency = pre ? 0.0 : post_chatgpt_signal(doc_date_of(doc));
+
+        std::map<std::string, double> raw;
+        raw["stylometry"] = style_in;
+        raw["stock_phrase_detector"] = stock_in;
+        raw["stock_phrase_raw"] = stock;
+        raw["sentence_uniformity_detector"] = uni_in;
+        raw["ngram_repetition_detector"] = ngram_in;
+        raw["embedding_anomaly"] = anomaly;
+        raw["stylometry_deviation"] = deviation;
+        raw["post_chatgpt"] = recency;
+
+        raw_estimates[i] = calibrate(raw, cfg);
+        doc.embedding_anomaly = anomaly;
+        doc.stylometry_deviation = deviation;
+    }
+
+    std::vector<double> post_p;
+    std::vector<size_t> post_i;
+    for (size_t i = 0; i < docs.size(); ++i) {
+        if (pre_flag[i]) continue;
+        post_i.push_back(i);
+        post_p.push_back(raw_estimates[i].p_ai);
+    }
+    auto post_rank = ranks01(post_p);
+    for (size_t k = 0; k < post_i.size(); ++k) {
+        size_t i = post_i[k];
+        auto mixed = mix_with_rank(raw_estimates[i], post_rank[k], cfg);
+        docs[i].p_ai = mixed.p_ai;
+        docs[i].ci_low = mixed.ci_low;
+        docs[i].ci_high = mixed.ci_high;
+        docs[i].band = mixed.band;
+        docs[i].explanation_json = signals_json(mixed.signals);
+    }
+    for (size_t i = 0; i < docs.size(); ++i) {
+        if (!pre_flag[i]) continue;
+        auto sigs = raw_estimates[i].signals;
+        sigs["post_chatgpt"] = 0;
+        docs[i].explanation_json = signals_json(sigs);
+        force_pre2019_human(docs[i], style_raw[i]);
+    }
+}
+
 static void assign_scores(std::vector<Document>& docs, const Config& cfg) {
-    std::vector<std::vector<float>> vectors;
-    std::vector<Features> features;
-    std::vector<double> style_ai;
     for (auto& doc : docs) {
         Features f = stylometry_analyze(doc.text);
-        features.push_back(f);
-        style_ai.push_back(stylometry_ai_score(f));
         doc.word_count = f.word_count;
         doc.type_token_ratio = f.type_token_ratio;
         doc.avg_sentence_length = f.avg_sentence_length;
@@ -160,71 +368,17 @@ static void assign_scores(std::vector<Document>& docs, const Config& cfg) {
         doc.punctuation_ratio = f.punctuation_ratio;
         doc.char_entropy = f.char_entropy;
         doc.repetition_score = f.repetition_score;
-        auto emb = hashed_embed(doc.title + "\n" + doc.text, cfg.embed_dim);
-        doc.embedding = emb;
-        vectors.push_back(emb);
+        doc.embedding = hashed_embed(doc.title + "\n" + doc.text, cfg.embed_dim);
+        doc.detector_stylometry = stylometry_ai_score(f);
+        double stock = 0;
+        for (const auto& det : run_detectors(doc.text, f)) {
+            if (det.name == "stock_phrase_detector") stock = det.score;
+            else if (det.name == "ngram_repetition_detector") doc.detector_repetition = det.score;
+            else if (det.name == "sentence_uniformity_detector") doc.detector_uniformity = det.score;
+        }
+        doc.explanation_json = signals_json({{"stock_phrase_raw", stock}, {"stock_phrase_detector", stock}});
     }
-
-    std::vector<int> order(docs.size());
-    std::iota(order.begin(), order.end(), 0);
-    std::sort(order.begin(), order.end(), [&](int a, int b) { return style_ai[a] < style_ai[b]; });
-    int baseline_n = std::max(2, std::min(8, static_cast<int>(docs.size()) / 6));
-    std::vector<std::vector<float>> human_baseline;
-    for (int i = 0; i < std::min(baseline_n, static_cast<int>(order.size())); ++i) {
-        human_baseline.push_back(vectors[order[i]]);
-    }
-    auto cent = centroid(human_baseline.empty() ? vectors : human_baseline);
-
-    std::vector<double> ttr, burst;
-    for (const auto& d : docs) {
-        ttr.push_back(nz(d.type_token_ratio));
-        burst.push_back(nz(d.burstiness));
-    }
-    Stats ttr_stats = stats_of(ttr);
-    Stats burst_stats = stats_of(burst);
-
-    std::vector<double> raw_anomaly(docs.size());
-    for (size_t i = 0; i < docs.size(); ++i) {
-        raw_anomaly[i] = 1.0 - cosine(docs[i].embedding, cent);
-    }
-    auto anomaly_rank = ranks01(raw_anomaly);
-
-    std::vector<Estimate> raw_estimates;
-    for (size_t i = 0; i < docs.size(); ++i) {
-        auto& doc = docs[i];
-        const auto& f = features[i];
-        double anomaly = clamp01(0.45 * clamp01(raw_anomaly[i] * 1.4) + 0.55 * anomaly_rank[i]);
-        double zt = zscore(f.type_token_ratio, ttr_stats);
-        double zb = zscore(f.burstiness, burst_stats);
-        double deviation = clamp01((std::abs(zt) + std::abs(zb)) / 6.0);
-
-        std::map<std::string, double> raw;
-        raw["stylometry"] = stylometry_ai_score(f);
-        for (const auto& det : run_detectors(doc.text, f)) raw[det.name] = det.score;
-        raw["embedding_anomaly"] = anomaly;
-        raw["stylometry_deviation"] = deviation;
-        raw["post_chatgpt"] = post_chatgpt_signal(doc.created_at);
-
-        auto estimate = calibrate(raw, cfg);
-        raw_estimates.push_back(estimate);
-        doc.detector_stylometry = raw["stylometry"];
-        doc.detector_repetition = raw["ngram_repetition_detector"];
-        doc.detector_uniformity = raw["sentence_uniformity_detector"];
-        doc.embedding_anomaly = anomaly;
-        doc.stylometry_deviation = deviation;
-    }
-
-    std::vector<double> raw_p;
-    for (const auto& e : raw_estimates) raw_p.push_back(e.p_ai);
-    auto p_rank = ranks01(raw_p);
-    for (size_t i = 0; i < docs.size(); ++i) {
-        auto mixed = mix_with_rank(raw_estimates[i], p_rank[i], cfg);
-        docs[i].p_ai = mixed.p_ai;
-        docs[i].ci_low = mixed.ci_low;
-        docs[i].ci_high = mixed.ci_high;
-        docs[i].band = mixed.band;
-        docs[i].explanation_json = signals_json(mixed.signals);
-    }
+    apply_era_scores(docs, cfg, false);
 }
 
 static std::string edge_reason(bool topic, bool source) {
@@ -409,34 +563,94 @@ static bool document_is_wikipedia(const Document& d, const std::unordered_set<in
     return iequals(d.source, WIKI_SOURCE);
 }
 
+// Display-only: stored "Geography of India" is shown and grouped as India.
+static std::string display_wiki_topic(const std::string& topic, const std::string& title = "") {
+    std::string t = canonical_wiki_topic(topic, title);
+    if (iequals(t, SHARED_TOPIC_GEO_INDIA)) return SHARED_TOPIC_INDIA;
+    return t;
+}
+
+static std::string collapse_geo_india_label(const std::string& topic) {
+    return iequals(trim(topic), SHARED_TOPIC_GEO_INDIA) ? SHARED_TOPIC_INDIA : topic;
+}
+
+static bool is_display_country_topic(const std::string& topic) {
+    std::string t = collapse_geo_india_label(trim(topic));
+    return iequals(t, SHARED_TOPIC_INDIA) || iequals(t, SHARED_TOPIC_USA) ||
+           iequals(t, SHARED_TOPIC_GERMANY) || iequals(t, SHARED_TOPIC_AUSTRALIA);
+}
+
+static std::string pretty_subject_topic(const std::string& topic) {
+    std::string t = trim(topic);
+    if (t.empty() || is_display_country_topic(t)) return "";
+    if (iequals(t, "computer_science")) return "Computer science";
+    if (iequals(t, "general")) return "";
+    std::string out;
+    bool cap = true;
+    for (char ch : t) {
+        if (ch == '_') {
+            out.push_back(' ');
+            cap = true;
+            continue;
+        }
+        unsigned char uc = static_cast<unsigned char>(ch);
+        if (cap && std::isalpha(uc)) {
+            out.push_back(static_cast<char>(std::toupper(uc)));
+            cap = false;
+        } else {
+            out.push_back(ch);
+            if (ch == ' ') cap = true;
+        }
+    }
+    return out;
+}
+
+static void apply_country_topic(Document& d) {
+    std::string original = trim(d.topic);
+    std::string shown = collapse_geo_india_label(display_wiki_topic(original, d.title));
+    if (is_display_country_topic(shown)) {
+        if (!is_display_country_topic(original)) d.subtopic = pretty_subject_topic(original);
+        d.topic = shown;
+        return;
+    }
+    std::string inferred = classify_country_topic(d.title, original);
+    if (inferred.empty()) inferred = classify_country_topic(d.title, d.title);
+    if (!inferred.empty() && is_display_country_topic(inferred)) {
+        d.subtopic = pretty_subject_topic(original);
+        d.topic = collapse_geo_india_label(inferred);
+        return;
+    }
+    d.subtopic = pretty_subject_topic(original.empty() ? shown : original);
+    d.topic.clear();
+}
+
+static void apply_country_topics(std::vector<Document>& docs) {
+    for (auto& d : docs) apply_country_topic(d);
+}
+
 static void remap_wiki_topics(std::vector<Document>& docs) {
-    for (auto& d : docs) d.topic = canonical_wiki_topic(d.topic, d.title);
+    for (auto& d : docs) d.topic = display_wiki_topic(d.topic, d.title);
 }
 
 static void remap_wiki_topics_in_union(std::vector<Document>& docs,
                                        const std::unordered_set<int64_t>& wiki_ids) {
     for (auto& d : docs) {
-        if (document_is_wikipedia(d, wiki_ids)) d.topic = canonical_wiki_topic(d.topic, d.title);
+        if (document_is_wikipedia(d, wiki_ids)) d.topic = display_wiki_topic(d.topic, d.title);
     }
 }
 
 static std::string topic_needle(const std::string& wanted) {
     std::string t = trim(wanted);
     if (t.empty()) return "";
-    return ascii_lower(canonical_wiki_topic(t, t));
+    return ascii_lower(display_wiki_topic(t, t));
 }
 
 static bool document_matches_topic(const Document& d, const std::string& needle) {
     if (needle.empty()) return true;
-    std::string stored = ascii_lower(trim(d.topic));
+    std::string stored = ascii_lower(collapse_geo_india_label(trim(d.topic)));
     if (!stored.empty() && stored == needle) return true;
-    std::string canon = ascii_lower(canonical_wiki_topic(d.topic, d.title));
+    std::string canon = ascii_lower(display_wiki_topic(d.topic, d.title));
     return canon == needle;
-}
-
-static std::string topic_key_for_list(const Document& d, bool canonicalize) {
-    if (canonicalize) return canonical_wiki_topic(d.topic, d.title);
-    return trim(d.topic);
 }
 
 std::vector<Document> docs_for_view(Store& store, int64_t dataset_id, const std::string& topic,
@@ -452,6 +666,7 @@ std::vector<Document> docs_for_view(Store& store, int64_t dataset_id, const std:
         docs = store.docs_by_dataset(dataset_id, false);
         if (collection_is_wikipedia(store, dataset_id)) remap_wiki_topics(docs);
     }
+    apply_country_topics(docs);
     std::string wanted = trim(topic);
     if (!wanted.empty()) {
         std::string needle = topic_needle(wanted);
@@ -482,11 +697,11 @@ std::vector<std::string> topics_for_dataset(Store& store, int64_t dataset_id) {
         canonicalize = collection_is_wikipedia(store, dataset_id);
         if (canonicalize) remap_wiki_topics(docs);
     }
+    apply_country_topics(docs);
     std::map<std::string, int> counts;
     for (const auto& d : docs) {
-        std::string key = topic_key_for_list(d, canonicalize);
-        if (is_blank(key)) continue;
-        if (canonicalize && is_blank(d.topic) && iequals(key, "General")) continue;
+        std::string key = collapse_geo_india_label(trim(d.topic));
+        if (is_blank(key) || !is_display_country_topic(key)) continue;
         counts[key]++;
     }
     std::vector<std::string> out;
@@ -506,27 +721,43 @@ static std::string band_heading(const std::string& band) {
     return "pending";
 }
 
+static std::string collection_label_of(const Dataset& d) {
+    if (d.kind == KIND_WIKI || d.kind == KIND_WIKI_SUBSET || is_wikipedia_name(d.name)) return "Wikipedia";
+    if (d.kind == KIND_GDELT || iequals(trim(d.name), "GDELT")) return "GDELT";
+    return d.name.empty() ? "Collection" : d.name;
+}
+
+static std::unordered_map<int64_t, std::string> collection_labels(Store& store) {
+    std::unordered_map<int64_t, std::string> out;
+    for (const auto& d : store.all_datasets()) out[d.id] = collection_label_of(d);
+    return out;
+}
+
 static std::string choose_group_by(const std::vector<Document>& docs, const std::string& topic_filter) {
+    if (!trim(topic_filter).empty()) return "dataset";
     std::map<std::string, int> topic_counts;
-    std::set<std::string> sources;
     for (const auto& d : docs) {
-        if (!is_blank(d.topic)) topic_counts[ascii_lower(d.topic)]++;
-        if (!is_blank(d.source)) sources.insert(ascii_lower(d.source));
+        if (!is_blank(d.topic) && is_display_country_topic(d.topic)) {
+            topic_counts[ascii_lower(d.topic)]++;
+        }
     }
     int substantial_topics = 0;
     for (const auto& [topic, n] : topic_counts) {
         if (n >= MIN_TOPIC_DOCUMENTS) substantial_topics++;
     }
-    if (!trim(topic_filter).empty()) return sources.size() >= 2 ? "source" : "band";
     if (substantial_topics >= 1) return "topic";
-    if (sources.size() >= 2) return "source";
-    return "band";
+    return "dataset";
 }
 
-static std::string graph_group_label(const Document& doc, const std::string& group_by) {
-    if (group_by == "topic") return is_blank(doc.topic) ? "Uncategorized" : doc.topic;
-    if (group_by == "source") return is_blank(doc.source) ? "Unknown source" : doc.source;
-    return band_heading(doc.band);
+static std::string graph_group_label(const Document& doc, const std::string& group_by,
+                                    const std::unordered_map<int64_t, std::string>& collections) {
+    if (group_by == "dataset") {
+        auto it = collections.find(doc.dataset_id);
+        if (it != collections.end() && !it->second.empty()) return it->second;
+        return "Unknown collection";
+    }
+    if (is_blank(doc.topic) || !is_display_country_topic(doc.topic)) return "Uncategorized";
+    return doc.topic;
 }
 
 static json card_json(Store& store, const Document& meta, bool include_text) {
@@ -540,7 +771,10 @@ static json card_json(Store& store, const Document& meta, bool include_text) {
     m["title"] = doc.title;
     m["url"] = doc.url.empty() ? nullptr : json(doc.url);
     m["source"] = doc.source;
-    m["topic"] = doc.topic;
+    apply_country_topic(doc);
+    m["topic"] = collapse_geo_india_label(doc.topic);
+    if (doc.subtopic.empty()) m["subtopic"] = nullptr;
+    else m["subtopic"] = doc.subtopic;
     if (doc.published_at.empty()) m["publishedAt"] = nullptr;
     else m["publishedAt"] = doc.published_at;
     if (doc.created_at.empty()) m["createdAt"] = nullptr;
@@ -614,6 +848,7 @@ nlohmann::json summary_json(Store& store, int64_t dataset_id, const std::string&
     }
     long corpus = union_view ? store.count_all_docs() : store.count_docs(dataset_id);
     auto docs = docs_for_view(store, dataset_id, topic, ids);
+    apply_era_scores(docs, Config{}, true);
     std::vector<Document> scored;
     for (const auto& d : docs) if (d.p_ai) scored.push_back(d);
     json out;
@@ -645,7 +880,7 @@ nlohmann::json summary_json(Store& store, int64_t dataset_id, const std::string&
     }
     std::string view_topic = trim(topic);
     if (view_topic.empty()) out["topic"] = nullptr;
-    else out["topic"] = view_topic;
+    else out["topic"] = collapse_geo_india_label(view_topic);
     out["topicView"] = !view_topic.empty();
     out["idView"] = !ids.empty();
     out["corpusDocumentCount"] = corpus;
@@ -718,18 +953,13 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
                           const std::vector<int64_t>& ids, int graph_k, double graph_min_cosine) {
     const bool union_view = is_union_scope(dataset_id);
     auto docs = docs_for_view(store, dataset_id, topic, ids);
+    apply_era_scores(docs, Config{}, true);
+    auto collections = collection_labels(store);
     std::string group_by = choose_group_by(docs, topic);
-    if (union_view) {
-        std::set<std::string> sources;
-        for (const auto& d : docs) {
-            if (!is_blank(d.source)) sources.insert(ascii_lower(d.source));
-        }
-        if (sources.size() >= 2) group_by = "source";
-    }
     std::unordered_map<int64_t, std::string> groups_by_id;
     std::map<std::string, int> counts;
     for (const auto& doc : docs) {
-        std::string label = graph_group_label(doc, group_by);
+        std::string label = graph_group_label(doc, group_by, collections);
         groups_by_id[doc.id] = label;
         counts[label]++;
     }
@@ -742,7 +972,7 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
         std::unordered_set<std::string> keep;
         for (size_t i = 0; i < std::min<size_t>(7, rows.size()); ++i) keep.insert(rows[i].first);
         for (auto& [id, label] : groups_by_id) {
-            if (!keep.count(label)) label = "Other";
+            if (!keep.count(label)) label = "Other (remaining groups)";
         }
         counts.clear();
         for (const auto& [id, label] : groups_by_id) counts[label]++;
@@ -758,8 +988,13 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
         if (doc.p_ai) n["pAi"] = *doc.p_ai;
         else n["pAi"] = nullptr;
         n["wordCount"] = doc.word_count;
-        n["topic"] = doc.topic;
+        n["topic"] = collapse_geo_india_label(doc.topic);
+        if (doc.subtopic.empty()) n["subtopic"] = nullptr;
+        else n["subtopic"] = doc.subtopic;
         n["source"] = doc.source;
+        n["datasetId"] = doc.dataset_id;
+        auto cit = collections.find(doc.dataset_id);
+        n["dataset"] = cit != collections.end() ? cit->second : "Unknown collection";
         if (doc.created_at.empty()) n["createdAt"] = nullptr;
         else n["createdAt"] = doc.created_at;
         if (doc.published_at.empty()) n["publishedAt"] = nullptr;
@@ -774,7 +1009,9 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
     });
     json groups = json::array();
     for (const auto& [k, c] : group_rows) {
-        if (group_by == "topic" && (c < MIN_TOPIC_DOCUMENTS || k == "Other" || k == "Uncategorized")) continue;
+        if ((group_by == "topic" || group_by == "subtopic") &&
+            (c < MIN_TOPIC_DOCUMENTS || k == "Other" ||
+             k.rfind("Other (", 0) == 0 || k == "Uncategorized")) continue;
         groups.push_back({{"key", k}, {"label", k}, {"count", c}});
     }
     json links = json::array();
@@ -791,7 +1028,7 @@ nlohmann::json graph_json(Store& store, int64_t dataset_id, const std::string& t
     else out["datasetId"] = dataset_id;
     out["union"] = union_view;
     if (trim(topic).empty()) out["topic"] = nullptr;
-    else out["topic"] = trim(topic);
+    else out["topic"] = collapse_geo_india_label(trim(topic));
     out["idView"] = !ids.empty();
     out["groupBy"] = group_by;
     out["groups"] = groups;
@@ -809,10 +1046,11 @@ static std::string topic_band_from_mean(double mean) {
 nlohmann::json examples_json(Store& store, int64_t dataset_id, const std::string& band, int limit,
                              const std::string& topic, const std::vector<int64_t>& ids) {
     auto docs = docs_for_view(store, dataset_id, topic, ids);
+    apply_era_scores(docs, Config{}, true);
     std::map<std::string, std::vector<Document>> groups;
     for (const auto& d : docs) {
         std::string key = trim(d.topic);
-        if (key.empty() || !d.p_ai) continue;
+        if (key.empty() || !is_display_country_topic(key) || !d.p_ai) continue;
         groups[key].push_back(d);
     }
     struct TopicRow {
@@ -849,20 +1087,214 @@ nlohmann::json examples_json(Store& store, int64_t dataset_id, const std::string
     return out;
 }
 
+static std::vector<std::string> tokens_alnum(const std::string& text) {
+    std::vector<std::string> out;
+    std::string cur;
+    for (unsigned char c : ascii_lower(text)) {
+        if (std::isalnum(c) || c == '\'') cur.push_back(static_cast<char>(c));
+        else if (!cur.empty()) {
+            out.push_back(cur);
+            cur.clear();
+        }
+    }
+    if (!cur.empty()) out.push_back(cur);
+    return out;
+}
+
+static bool is_filler_word(const std::string& w) {
+    static const std::unordered_set<std::string> stop = {
+        "the", "a", "an", "and", "or", "of", "to", "in", "on", "for", "with", "by", "from", "at",
+        "as", "is", "are", "was", "were", "be", "been", "being", "this", "that", "these", "those",
+        "it", "its", "their", "they", "them", "we", "you", "your", "our", "not", "but", "if",
+        "than", "then", "also", "into", "over", "after", "before", "about", "more", "most", "can",
+        "will", "has", "have", "had", "his", "her", "she", "he", "which", "who", "whom", "what",
+        "when", "where", "how", "all", "any", "each", "other", "such", "only", "own", "same", "so",
+        "too", "very", "just", "because", "while", "through", "during", "without", "within",
+        "between", "under", "again", "further", "once", "here", "there", "both", "few", "some",
+        "no", "nor", "do", "does", "did", "doing", "would", "should", "could", "may", "might",
+        "page", "pages", "see", "http", "https", "www", "com", "org", "html", "pdf", "new", "one",
+        "two", "first", "last", "used", "using", "use", "including", "include", "based"
+    };
+    return w.size() < 3 || stop.count(w);
+}
+
+static json freq_rows(const std::map<std::string, int>& df, int limit, int min_df, const char* key) {
+    std::vector<std::pair<std::string, int>> rows(df.begin(), df.end());
+    std::sort(rows.begin(), rows.end(), [](const auto& a, const auto& b) {
+        if (a.second != b.second) return a.second > b.second;
+        return a.first < b.first;
+    });
+    json out = json::array();
+    for (const auto& row : rows) {
+        if (row.second < min_df) continue;
+        out.push_back({{key, row.first}, {"documents", row.second}});
+        if (static_cast<int>(out.size()) >= limit) break;
+    }
+    return out;
+}
+
+static json strongest_signal_row(const json& sig) {
+    struct Row {
+        const char* key;
+        const char* label;
+    };
+    static const Row rows[] = {
+        {"embeddingAnomaly", "unusual wording (embedding)"},
+        {"stockPhrases", "stock phrases"},
+        {"ngrams", "repeated phrases"},
+        {"stylometry", "writing style"},
+        {"uniformity", "even sentences"},
+        {"stylometryDeviation", "writing style that differs from typical pages here"}
+    };
+    const char* best_key = nullptr;
+    const char* best_label = nullptr;
+    double best = -1;
+    for (const auto& row : rows) {
+        if (!sig.contains(row.key) || !sig[row.key].is_number()) continue;
+        double v = sig[row.key].get<double>();
+        if (v > best) {
+            best = v;
+            best_key = row.key;
+            best_label = row.label;
+        }
+    }
+    if (!best_key) return nullptr;
+    return {{"key", best_key}, {"label", best_label}, {"score", round3(best)}};
+}
+
+nlohmann::json ai_common_json(Store& store, int64_t dataset_id, const std::string& topic,
+                              const std::vector<int64_t>& ids) {
+    auto docs = docs_for_view(store, dataset_id, topic, ids);
+    apply_era_scores(docs, Config{}, true);
+    std::vector<Document> ai;
+    for (const auto& d : docs) {
+        if (d.band == BAND_AI) ai.push_back(d);
+    }
+    json out;
+    out["documentCount"] = static_cast<int>(ai.size());
+    if (ai.empty()) {
+        out["signals"] = nullptr;
+        out["strongest"] = nullptr;
+        out["stockPhrases"] = json::array();
+        out["words"] = json::array();
+        out["phrases"] = json::array();
+        return out;
+    }
+    json signals = view_signals_json(ai);
+    out["signals"] = signals;
+    out["strongest"] = strongest_signal_row(signals);
+
+    std::sort(ai.begin(), ai.end(), [](const Document& a, const Document& b) {
+        return nz(a.p_ai) > nz(b.p_ai);
+    });
+    const size_t take = std::min<size_t>(220, ai.size());
+    std::vector<int64_t> sample;
+    sample.reserve(take);
+    for (size_t i = 0; i < take; ++i) sample.push_back(ai[i].id);
+    auto texts = store.docs_by_ids(sample, true);
+
+    static const char* markers[] = {
+        "it is important to note",
+        "in conclusion",
+        "this article provides",
+        "plays a crucial role",
+        "in today's world",
+        "a comprehensive overview",
+        "it should be noted",
+        "various factors",
+        "in this article we will",
+        "delve into"
+    };
+    std::map<std::string, int> stock_df, word_df, phrase_df;
+    for (const auto& d : texts) {
+        std::string blob = d.title;
+        blob += "\n";
+        blob += d.text.size() > 6000 ? d.text.substr(0, 6000) : d.text;
+        std::string lower = ascii_lower(blob);
+        std::unordered_set<std::string> seen_stock, seen_word, seen_phrase;
+        for (const char* m : markers) {
+            if (lower.find(m) != std::string::npos) seen_stock.insert(m);
+        }
+        auto toks = tokens_alnum(blob);
+        for (const auto& w : toks) {
+            if (!is_filler_word(w)) seen_word.insert(w);
+        }
+        for (size_t i = 0; i + 1 < toks.size(); ++i) {
+            if (toks[i].size() < 3 || toks[i + 1].size() < 3) continue;
+            if (is_filler_word(toks[i]) && is_filler_word(toks[i + 1])) continue;
+            seen_phrase.insert(toks[i] + " " + toks[i + 1]);
+        }
+        for (size_t i = 0; i + 2 < toks.size(); ++i) {
+            int content = (!is_filler_word(toks[i]) ? 1 : 0) +
+                          (!is_filler_word(toks[i + 1]) ? 1 : 0) +
+                          (!is_filler_word(toks[i + 2]) ? 1 : 0);
+            if (content < 2) continue;
+            seen_phrase.insert(toks[i] + " " + toks[i + 1] + " " + toks[i + 2]);
+        }
+        for (const auto& s : seen_stock) stock_df[s]++;
+        for (const auto& s : seen_word) word_df[s]++;
+        for (const auto& s : seen_phrase) phrase_df[s]++;
+    }
+    int scanned = static_cast<int>(texts.size());
+    int min_word = std::max(3, (scanned * 8) / 100);
+    int min_phrase = std::max(3, (scanned * 6) / 100);
+    out["sampled"] = scanned;
+    out["stockPhrases"] = freq_rows(stock_df, 4, 2, "phrase");
+    out["words"] = freq_rows(word_df, 6, min_word, "word");
+    out["phrases"] = freq_rows(phrase_df, 5, min_phrase, "phrase");
+    return out;
+}
+
 nlohmann::json breakdown_rows(Store& store, int64_t dataset_id, const std::string& by,
                               const std::string& topic, const std::vector<int64_t>& ids) {
     auto docs = docs_for_view(store, dataset_id, topic, ids);
+    apply_era_scores(docs, Config{}, true);
+    json rows = json::array();
+    if (by == "time") {
+        std::map<int, std::vector<double>> scored;
+        std::map<int, int> dated_count;
+        int min_y = 0;
+        int max_y = 0;
+        for (const auto& doc : docs) {
+            int y = year_of_date(chart_date_of(doc));
+            if (y < TIME_CHART_MIN_YEAR) continue;
+            if (!min_y || y < min_y) min_y = y;
+            if (y > max_y) max_y = y;
+            dated_count[y]++;
+            if (doc.p_ai) scored[y].push_back(*doc.p_ai);
+        }
+        if (!min_y) return rows;
+        min_y = TIME_CHART_MIN_YEAR;
+        {
+            const int now_y = utc_year_now();
+            if (now_y > 0 && max_y > now_y) max_y = now_y;
+        }
+        for (int y = min_y; y <= max_y; ++y) {
+            int n = dated_count[y];
+            json row;
+            row["key"] = std::to_string(y);
+            row["documentCount"] = n;
+            auto it = scored.find(y);
+            if (it != scored.end() && !it->second.empty()) {
+                auto iv = mean_interval(it->second);
+                row["estimatePercent"] = pct(iv.mean);
+                row["rangePercent"] = json::array({pct(iv.low), pct(iv.high)});
+            } else {
+                row["estimatePercent"] = nullptr;
+                row["rangePercent"] = json::array();
+            }
+            rows.push_back(row);
+        }
+        return rows;
+    }
     std::map<std::string, std::vector<Document>> groups;
     for (const auto& doc : docs) {
         if (!doc.p_ai) continue;
-        std::string key;
-        if (by == "topic") key = trim(doc.topic);
-        else if (by == "time") key = doc.created_at.size() >= 4 ? doc.created_at.substr(0, 4) : "";
-        else key = trim(doc.source);
+        std::string key = by == "topic" ? collapse_geo_india_label(trim(doc.topic)) : trim(doc.source);
         if (key.empty()) continue;
+        if (by == "topic" && !is_display_country_topic(key)) continue;
         groups[key].push_back(doc);
     }
-    json rows = json::array();
     for (auto& [k, g] : groups) {
         if (by == "topic" && static_cast<int>(g.size()) < MIN_TOPIC_DOCUMENTS) continue;
         std::vector<double> ps;
@@ -907,34 +1339,18 @@ nlohmann::json explanation_json(Store& store, int64_t dataset_id, int64_t doc_id
     return out;
 }
 
-static int year_of_date(const std::string& date) {
-    if (date.size() < 4) return 0;
-    try {
-        return std::stoi(date.substr(0, 4));
-    } catch (...) {
-        return 0;
-    }
-}
-
 static std::string era_date_of(const Document& d) {
-    return d.created_at;
+    return doc_date_of(d);
 }
 
 static const char* era_date_source(const Document& d) {
     if (!d.created_at.empty() && year_of_date(d.created_at) > 0) return "createdAt";
+    if (!d.published_at.empty() && year_of_date(d.published_at) > 0) return "publishedAt";
     return "";
 }
 
 static bool has_created_date(const Document& d) {
-    return !d.created_at.empty() && year_of_date(d.created_at) > 0;
-}
-
-static bool is_pre_2019(const Document& d) {
-    return has_created_date(d) && d.created_at < ERA_CUTOFF;
-}
-
-static bool is_post_2019(const Document& d) {
-    return has_created_date(d) && d.created_at >= ERA_CUTOFF;
+    return doc_year(d) > 0;
 }
 
 static std::vector<Document> sample_evenly(std::vector<Document> docs, int n) {
@@ -1021,12 +1437,11 @@ static json era_article_json(const Document& d) {
 }
 
 static const char* SCORE_METHOD =
-    "Each document's p_ai is a logistic blend of local stylometry (formulaic / low-burstiness marks), "
-    "stock-phrase, sentence-uniformity, and n-gram-repetition detectors, plus embedding distance from a "
-    "human-leaning baseline centroid in this collection (the most human-scoring pages by stylometry). "
-    "A small rank mix spreads scores across the set. The collection or topic percent is the mean of those "
-    "document scores (share of documents). The after-2019 block also reports distance to a pre-2019 centroid; "
-    "that distance is a comparison signal, not a second headline. ESTIMATE, not proof of authorship.";
+    "Each document's p_ai is a logistic blend of local stylometry, stock-phrase, sentence-uniformity, "
+    "and n-gram-repetition detectors scored against pre-2019 writing in the same visible collection "
+    "(or the same topic when a topic is selected), plus embedding distance from that pre-2019 centroid. "
+    "Pages dated before 2019 are the human baseline and stay near zero. A small rank mix spreads later "
+    "scores. The collection percent is the mean of those document scores.";
 
 static std::string fmt_num(double v, int digits = 2) {
     char buf[32];
@@ -1073,14 +1488,14 @@ static std::string map_headline_copy(const std::string& topic, const std::vector
     int share = pct(mean_opt(docs, &Document::p_ai));
     std::ostringstream out;
     if (!topic.empty()) out << "On " << topic << ", ";
-    out << "the " << share << "% figure is the mean of document p_ai scores — the share of documents, not a count of proven AI pages. ";
+    out << "the " << share << "% figure is the mean of document p_ai scores, the share of documents, not a count of proven AI pages. ";
     out << "Underneath that mean: stylometry " << fmt_num(mean_opt(docs, &Document::detector_stylometry))
         << ", stock phrases " << fmt_num(mean_stock(docs))
         << ", sentence uniformity " << fmt_num(mean_opt(docs, &Document::detector_uniformity))
         << ", n-gram repetition " << fmt_num(mean_opt(docs, &Document::detector_repetition))
-        << ", embedding anomaly vs the human-leaning centroid "
+        << ", embedding anomaly vs the pre-2019 centroid "
         << fmt_num(mean_opt(docs, &Document::embedding_anomaly))
-        << ". Those signals go through the logistic blend above. ESTIMATE, not proof.";
+        << ". Those signals go through the logistic blend above.";
     return out.str();
 }
 
@@ -1180,6 +1595,7 @@ nlohmann::json era_traits_json(Store& store, int64_t dataset_id, const std::stri
         out["topics"] = json::array();
         out["reason"] = "Combined All sources uses the same document p_ai blend; collection share is the mean over the visible union.";
         auto docs = docs_for_view(store, DATASET_ALL, topic, {});
+        apply_era_scores(docs, Config{}, true);
         out["collectionSignals"] = view_signals_json(docs);
         return out;
     }
@@ -1192,7 +1608,7 @@ nlohmann::json era_traits_json(Store& store, int64_t dataset_id, const std::stri
     out["minTopicDocuments"] = MIN_TOPIC_DOCUMENTS;
     out["dateField"] = "createdAt";
     out["dateNote"] =
-        "Split uses Wikipedia page first-revision / creation date only. Last-modified is not used.";
+        "Dates use first-revision / createdAt when present, otherwise publishedAt.";
     out["disclaimer"] =
         "This is an estimate from local stylometry and detectors, not proof of authorship.";
     out["scoreMethod"] = SCORE_METHOD;
@@ -1207,7 +1623,7 @@ nlohmann::json era_traits_json(Store& store, int64_t dataset_id, const std::stri
     auto docs = store.docs_by_dataset(dataset_id, false);
     if (wiki) remap_wiki_topics(docs);
     std::string wanted = trim(topic);
-    if (!wanted.empty() && wiki) wanted = canonical_wiki_topic(wanted, wanted);
+    if (!wanted.empty() && wiki) wanted = display_wiki_topic(wanted, wanted);
 
     std::vector<Document> scoped;
     std::map<std::string, std::vector<Document>> by_topic;
@@ -1217,8 +1633,10 @@ nlohmann::json era_traits_json(Store& store, int64_t dataset_id, const std::stri
         by_topic[d.topic].push_back(d);
         scoped.push_back(d);
     }
-    out["collectionSignals"] = mean_signals_json(scoped.empty() ? docs : scoped);
-    out["headlineWhy"] = map_headline_copy(wanted, scoped.empty() ? docs : scoped);
+    std::vector<Document> signal_docs = scoped.empty() ? docs : scoped;
+    apply_era_scores(signal_docs, Config{}, true);
+    out["collectionSignals"] = mean_signals_json(signal_docs);
+    out["headlineWhy"] = map_headline_copy(wanted, signal_docs);
 
     json topics = json::array();
     int waiting = 0;

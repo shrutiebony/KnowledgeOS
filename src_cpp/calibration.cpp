@@ -38,6 +38,7 @@ double post_chatgpt_signal(const std::string& published_at) {
     int month = month_of(published_at);
     int day = day_of(published_at);
     if (year <= 0) return 0.45;
+    if (year < 2019) return 0.0;
     if (year < 2022) return 0.20;
     bool before_launch = year < 2022 || (year == 2022 && (month < 11 || (month == 11 && day < 30)));
     if (before_launch) return 0.26;

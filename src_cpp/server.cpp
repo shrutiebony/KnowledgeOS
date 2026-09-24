@@ -305,6 +305,20 @@ int main() {
     svr.Get("/datasets/:id/examples", get_examples);
     svr.Get("/examples", get_examples);
 
+    auto get_ai_common = [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            send_json(res, kos::ai_common_json(store, id, param(req, "topic"), parse_ids(req)));
+        } catch (const std::runtime_error& e) {
+            send_error(res, e.what(), 404);
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    };
+    svr.Get("/datasets/:id/ai-common", get_ai_common);
+    svr.Get("/ai-common", get_ai_common);
+
     auto get_breakdown = [&](const httplib::Request& req, httplib::Response& res) {
         try {
             int64_t id = parse_scope_id(req);
