@@ -72,6 +72,10 @@ Config Config::from_env() {
         crawl = env_flag("CRAWL", crawl);
     }
     c.wikipedia_crawl = crawl;
+    c.wikipedia_crawl_india = env_flag("KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL", crawl);
+    c.wikipedia_crawl_germany = env_flag("KNOWLEDGEOS_WIKIPEDIA_GERMANY_CRAWL", crawl);
+    c.wikipedia_crawl_usa = env_flag("KNOWLEDGEOS_WIKIPEDIA_USA_CRAWL", false);
+    c.wikipedia_crawl_australia = env_flag("KNOWLEDGEOS_WIKIPEDIA_AUSTRALIA_CRAWL", false);
     int wiki_pages = env_int("KNOWLEDGEOS_WIKIPEDIA_MAX_PAGES",
                              env_int("KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES", 1000));
     c.wikipedia_max_pages = std::max(100, wiki_pages);

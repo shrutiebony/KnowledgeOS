@@ -2,226 +2,107 @@
 
 Collection-level estimate of how much of a document set looks AI-generated or AI-assisted.
 
+## What it offers
 
-Collections are independent. 3 sources of data are being used : Wikipedia India, a URL crawl named GDELT while allowing the user to give any public URL of choice or upload PDFs to check the amount of AI generated text in either a particular topic at hand or in their specific PDF.
+A dashboard for researchers, editors, and analysts who need a collection-level read on AI-looking prose or topic or country-wise analysis of open source data. Current sources include: Wikipedia and GDELT as public baselines, plus PDFs or open-source public URL the user would like to give.
 
-## Experimental / recovered original (not this runtime)
+You can:
 
-An **experimental** snapshot of an earlier tree lives at [https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23](https://github.com/shrutiebony/KnowledgeOS/tree/recovered-original-project-2026-09-23). That branch is a **recovered original** — archival / experimental only. It is **not** the current product and **not** what the shared demo runs.
+- Current use case: Compare how much of a corpus looks AI-generated or AI-assisted, by country topic and by source ( to be extended later )
+- Add your own files or site and see the same estimate next to Wikipedia and GDELT.
+- Analysis based: stylometry, stock phrases, embeddings vs a pre-2019 human baseline not a verdict on any author as the amount of AI-Generated text increases.
 
-This repository’s runtime is **C++20 + CMake** (`knowledgeos.exe`). Use this tree (and the URLs below) for the live dashboard.
+**What you see**
 
-## Where it is running
+- **How to use** — popup (not `alert()`).
+- **Dataset** and **Topic** — pinned left. User can filter based on data source or country or both
+- **PDFs or a URL** and **Crawl and analyse** — each add is its own collection. A URL is accepted only if a same-host probe can reach about 500 pages. At most 7 collections addition is allowed, including Wikipedia and GDELT.
+- **AI share over time** — yearly estimate; the data is crawled from 2015. Graphs are clustered by data source and country and edges are defined by kNN similarity.
+- **Analysis I / II** — live reading lines: AI share, September 2019 era compare, strongest clue.
+- **Subject-mix bar chart** — AI generated text present in different phases of data crawled, currently sees: news, schools, places, sports, food, politics, and similar subjects × AI share of that subject.
+- **Breakdown by source**.
+- **Final analysis** — what likely-AI pages share (embeddings, phrases, words).
+- **How we analyze** — methods footer.
 
-Runtime is still **C++20** + **CMake** (`knowledgeos.exe`). The shared demo is a Cloudflare quick tunnel in front of that process on a PC — not GCP / Cloud Run.
+Wikipedia and GDELT cannot be deleted. Any other collection can.
 
-| | URL |
-| --- | --- |
-| Public (Cloudflare quick tunnel) | [https://full-definition-hundreds-bye.trycloudflare.com](https://full-definition-hundreds-bye.trycloudflare.com) |
-| Local | [http://localhost:8080](http://localhost:8080) |
-
-Honest limits: the PC must stay on; the tunnel URL can change when the tunnel is restarted; there is **no auth**; every visitor on that process (localhost and the public tunnel) shares the same datasets. This is a shared demo, not a private instance.
 
 ## Architecture
 
-**C++20** + **CMake 3.20+** is the only runtime. SQLite file store at `./data/knowledgeos.db` (Docker: `/data/knowledgeos.db`). HTTP via cpp-httplib.
+One local C++20 process. cpp-httplib serves JSON APIs and static files from `./web` on `0.0.0.0:8080`. Documents live in SQLite (`./data/knowledgeos.db`) with a `dataset_id`. “All sources” and topic filters are query-time views.
 
-| Piece | What it does |
-| --- | --- |
-| Ingest | Simple PDF text extract; UTF-8 / HTML / JSONL / ZIP uploads; same-host URL crawl (depth 2, up to 80 pages). Wikipedia India is a separate crawler. |
-| Analysis | Stylometry (TTR, burstiness, entropy, …), local detectors (stock phrases, sentence uniformity, n-gram repetition), hashed embeddings, collection-relative anomaly + deviation. |
-| Calibration | Logistic blend of those signals + a modest post-ChatGPT date prior; rank mix; bands `LIKELY_AI` / `LIKELY_HUMAN` / `UNCERTAIN`. GraphSAGE is omitted from the headline. |
-| Graph | Per-collection kNN on embedding cosine (`k=8`, min cosine `0.32`). The UI draws a circular cluster layout (unlabeled dots, subheading labels). |
-| Wikipedia India | On start (if seeding is on): background crawl from India seeds, or a small offline fixture if crawl is off / unreachable. |
-| GraphSAGE | Gated. Mean-aggregation fallback only. `usedInHeadline` is always false. Optional offline helper: `tools/graphsage/graphsage_embed.py`. |
-
-On each process start, leftover collections that are **not** named `Wikipedia India` or `GDELT` are pruned. New uploads and URL crawls still work during that run.
-
-```mermaid
-flowchart LR
-  subgraph ingest [Ingest]
-    Wiki["Wikipedia India seeder / crawler"]
-    Upload["PDF / text / ZIP upload"]
-    Urls["same-host URL crawl"]
-  end
-  SQLite[("SQLite ./data")]
-  subgraph analyze [Per collection]
-    Sty[Stylometry]
-    Det[Local detectors]
-    Emb[Embeddings]
-    Cal[Calibration bands]
-    kNN[kNN edges]
-  end
-  UI["web/index.html"]
-  Wiki --> SQLite
-  Upload --> SQLite
-  Urls --> SQLite
-  SQLite --> Sty --> Cal
-  SQLite --> Det --> Cal
-  SQLite --> Emb --> Cal
-  Emb --> kNN
-  Cal --> UI
-  kNN --> UI
+```
+PDF / URL ingest          Wikipedia seeder          GDELT seeder
+        \                       |                        /
+         \                      |                       /
+                    SQLite  ./data/knowledgeos.db
+                                |
+         stylometry · detectors · hashed embeddings · calibration
+                                |
+                    kNN graph (k=8, min cosine 0.32)
+                    GraphSAGE on the graph only
+                                |
+                    query-time: All sources union, country topic
+                                |
+                         web/index.html
 ```
 
-## Build and run (Windows)
+**Scoring (per document, then collection)**
 
-Needs **CMake 3.20+** and **MSVC** (Visual Studio Build Tools) or MinGW.
+- Stylometry (TTR, burstiness, entropy).
+- Stock phrases, sentence uniformity, n-gram repetition.
+- Embedding anomaly vs the pre-2019 human centroid in the visible set.
+- Stylometry deviation from that same baseline.
+- Logistic blend + uncertainty interval; three bands: likely AI, likely human, uncertain.
+- Pages dated before 2019 are the human baseline. GraphSAGE is **not** a detection signal.
 
-From this directory:
+**Collections**
+
+| Collection | Role |
+| --- | --- |
+| Wikipedia | Seeded, undeletable. Country topics (n ≥ 100). |
+| GDELT | Seeded, undeletable. Same country topics. |
+| User PDF / URL | New row, never mixed into Wikipedia or GDELT. Deletable. Cap 7 total. |
+
+## Tech stack
+
+| Layer | Current |
+| --- | --- |
+| Frontend | Single page `web/index.html` (Fraunces + Literata). Copied next to the binary on build. |
+| Backend | C++20, CMake 3.20+, cpp-httplib. Binary `build/knowledgeos.exe`. Config in `src_cpp/config.cpp`. |
+| Database | SQLite `./data/knowledgeos.db` (`KNOWLEDGEOS_DB`). |
+| Embeddings / graph | Hashed embeddings (default dim 128); kNN similarity graph. |
+| Deployment | Local process on `0.0.0.0:8080`. Optional: `docker compose up --build` (same port, DB at `./data`). |
+
+There is no streaming product surface (no WebSockets / SSE).
+
+## Run locally
+
+**Prerequisites:** CMake 3.20+, MSVC Build Tools, and an existing `./data/knowledgeos.db` if you want the seeded Wikipedia and GDELT corpora.
+
+**Build** (from the repo root, if `build/knowledgeos.exe` is missing):
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
 cmake -S . -B build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release
-cmake --build build
+cmake --build build --target knowledgeos
 ```
 
-Binary: `build/knowledgeos.exe` (the `web/` dashboard is copied next to it).
+**Start with crawl off** (use the stored DB; no harvest):
 
-```bat
-set KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL=false
-build\knowledgeos.exe
+```powershell
+$env:CRAWL='false'; $env:KNOWLEDGEOS_WIKIPEDIA_CRAWL='false'; $env:KNOWLEDGEOS_GDELT_CRAWL='false'; .\build\knowledgeos.exe
 ```
 
 Open [http://localhost:8080](http://localhost:8080).
 
-To live-crawl English Wikipedia (same-host `en.wikipedia.org`, default cap **2000** pages, depth 4):
+Omit those flags only if you want a background Wikipedia / GDELT harvest. Defaults in `src_cpp/config.cpp`: crawl **on**, port **8080** (`PORT` / `SERVER_PORT`), DB `./data/knowledgeos.db`.
 
-```bat
-set KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL=true
-set KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES=2000
-build\knowledgeos.exe
-```
+## Lifecycle of one dataset
 
-The app binds to 8080 first when crawl is on (crawl runs in a background thread). Header pills fill as pages are scored. If Wikipedia is unreachable, the small offline India fixture is installed so the dashboard still has a collection.
-
-SQLite lives under `./data/knowledgeos.db`. Leave that directory in place so the India corpus can resume instead of starting over.
-
-### Linux / Docker
-
-```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-./build/knowledgeos
-```
-
-or
-
-```bash
-docker compose up --build
-```
-
-Cloud Run uses the same C++ `Dockerfile`. Containers honor `PORT`.
-
-## How to use the dashboard
-
-Same product UI as the public demo and localhost.
-
-1. **Dataset** — pick a collection, then **Refresh**. Wikipedia India is the seeded corpus. Each upload or URL crawl is its own row. A collection named `gdelt` / `GDELT` is kept across `knowledgeos.exe` restarts; other extra names last for the running process.
-2. **Wikipedia topic** — only on Wikipedia India. A **view** on that same collection. It does not create another dataset.
-3. **Header pills** — share of documents, share of analyzed words, uncertainty range, and band counts (likely AI / likely human / uncertain). Read-only. Estimates, not proof. GraphSAGE is not in these numbers.
-4. **Document graph** — circular layout: unlabeled dots are documents; one subheading sits on each cluster. Hover a dot for the title. Edges are embedding similarity.
-5. **Click a heading or cluster** — the graph zooms to that visible set and **Analysis across collection** follows it. **Explain insights** reads that same visible set and opens a short estimate in the popup (no API key required).
-6. **Click a document** — highlights it in the analysis panel and opens the detail card.
-7. **Upload PDFs or text** — `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, `.zip`. Creates a `USER_UPLOAD` collection.
-8. **Public URLs** — one URL per line, optional name (e.g. `gdelt`). Same-site children only (depth 2, up to 80 pages). Stored as `USER_URLS`, never mixed into Wikipedia.
-9. **AI share over time** — yearly bins from last-modified (HTTP `Last-Modified` / page meta), not the year the prose was written. Hidden if the collection has no dates.
-10. **Delete** — shown for every collection except Wikipedia India.
-
-There is **no POST that creates a Wikipedia subset dataset**. `topic=` and `ids=` are view filters only.
-
-## Lifecycle of one additional collection (URL crawl or PDF/text)
-
-Wikipedia India is already seeded. This section is the full life of **one extra collection** — a public URL (same-site crawl) **or** a PDF/text upload. That extra set is independent. It is never mixed into Wikipedia India.
-
-Open the shared demo at [https://full-definition-hundreds-bye.trycloudflare.com](https://full-definition-hundreds-bye.trycloudflare.com) or [http://localhost:8080](http://localhost:8080). Both hit the same `knowledgeos.exe` process and the same SQLite file.
-
-### 1. Add it
-
-**Public URL (same-site crawl).** In **Public URLs**, paste one URL per line (optional name, e.g. `gdelt`). **Crawl same-site pages and analyze** calls `POST /datasets/from-urls`. The crawler fetches each seed, then follows in-site child links only (depth 2, up to 80 pages). Stored as kind `USER_URLS`.
-
-**Or upload PDF / text.** Choose `.pdf`, `.txt`, `.md`, `.html`, `.jsonl`, or `.zip`, optional dataset name, then **Upload and analyze**. That is `POST /datasets/upload`, kind `USER_UPLOAD`.
-
-Either path writes a **new** collection in `./data/knowledgeos.db`. Pages from that crawl or upload stay in that collection only. They are never appended to Wikipedia India.
-
-**Wikipedia topic is not this step.** The topic dropdown is a view filter on Wikipedia India only. Changing it does not create a dataset. There is no POST that materializes a Wikipedia subset.
-
-### 2. It appears for every visitor
-
-`GET /datasets` lists the new row. It shows up in the **Dataset** dropdown for **all** visitors on this process — you on localhost and anyone on the public tunnel. This is a shared demo, not a private instance. Pick the new name and **Refresh**.
-
-### 3. Open it
-
-Selecting that collection scopes every panel to its documents only:
-
-- **Analysis across collection** — share of documents, share of analyzed words, uncertainty range, and example cards.
-- **Bands** — counts and examples for `LIKELY_AI`, `LIKELY_HUMAN`, and `UNCERTAIN` (AI if `p >= 0.58`, human if `p <= 0.42`, otherwise uncertain, or if the interval is wider than `0.50`).
-- **Document graph** — circular cluster layout (unlabeled dots, one heading per cluster). Hover a dot for the title. Edges are embedding cosine (`k=8`, min cosine `0.32`). Click a heading or cluster to zoom; analysis follows that visible set.
-- **AI share over time** — yearly estimate binned by **last-modified** (HTTP `Last-Modified` or page meta such as `article:modified_time`), not the year the prose was written. A later date can mean an edit. If the collection has no dates (common for many PDF uploads), the chart stays hidden.
-
-Click a document to highlight it in analysis and open the detail card (signals, neighbors, text).
-
-### 4. Explain insights on the visible set
-
-**Explain insights** (on the graph card and on Analysis across collection) posts `POST /datasets/{id}/insights` with the same `topic=` / `ids=` scope as the graph. It reads the **visible** set — the whole extra collection, or the cluster you clicked — and opens a short estimate in the popup. No API key. GraphSAGE is not in that text.
-
-### 5. Delete it
-
-Any collection **except** Wikipedia India can be removed. The dashboard **Delete** button (hidden on Wikipedia India) calls `DELETE /datasets/{id}`. Documents, edges, and scores for that id go away; other collections stay separate. Wikipedia India is refused (`403`). A collection named `GDELT` can be deleted this way even though it survives startup prune.
-
-### 6. How long it lasts
-
-There is **no hour TTL** while `knowledgeos.exe` is running. The extra collection stays until you delete it or one of these happens:
-
-| What you do | Extra collections (upload / URL) |
-| --- | --- |
-| Leave `knowledgeos.exe` running (tunnel stays up, or you only restart the Cloudflare tunnel) | **Kept.** Tunnel-only restart does not prune. |
-| Restart `knowledgeos.exe` | **Pruned** on startup unless the name is `Wikipedia India` or `GDELT`. |
-| Delete `./data/knowledgeos.db` | **Wiped**, including Wikipedia India. |
-
-## REST APIs (same JSON field names as the dashboard)
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| GET | `/health` | `{"status":"ok"}` |
-| GET | `/datasets` | Wikipedia first, then unique user collections. Brief: `id`, `name`, `kind`, `analysisState`, `documentCount`, `topics`, `graphSageStatus`, `wikipedia`. |
-| DELETE | `/datasets/{id}` | Removes that collection and its documents / edges / scores. Wikipedia India is protected (`403`). |
-| POST | `/datasets/upload` | multipart `files` + optional `name`. |
-| POST | `/datasets/from-urls` | JSON `{name, urls}`. Extra fields: `seedCount`, `extraPages`, `ingestedPages`, `failedPages`, `crawlMaxDepth`, `crawlMaxPages`. |
-| POST | `/datasets/{id}/analyze` | Re-score the collection. |
-| GET | `/datasets/{id}/summary` | `metric=documents\|words`, `topic=`, `ids=`. Shares, ranges, bands, optional URL-vs-Wikipedia comparison. |
-| GET | `/datasets/{id}/graph` | `topic=`, `ids=`. Nodes + edges. |
-| GET | `/datasets/{id}/examples` | `band=LIKELY_AI\|LIKELY_HUMAN\|UNCERTAIN`, `limit=`. |
-| GET | `/datasets/{id}/breakdown` | `by=source\|topic\|time`. `{by, available, rows}`. |
-| GET | `/datasets/{id}/documents/{docId}` | Signals, neighbors, text. |
-| GET | `/datasets/{id}/topics` | Distinct topics (Wikipedia filter). |
-| POST | `/datasets/{id}/insights` | `topic=`, `ids=` — same visible scope as Analysis across collection. Runs `tools/insights/agent.py` on summary/graph/time JSON. `{text, source, llmRequired: false}`. No API key required. |
-| POST | `/datasets/{id}/graphsage/train` | Gated. `{status, message, usedInHeadline: false}`. |
-
-Bands: AI if `p >= 0.58`, human if `p <= 0.42`, otherwise uncertain (or if the interval is wider than `0.50`). Rank mix `0.38`.
-
-## Environment variables
-
-| Env var | Default | Notes |
-| --- | --- | --- |
-| `PORT` / `SERVER_PORT` | `8080` | Listen port. |
-| `KNOWLEDGEOS_DB` | `./data/knowledgeos.db` | SQLite path. |
-| `KNOWLEDGEOS_WEB` | *(auto)* | Directory containing `index.html`. |
-| `KNOWLEDGEOS_EMBED_DIM` | `128` | Hashed embedding size. |
-| `KNOWLEDGEOS_GRAPH_K` | `8` | kNN neighbors per document. |
-| `KNOWLEDGEOS_GRAPH_MIN_COSINE` | `0.32` | |
-| `KNOWLEDGEOS_SEED_WIKIPEDIA` | `true` | If false, skip India seed/crawl entirely. |
-| `KNOWLEDGEOS_CRAWL_MAX_DEPTH` | `2` | Generic URL crawler only. |
-| `KNOWLEDGEOS_CRAWL_MAX_PAGES` | `80` | Generic URL crawler only. |
-| `KNOWLEDGEOS_CRAWL_TIMEOUT_MS` | `12000` | |
-| `KNOWLEDGEOS_CRAWL_DELAY_MS` | `200` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL` / `CRAWL` | `true` | `false` → offline India fixture. |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_PAGES` | `2000` | Independent of the generic crawler. |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_MAX_DEPTH` | `4` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_DELAY_MS` | `300` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_TIMEOUT_MS` | `15000` | |
-| `KNOWLEDGEOS_WIKIPEDIA_INDIA_FLUSH_EVERY` | `25` | Incremental score flush during crawl. |
-| `KNOWLEDGEOS_BAND_AI_MIN` | `0.58` | Band thresholds; not proof. |
-| `KNOWLEDGEOS_BAND_HUMAN_MAX` | `0.42` | |
-| `KNOWLEDGEOS_BAND_MAX_INTERVAL` | `0.50` | Wider interval → uncertain. |
-| `KNOWLEDGEOS_CALIBRATE_RANK_MIX` | `0.38` | Mix of raw p(AI) with collection rank. |
+1. **Create** — Wikipedia and GDELT are seeded on start. A user specific dataset is created by PDF upload or a public URL (must be open-source public dataset with atleast 1000 pages). Cap 7 collections.
+3. **Analyze** — Stylometry, detectors, hashed embeddings, calibration, era scores of all data inclusing the one uploaded by the user (pre- / post–September 2019). Three bands.
+4. **Graph** — kNN edges on embedding cosine. GraphSAGE neighborhood embeddings may be stored for the graph
+5. **Query-time views** — Dataset = one collection, or **All sources** (union). Topic = country filter on that view.
+6. **Dashboard** — Summary readings, time chart, document graph, subject-mix chart, source breakdown, final AI-common analysis.
+7. **Delete** — Allowed for any user collection except Wikipedia and GDELT

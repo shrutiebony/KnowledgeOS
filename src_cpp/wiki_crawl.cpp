@@ -13,6 +13,7 @@
 #include <iostream>
 #include <ostream>
 #include <map>
+#include <mutex>
 #include <regex>
 #include <thread>
 #include <unordered_set>
@@ -654,11 +655,60 @@ static int topic_count_of(const std::map<std::string, int>& counts, const std::s
     return it == counts.end() ? 0 : it->second;
 }
 
+static int wiki_have(const std::map<std::string, int>& counts, const std::string& topic) {
+    if (iequals(topic, SHARED_TOPIC_INDIA) || iequals(topic, SHARED_TOPIC_GEO_INDIA)) {
+        return topic_count_of(counts, SHARED_TOPIC_INDIA) + topic_count_of(counts, SHARED_TOPIC_GEO_INDIA);
+    }
+    return topic_count_of(counts, topic);
+}
+
+static bool wiki_campaign_enabled(const Config& cfg, const char* topic) {
+    if (iequals(topic, SHARED_TOPIC_INDIA) || iequals(topic, SHARED_TOPIC_GEO_INDIA)) {
+        return cfg.wikipedia_crawl_india;
+    }
+    if (iequals(topic, SHARED_TOPIC_GERMANY)) return cfg.wikipedia_crawl_germany;
+    if (iequals(topic, SHARED_TOPIC_USA)) return cfg.wikipedia_crawl_usa;
+    if (iequals(topic, SHARED_TOPIC_AUSTRALIA)) return cfg.wikipedia_crawl_australia;
+    return false;
+}
+
+static std::mutex g_wiki_rl_mu;
+static int g_wiki_gap_ms = 0;
+
+static void wiki_note_status(int status, const Config& cfg) {
+    std::lock_guard<std::mutex> lk(g_wiki_rl_mu);
+    int floor = std::max(cfg.wikipedia_delay_ms, 1500);
+    if (status == 429 || status == 503) {
+        g_wiki_gap_ms = std::min(std::max(g_wiki_gap_ms * 2, 15000), 60000);
+    } else if (status > 0 && status < 400) {
+        if (g_wiki_gap_ms > floor) g_wiki_gap_ms = std::max(g_wiki_gap_ms * 3 / 4, floor);
+        else g_wiki_gap_ms = floor;
+    }
+}
+
+static void wiki_throttle(const Config& cfg) {
+    int gap;
+    {
+        std::lock_guard<std::mutex> lk(g_wiki_rl_mu);
+        if (g_wiki_gap_ms < cfg.wikipedia_delay_ms) g_wiki_gap_ms = cfg.wikipedia_delay_ms;
+        gap = g_wiki_gap_ms;
+    }
+    if (gap > 0) std::this_thread::sleep_for(std::chrono::milliseconds(gap));
+}
+
 static HttpResponse wiki_api_get(const std::string& api, const Config& cfg) {
-    auto res = http_get(api, UA, cfg.wikipedia_timeout_ms, 8'000'000);
-    if (res.status == 429 || res.status == 503) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(std::max(cfg.wikipedia_delay_ms, 2500)));
+    HttpResponse res;
+    for (int attempt = 0; attempt < 16; ++attempt) {
+        wiki_throttle(cfg);
         res = http_get(api, UA, cfg.wikipedia_timeout_ms, 8'000'000);
+        wiki_note_status(res.status, cfg);
+        if (res.status != 429 && res.status != 503) return res;
+        int gap;
+        {
+            std::lock_guard<std::mutex> lk(g_wiki_rl_mu);
+            gap = g_wiki_gap_ms;
+        }
+        std::cerr << "Wikipedia API " << res.status << ", hold " << gap << "ms\n" << std::flush;
     }
     return res;
 }
@@ -667,7 +717,7 @@ static bool emit_wiki_page(const std::string& title, const std::string& text, co
                            std::unordered_set<std::string>& already, std::unordered_set<std::string>& stored_keys,
                            std::map<std::string, int>& topic_counts, WikiCrawlStats& stats,
                            const std::function<void(const WikiPage&)>& on_page) {
-    if (topic_count_of(topic_counts, topic) >= per_topic) return false;
+    if (wiki_have(topic_counts, topic) >= per_topic) return false;
     if (skip_namespace(title) || is_hub_namespace(title)) return false;
     if (count_words(text) < WIKI_MIN_ARTICLE_WORDS || looks_like_disambiguation(title, text)) return false;
     std::string url = wiki_article_url(title);
@@ -702,7 +752,7 @@ static void harvest_extract_titles(const Config& cfg, const char* topic, const s
                                    std::unordered_set<std::string>& stored_keys, std::map<std::string, int>& topic_counts,
                                    WikiCrawlStats& stats, const std::function<void(const WikiPage&)>& on_page) {
     const int batch = 20;
-    for (size_t i = 0; i < titles.size() && topic_count_of(topic_counts, topic) < per_topic; ++i) {
+    for (size_t i = 0; i < titles.size() && wiki_have(topic_counts, topic) < per_topic; ++i) {
         std::string joined;
         int n = 0;
         while (i < titles.size() && n < batch) {
@@ -728,6 +778,10 @@ static void harvest_extract_titles(const Config& cfg, const char* topic, const s
                           "&exchars=1800&exlimit=20&titles=" +
                           url_encode(joined);
         auto res = wiki_api_get(api, cfg);
+        if (res.status == 429 || res.status == 503) {
+            i = i > 0 ? i - 1 : 0;
+            continue;
+        }
         if (res.status >= 400 || res.body.empty() || !res.error.empty()) {
             stats.failed++;
             continue;
@@ -746,13 +800,13 @@ static void harvest_category_extracts(const Config& cfg, std::string cat, const 
     for (char& c : cat) if (c == '_') c = ' ';
     cat = trim(cat);
     if (cat.empty()) return;
-    int before = topic_count_of(topic_counts, topic);
+    int before = wiki_have(topic_counts, topic);
     std::cerr << "Wikipedia category extracts " << cat << " [" << topic << " have " << before << "]\n"
               << std::flush;
     std::vector<std::string> titles;
     std::string cont;
     for (int page = 0; page < 8 && static_cast<int>(titles.size()) < 1200 &&
-                       topic_count_of(topic_counts, topic) < per_topic; ++page) {
+                       wiki_have(topic_counts, topic) < per_topic; ++page) {
         if (page > 0 && cfg.wikipedia_delay_ms > 0) {
             std::this_thread::sleep_for(std::chrono::milliseconds(cfg.wikipedia_delay_ms));
         }
@@ -768,8 +822,8 @@ static void harvest_category_extracts(const Config& cfg, std::string cat, const 
                       << res.error << " bytes=" << res.body.size() << "\n"
                       << std::flush;
             if (res.status == 429 || res.status == 503) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(15000));
-                break;
+                --page;
+                continue;
             }
             break;
         }
@@ -795,8 +849,8 @@ static void harvest_category_extracts(const Config& cfg, std::string cat, const 
     }
     std::cerr << "Wikipedia queued " << titles.size() << " titles from " << cat << "\n" << std::flush;
     harvest_extract_titles(cfg, topic, titles, per_topic, already, stored_keys, topic_counts, stats, on_page);
-    std::cerr << "Wikipedia " << cat << " stored +" << (topic_count_of(topic_counts, topic) - before) << " now "
-              << topic_count_of(topic_counts, topic) << "\n"
+    std::cerr << "Wikipedia " << cat << " stored +" << (wiki_have(topic_counts, topic) - before) << " now "
+              << wiki_have(topic_counts, topic) << "\n"
               << std::flush;
 }
 
@@ -876,6 +930,55 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
         std::vector<const char*> seeds;
     };
     static const Campaign campaigns[] = {
+        {SHARED_TOPIC_GERMANY,
+         {"https://en.wikipedia.org/wiki/Category:Towns_in_Bavaria",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_North_Rhine-Westphalia",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Baden-Württemberg",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Lower_Saxony",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Hesse",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Saxony",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Rhineland-Palatinate",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Schleswig-Holstein",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Thuringia",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Brandenburg",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Saxony-Anhalt",
+          "https://en.wikipedia.org/wiki/Category:Municipalities_in_Bavaria",
+          "https://en.wikipedia.org/wiki/Category:Municipalities_in_North_Rhine-Westphalia",
+          "https://en.wikipedia.org/wiki/Category:Municipalities_in_Baden-Württemberg",
+          "https://en.wikipedia.org/wiki/Category:Municipalities_in_Lower_Saxony",
+          "https://en.wikipedia.org/wiki/Category:Municipalities_in_Hesse",
+          "https://en.wikipedia.org/wiki/Category:Populated_places_in_Germany",
+          "https://en.wikipedia.org/wiki/Category:Districts_of_Germany",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_North_Rhine-Westphalia",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Bavaria",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Baden-Württemberg",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Lower_Saxony",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Hesse",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Germany",
+          "https://en.wikipedia.org/wiki/Category:Towns_in_Germany",
+          "https://en.wikipedia.org/wiki/Germany",
+          "https://en.wikipedia.org/wiki/Berlin",
+          "https://en.wikipedia.org/wiki/Munich",
+          "https://en.wikipedia.org/wiki/Hamburg"}},
+        {SHARED_TOPIC_INDIA,
+         {"https://en.wikipedia.org/wiki/Category:Cities_in_Maharashtra",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Uttar_Pradesh",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Tamil_Nadu",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Karnataka",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_West_Bengal",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Gujarat",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Rajasthan",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Kerala",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_Madhya_Pradesh",
+          "https://en.wikipedia.org/wiki/Category:Cities_in_India",
+          "https://en.wikipedia.org/wiki/Category:States_and_union_territories_of_India",
+          "https://en.wikipedia.org/wiki/Category:Populated_places_in_India",
+          "https://en.wikipedia.org/wiki/India",
+          "https://en.wikipedia.org/wiki/Mumbai",
+          "https://en.wikipedia.org/wiki/Delhi",
+          "https://en.wikipedia.org/wiki/Kolkata",
+          "https://en.wikipedia.org/wiki/Chennai",
+          "https://en.wikipedia.org/wiki/Bengaluru"}},
         {SHARED_TOPIC_USA,
          {"https://en.wikipedia.org/wiki/Category:Cities_in_California",
           "https://en.wikipedia.org/wiki/Category:Cities_in_Texas",
@@ -895,18 +998,6 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
           "https://en.wikipedia.org/wiki/Texas",
           "https://en.wikipedia.org/wiki/New_York_City",
           "https://en.wikipedia.org/wiki/Florida"}},
-        {SHARED_TOPIC_GERMANY,
-         {"https://en.wikipedia.org/wiki/Category:Cities_in_North_Rhine-Westphalia",
-          "https://en.wikipedia.org/wiki/Category:Cities_in_Bavaria",
-          "https://en.wikipedia.org/wiki/Category:Cities_in_Baden-Württemberg",
-          "https://en.wikipedia.org/wiki/Category:Cities_in_Lower_Saxony",
-          "https://en.wikipedia.org/wiki/Category:Cities_in_Hesse",
-          "https://en.wikipedia.org/wiki/Category:Cities_in_Germany",
-          "https://en.wikipedia.org/wiki/Category:Towns_in_Germany",
-          "https://en.wikipedia.org/wiki/Germany",
-          "https://en.wikipedia.org/wiki/Berlin",
-          "https://en.wikipedia.org/wiki/Munich",
-          "https://en.wikipedia.org/wiki/Hamburg"}},
         {SHARED_TOPIC_AUSTRALIA,
          {"https://en.wikipedia.org/wiki/Category:Suburbs_of_Sydney",
           "https://en.wikipedia.org/wiki/Category:Suburbs_of_Melbourne",
@@ -938,11 +1029,24 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
     std::string last_error;
     const int per_topic = std::max({cfg.wikipedia_max_pages, WIKI_MIN_SHARED_PAGES, WIKI_MIN_COUNTRY_PAGES});
     const int max_fetches_each = std::max(per_topic * 8, 4000);
+    std::cerr << "Wikipedia harvest cooling 12s before API calls.\n" << std::flush;
+    std::this_thread::sleep_for(std::chrono::seconds(12));
 
     for (const auto& campaign : campaigns) {
-        if (topic_count_of(topic_counts, campaign.topic) >= per_topic) continue;
+        if (!wiki_campaign_enabled(cfg, campaign.topic)) {
+            std::cerr << "Wikipedia skip " << campaign.topic << " harvest (disabled).\n" << std::flush;
+            continue;
+        }
+        if ((iequals(campaign.topic, SHARED_TOPIC_INDIA) || iequals(campaign.topic, SHARED_TOPIC_GEO_INDIA)) &&
+            wiki_have(topic_counts, SHARED_TOPIC_INDIA) >= 500) {
+            std::cerr << "Wikipedia skip India harvest (already have "
+                      << wiki_have(topic_counts, SHARED_TOPIC_INDIA) << ").\n"
+                      << std::flush;
+            continue;
+        }
+        if (wiki_have(topic_counts, campaign.topic) >= per_topic) continue;
         std::cerr << "Wikipedia extracts " << campaign.topic << " from en.wikipedia.org (have "
-                  << topic_count_of(topic_counts, campaign.topic) << ", want " << per_topic << ").\n"
+                  << wiki_have(topic_counts, campaign.topic) << ", want " << per_topic << ").\n"
                   << std::flush;
         std::vector<std::string> seed_articles;
         std::vector<std::string> seed_cats;
@@ -971,10 +1075,10 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                    low.find("buildings") != std::string::npos;
         };
         for (const auto& cat : seed_cats) {
-            if (topic_count_of(topic_counts, campaign.topic) >= per_topic) break;
+            if (wiki_have(topic_counts, campaign.topic) >= per_topic) break;
             harvest_category_extracts(cfg, cat, campaign.topic, per_topic, already, stored_keys, topic_counts,
                                       stats, on_page);
-            if (topic_count_of(topic_counts, campaign.topic) >= per_topic) break;
+            if (wiki_have(topic_counts, campaign.topic) >= per_topic) break;
             auto place_list_cat = [](const std::string& title) {
                 std::string low = ascii_lower(title);
                 return low.find("cities in") != std::string::npos || low.find("towns in") != std::string::npos ||
@@ -982,27 +1086,32 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                        low.find("counties") != std::string::npos ||
                        low.find("populated places") != std::string::npos ||
                        low.find("states of") != std::string::npos ||
-                       low.find("states and territories") != std::string::npos;
+                       low.find("states and territories") != std::string::npos ||
+                       low.find("union territor") != std::string::npos ||
+                       low.find("districts of") != std::string::npos ||
+                       low.find("municipalities in") != std::string::npos ||
+                       low.find("municipalities of") != std::string::npos ||
+                       low.find("federal states") != std::string::npos;
             };
             for (const auto& sub : fetch_subcategories(cfg, cat, 80)) {
-                if (topic_count_of(topic_counts, campaign.topic) >= per_topic) break;
+                if (wiki_have(topic_counts, campaign.topic) >= per_topic) break;
                 if (skip_meta_cat(sub) || !place_list_cat(sub)) continue;
                 harvest_category_extracts(cfg, sub, campaign.topic, per_topic, already, stored_keys, topic_counts,
                                           stats, on_page);
-                if (topic_count_of(topic_counts, campaign.topic) >= per_topic) break;
+                if (wiki_have(topic_counts, campaign.topic) >= per_topic) break;
                 for (const auto& sub2 : fetch_subcategories(cfg, sub, 80)) {
-                    if (topic_count_of(topic_counts, campaign.topic) >= per_topic) break;
+                    if (wiki_have(topic_counts, campaign.topic) >= per_topic) break;
                     if (skip_meta_cat(sub2) || !place_list_cat(sub2)) continue;
                     harvest_category_extracts(cfg, sub2, campaign.topic, per_topic, already, stored_keys,
                                               topic_counts, stats, on_page);
                 }
             }
         }
-        if (topic_count_of(topic_counts, campaign.topic) < per_topic) {
+        if (wiki_have(topic_counts, campaign.topic) < per_topic) {
             harvest_extract_titles(cfg, campaign.topic, seed_articles, per_topic, already, stored_keys, topic_counts,
                                    stats, on_page);
         }
-        if (topic_count_of(topic_counts, campaign.topic) < per_topic) {
+        if (wiki_have(topic_counts, campaign.topic) < per_topic) {
             std::vector<std::string> linked;
             for (const auto& t : seed_articles) {
                 auto more = fetch_article_links(cfg, t, 800);
@@ -1012,9 +1121,9 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                                    on_page);
         }
         std::cerr << "Wikipedia " << campaign.topic << " after extracts "
-                  << topic_count_of(topic_counts, campaign.topic) << " stored.\n"
+                  << wiki_have(topic_counts, campaign.topic) << " stored.\n"
                   << std::flush;
-        if (topic_count_of(topic_counts, campaign.topic) >= per_topic) continue;
+        if (wiki_have(topic_counts, campaign.topic) >= per_topic) continue;
 
         std::deque<Item> queue;
         std::unordered_set<std::string> seen;
@@ -1090,9 +1199,9 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
         }
         int campaign_fetches = 0;
         std::cerr << "Wikipedia BFS " << campaign.topic << " from en.wikipedia.org (have "
-                  << topic_count_of(topic_counts, campaign.topic) << ", want " << per_topic << ").\n"
+                  << wiki_have(topic_counts, campaign.topic) << ", want " << per_topic << ").\n"
                   << std::flush;
-        while (!queue.empty() && topic_count_of(topic_counts, campaign.topic) < per_topic &&
+        while (!queue.empty() && wiki_have(topic_counts, campaign.topic) < per_topic &&
                campaign_fetches < max_fetches_each) {
             Item item = queue.front();
             queue.pop_front();
@@ -1107,8 +1216,20 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
             campaign_fetches++;
             auto page = http_get(item.url, UA, cfg.wikipedia_timeout_ms, 5'000'000);
             if (page.status == 429 || page.status == 503) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(std::max(cfg.wikipedia_delay_ms, 300)));
+                int wait = std::max(cfg.wikipedia_delay_ms, 4000);
+                std::cerr << "Wikipedia HTTP " << page.status << ", backoff " << wait << "ms\n" << std::flush;
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                 page = http_get(item.url, UA, cfg.wikipedia_timeout_ms, 5'000'000);
+                if (page.status == 429 || page.status == 503) {
+                    wait = std::min(wait * 2, 60000);
+                    std::cerr << "Wikipedia HTTP " << page.status << ", requeue after " << wait << "ms\n"
+                              << std::flush;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    queue.push_front(item);
+                    stats.fetched--;
+                    campaign_fetches--;
+                    continue;
+                }
             }
             if (page.status >= 400 || page.body.empty() || !page.error.empty()) {
                 stats.failed++;
@@ -1153,7 +1274,7 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
             bool enough_text = count_words(text) >= WIKI_MIN_ARTICLE_WORDS && !looks_like_disambiguation(title, text);
             if (storeable && enough_text) {
                 bool already_have = stored_key && stored_keys.count(*stored_key);
-                if (!already_have && topic_count_of(topic_counts, campaign.topic) < per_topic) {
+                if (!already_have && wiki_have(topic_counts, campaign.topic) < per_topic) {
                         WikiPage wp;
                         wp.url = stored_url;
                         wp.title = title;
@@ -1199,7 +1320,7 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                 }
             }
         }
-        std::cerr << "Wikipedia " << campaign.topic << " now " << topic_count_of(topic_counts, campaign.topic)
+        std::cerr << "Wikipedia " << campaign.topic << " now " << wiki_have(topic_counts, campaign.topic)
                   << " stored.\n";
     }
 

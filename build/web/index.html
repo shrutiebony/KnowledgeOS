@@ -387,20 +387,6 @@
       border: 1px solid var(--hair);
       background: transparent;
     }
-    .pill.ai, .pill.human, .pill.unc { color: #302417; }
-    .cols h4.pill {
-      display: block;
-      margin: 0 0 10px;
-      padding: 0 0 6px;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid var(--hair);
-      font-family: var(--display);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      text-transform: none;
-    }
     #graph {
       height: 560px;
       border-radius: 0;
@@ -444,7 +430,8 @@
       padding: 4px 12px;
       font-size: 12px;
     }
-    .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+    #subjectChart { min-height: 80px; margin: 4px 0 0; }
+    #subjectChart svg { display: block; width: 100%; height: auto; }
     .analysis-portrait {
       margin: 6px 0 28px;
       max-width: 46rem;
@@ -520,32 +507,7 @@
       font-weight: 600;
       letter-spacing: -0.03em;
     }
-    .analysis-note { margin: 0 0 18px; }
-    .ai-common {
-      margin: 22px 0 0;
-      max-width: 46rem;
-    }
-    .ai-common p {
-      margin: 0 0 8px;
-      font-size: 15px;
-      line-height: 1.55;
-      color: #302417;
-    }
-    .ex {
-      border: none;
-      border-top: 1px solid var(--hair);
-      border-radius: 0;
-      padding: 12px 0;
-      cursor: default;
-      min-height: 0;
-      background: transparent;
-      color: #302417;
-    }
-    .ex:first-child { border-top: none; padding-top: 4px; }
-    .ex[onclick] { cursor: pointer; }
-    .ex[onclick]:hover { opacity: 0.72; }
-    .ex h4 { margin: 0 0 6px; font-family: var(--display); font-size: 16px; color: #302417; }
-    .ex p { margin: 0; color: #302417; font-size: 12px; line-height: 1.45; }
+    .analysis-note { margin: 0 0 12px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; color: #302417; }
     th, td { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--line); color: #302417; }
     th { font-family: var(--display); font-weight: 600; }
@@ -557,6 +519,7 @@
       padding: 4px 56px 28px 40px;
       max-width: 44rem;
     }
+    .reading .kicker { margin: 0 0 10px; }
     .reading p {
       margin: 0 0 8px;
       font-size: 15px;
@@ -638,6 +601,9 @@
       background: rgba(196, 92, 78, 0.18);
       border: 1px solid rgba(196, 92, 78, 0.28);
     }
+    .swatch.rest {
+      background: var(--human);
+    }
     #overlay {
       position: fixed;
       inset: 0;
@@ -705,7 +671,6 @@
       aside { background: none; padding: 12px 28px 24px; }
       aside::after { display: none; }
       main, .reading, .site-footer { padding-left: 28px; padding-right: 28px; }
-      .cols { grid-template-columns: 1fr; }
       .compare { grid-template-columns: 1fr; }
       .compare .pane, .compare .pane + .pane {
         padding: 0;
@@ -871,16 +836,13 @@
           <button type="button" class="linkish js-explain-insights" id="explainInsights">Explain insights</button>
         </div>
         <div class="analysis-portrait" id="analysisOverview"></div>
-        <p class="hint analysis-note" id="analysisHint">Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.</p>
-        <div class="cols" id="exampleCols">
-          <div><h4 class="pill ai">Likely AI-generated</h4><div id="exAi"></div></div>
-          <div><h4 class="pill human">Likely human-written</h4><div id="exHuman"></div></div>
-          <div><h4 class="pill unc">Uncertain</h4><div id="exUnc"></div></div>
+        <p class="hint analysis-note" id="analysisHint">Later pages are scored against pre-2019 writing in this visible set.</p>
+        <div class="chart-legend" id="subjectChartLegend" hidden>
+          <span><i class="swatch"></i> Looks AI-generated</span>
+          <span><i class="swatch rest"></i> Rest of that subject</span>
+          <span>Bar length compares subject share</span>
         </div>
-        <div class="ai-common" id="aiCommon" hidden>
-          <p id="aiCommonL1"></p>
-          <p id="aiCommonL2"></p>
-        </div>
+        <div id="subjectChart"></div>
       </div>
       </section>
       <div class="card">
@@ -889,10 +851,13 @@
       </div>
     </main>
 
-  <section class="reading" id="readingSummary" aria-label="What was crawled">
+  <section class="reading" id="readingSummary" aria-label="Final analysis of shared AI marks">
+    <p class="kicker">Final analysis</p>
     <p id="readingL1"></p>
     <p id="readingL2"></p>
     <p id="readingL3"></p>
+    <p id="readingL4"></p>
+    <p id="readingL5"></p>
   </section>
 
   <footer class="site-footer">
@@ -928,8 +893,13 @@
     const OTHER_SUBJECT_LABEL = "Other (subjects with under 100 pages)";
     const OTHER_GROUP_LABEL = "Other (remaining groups)";
     const COUNTRY_TOPICS = new Set(["india", "united states", "germany", "australia", "geography of india", "usa", "us"]);
-    const BAND_AI_MIN = 0.58;
-    const BAND_HUMAN_MAX = 0.42;
+    const SEED_SUBJECTS = [
+      "news and media",
+      "schools and universities",
+      "places and geography",
+      "sports",
+      "food and cooking"
+    ];
 
     function isCountryTopic(name) {
       return COUNTRY_TOPICS.has(String(name || "").trim().toLowerCase());
@@ -980,7 +950,7 @@
       if (isOtherGroup(name)) return name;
       return displayTopic(name);
     }
-    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null };
+    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null, lastAiCommon: null, lastAiCommonKey: "", aiCommonSeq: 0 };
     let datasetsCache = [];
     const overlay = document.getElementById("overlay");
     const popupEl = document.getElementById("popup");
@@ -1050,7 +1020,7 @@
       "From add to delete\n" +
       "At most 7 collections, including Wikipedia and GDELT. The new collection appears in the Dataset dropdown. Select that one collection to analyze and view it in isolation. Click Explain insights to explain the currently visible graph or collection. When you are done, Delete that collection. Wikipedia cannot be deleted. GDELT cannot be deleted.\n\n" +
       "What the readings mean\n" +
-      "Country topics with at least 100 documents fall into likely AI, likely human, or uncertain bands from the country's mean estimate. Individual articles are documents, not topics. These readings are an estimate. GraphSAGE is not a detection signal.";
+      "The subject chart shows the mix of this visible set and how much of each subject looks AI-generated. Individual articles are documents, not topics. GraphSAGE is not a detection signal.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
@@ -1504,8 +1474,8 @@
       else if (summary.topicView && summary.topic) heading.textContent = `Analysis across collection · ${displayTopic(summary.topic)}`;
       else heading.textContent = unionView ? "Analysis across all sources" : "Analysis across collection";
       const hint = document.getElementById("analysisHint");
-      if (hint && !document.getElementById("exampleCols")?.hidden) {
-        hint.textContent = "Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.";
+      if (hint) {
+        hint.textContent = "Later pages are scored against pre-2019 writing in this visible set.";
       }
       const showAll = document.getElementById("showAllGraph");
       if (showAll) showAll.hidden = !state.selectedCluster;
@@ -1524,141 +1494,118 @@
     }
 
 
-    function topicBandFromMean(mean) {
-      if (mean >= BAND_AI_MIN) return "LIKELY_AI";
-      if (mean <= BAND_HUMAN_MAX) return "LIKELY_HUMAN";
-      return "UNCERTAIN";
-    }
-
-    function aggregateTopics(nodes) {
-      const country = selectedCountryTopic();
-      const groups = new Map();
-      (nodes || []).forEach(n => {
-        const key = displayTopic(String((n && (country ? n.subtopic : n.topic)) || "").trim());
-        if (!key) return;
-        if (!country && !isCountryTopic(key)) return;
-        if (!groups.has(key)) groups.set(key, []);
-        groups.get(key).push(n);
-      });
-      const rows = [];
-      groups.forEach((members, topic) => {
-        if (members.length < MIN_TOPIC_DOCS) return;
-        const scored = members.filter(m => m.pAi != null);
-        if (!scored.length) return;
-        const mean = scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length;
-        rows.push({
-          topic,
-          pAi: mean,
-          documentCount: members.length,
-          band: topicBandFromMean(mean)
-        });
-      });
-      return rows;
-    }
-
     function visibleAnalysisNodes() {
-      const view = state.fullView || state.graphView;
+      const view = state.graphView || state.fullView;
       return (view && view.nodes) || [];
     }
 
-    function renderTopicExamples(list, elId) {
-      const el = document.getElementById(elId);
-      if (!el) return;
-      if (!list || !list.length) {
-        el.innerHTML = `<p class="hint">None in this visible set.</p>`;
-        return;
-      }
-      el.innerHTML = list.map(d => {
-        const share = d.pAi == null ? "—" : Math.round(Number(d.pAi) * 100) + "%";
-        const n = Number(d.documentCount) || 0;
-        return `<div class="ex">
-          <h4>${esc(displayTopic(d.topic || d.title || "Untitled"))}, estimated AI share ${share}, ${n} document${n === 1 ? "" : "s"}</h4>
-        </div>`;
-      }).join("");
+    function displaySubject(name) {
+      const s = String(name || "").trim();
+      if (!s) return "";
+      return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
-    function renderTopicColumns(topics) {
-      const cols = document.getElementById("exampleCols");
-      const hint = document.getElementById("analysisHint");
-      const emptyMsg = "Later pages are scored against pre-2019 writing in this visible set. Country topics appear once a country has 100 documents. After the crawl fills a country, it will show here.";
-      if (!topics || !topics.length) {
-        if (cols) cols.hidden = true;
-        if (hint) hint.textContent = emptyMsg;
-        ["exAi", "exHuman", "exUnc"].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.innerHTML = "";
+    function subjectOf(n) {
+      const classified = classifyCorpusSubject(n);
+      if (classified) return classified;
+      const raw = String((n && n.subtopic) || "").trim();
+      if (!raw) return "";
+      const shown = displayTopic(raw);
+      if (!shown || isCountryTopic(shown) || isOtherGroup(shown)) return "";
+      if (/^(uncategorized|categories|general|miscellaneous)$/i.test(shown)) return "";
+      return shown.toLowerCase();
+    }
+
+    function mixShareLabel(share) {
+      const pct = Number(share) * 100;
+      if (pct > 0 && pct < 0.5) return "<1% of set";
+      return Math.round(pct) + "% of set";
+    }
+
+    function aggregateSubjects(nodes) {
+      const groups = new Map();
+      (nodes || []).forEach(n => {
+        const key = subjectOf(n);
+        if (!key) return;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(n);
+      });
+      const total = (nodes || []).length;
+      const rows = [];
+      groups.forEach((members, subject) => {
+        const scored = members.filter(m => m.pAi != null && Number.isFinite(Number(m.pAi)));
+        const mean = scored.length
+          ? scored.reduce((s, m) => s + Number(m.pAi), 0) / scored.length
+          : null;
+        rows.push({
+          subject,
+          documentCount: members.length,
+          mixShare: total ? members.length / total : 0,
+          pAi: mean
         });
+      });
+      const seedRank = new Map(SEED_SUBJECTS.map((s, i) => [s, i]));
+      rows.sort((a, b) => {
+        const as = seedRank.has(a.subject);
+        const bs = seedRank.has(b.subject);
+        if (as && bs) return seedRank.get(a.subject) - seedRank.get(b.subject);
+        if (as) return -1;
+        if (bs) return 1;
+        return b.documentCount - a.documentCount || a.subject.localeCompare(b.subject);
+      });
+      return { rows, total };
+    }
+
+    function renderSubjectChart() {
+      const mount = document.getElementById("subjectChart");
+      const legend = document.getElementById("subjectChartLegend");
+      const hint = document.getElementById("analysisHint");
+      if (hint) {
+        hint.textContent = "Later pages are scored against pre-2019 writing in this visible set.";
+      }
+      if (!mount) return;
+      const nodes = visibleAnalysisNodes();
+      const { rows, total } = aggregateSubjects(nodes);
+      if (!rows.length) {
+        if (legend) legend.hidden = true;
+        mount.innerHTML = total
+          ? `<p class="hint">No named subjects in this visible set.</p>`
+          : `<p class="hint">No documents in this visible set, so a subject mix cannot be drawn.</p>`;
         return;
       }
-      if (cols) cols.hidden = false;
-      if (hint) hint.textContent = "Later pages are scored against pre-2019 writing in this visible set. Country topics below have at least 100 documents. Band is the country's mean estimate.";
-      const by = { LIKELY_AI: [], LIKELY_HUMAN: [], UNCERTAIN: [] };
-      topics.forEach(t => { if (by[t.band]) by[t.band].push(t); });
-      by.LIKELY_AI.sort((a, b) => b.pAi - a.pAi || b.documentCount - a.documentCount);
-      by.LIKELY_HUMAN.sort((a, b) => a.pAi - b.pAi || b.documentCount - a.documentCount);
-      by.UNCERTAIN.sort((a, b) => b.documentCount - a.documentCount || String(a.topic).localeCompare(String(b.topic)));
-      renderTopicExamples(by.LIKELY_AI, "exAi");
-      renderTopicExamples(by.LIKELY_HUMAN, "exHuman");
-      renderTopicExamples(by.UNCERTAIN, "exUnc");
-    }
-
-    function renderTopicColumnsFromGraph() {
-      renderTopicColumns(aggregateTopics(visibleAnalysisNodes()));
-    }
-
-    function quoteCommon(items, key) {
-      return joinWords((items || []).map(row => {
-        const s = String((row && (row[key] || row.phrase || row.word)) || "").trim();
-        return s ? `"${s}"` : "";
-      }).filter(Boolean).slice(0, 4));
-    }
-
-    function renderAiCommon(data) {
-      const box = document.getElementById("aiCommon");
-      const l1 = document.getElementById("aiCommonL1");
-      const l2 = document.getElementById("aiCommonL2");
-      if (!box || !l1 || !l2) return;
-      const n = data && Number(data.documentCount) || 0;
-      box.hidden = false;
-      if (!n) {
-        l1.textContent = "No likely-AI pages in this visible set, so there is no shared wording to report.";
-        l2.textContent = "";
-        return;
-      }
-      const strong = data.strongest || {};
-      let lead = `Across ${pageCountLabel(n)} that look AI-generated, the common mark was ${strong.label || "a mix of writing signals"}`;
-      if (strong.score != null && Number.isFinite(Number(strong.score))) {
-        lead += ` (average ${Number(strong.score).toFixed(2)})`;
-      }
-      lead += ".";
-      const stocks = data.stockPhrases || [];
-      if (stocks.length) {
-        lead += ` Stock phrases that showed up on more than one of those pages were ${quoteCommon(stocks, "phrase")}.`;
-      } else {
-        lead += " Canned stock phrases were rare on those pages.";
-      }
-      l1.textContent = lead;
-      const words = data.words || [];
-      const phrases = data.phrases || [];
-      if (phrases.length && words.length) {
-        l2.textContent = `Repeated phrases included ${quoteCommon(phrases, "phrase")}. Shared words included ${quoteCommon(words, "word")}.`;
-      } else if (phrases.length) {
-        l2.textContent = `Repeated phrases included ${quoteCommon(phrases, "phrase")}.`;
-      } else if (words.length) {
-        l2.textContent = `Shared words included ${quoteCommon(words, "word")}.`;
-      } else {
-        l2.textContent = "No single word or phrase rose above the rest once filler words were set aside.";
-      }
-    }
-
-    async function loadAiCommon() {
-      const id = document.getElementById("dataset").value;
-      if (!id) return;
-      try {
-        renderAiCommon(await j(`/datasets/${id}/ai-common?${scopeQuery().replace(/^&/, "")}`));
-      } catch (err) {
-        renderAiCommon({ documentCount: 0 });
-      }
+      if (legend) legend.hidden = false;
+      const W = 880;
+      const labelW = 214;
+      const rightW = 200;
+      const rowH = 36;
+      const padT = 6;
+      const padB = 4;
+      const barH = 12;
+      const innerW = W - labelW - rightW;
+      const H = padT + padB + rows.length * rowH;
+      const maxMix = Math.max(...rows.map(r => r.mixShare), 0.01);
+      const bars = rows.map((r, i) => {
+        const y = padT + i * rowH + (rowH - barH) / 2;
+        const full = Math.max(0, innerW * (r.mixShare / maxMix));
+        const aiFrac = r.pAi == null ? 0 : Math.max(0, Math.min(1, Number(r.pAi)));
+        const aiW = full * aiFrac;
+        const restW = Math.max(0, full - aiW);
+        const mixLabel = mixShareLabel(r.mixShare);
+        const aiLabel = r.pAi == null ? "no AI score" : `${Math.round(Number(r.pAi) * 100)}% AI`;
+        const right = `${mixLabel} · ${aiLabel}`;
+        const tip = `${displaySubject(r.subject)}: ${pageCountLabel(r.documentCount)}, ${mixLabel}` +
+          (r.pAi == null ? "" : `, ${Math.round(Number(r.pAi) * 100)}% look AI-generated`);
+        const restFill = r.pAi == null ? "rgba(48,36,23,0.18)" : "#2f8f6e";
+        return `<g>
+          <title>${esc(tip)}</title>
+          <text x="${labelW - 12}" y="${y + barH - 1}" text-anchor="end" fill="#302417" font-size="13" font-family="Fraunces,Georgia,serif">${esc(displaySubject(r.subject))}</text>
+          <rect x="${labelW}" y="${y}" width="${innerW}" height="${barH}" fill="rgba(48,36,23,0.045)" />
+          ${aiW > 0.4 ? `<rect x="${labelW}" y="${y}" width="${aiW.toFixed(1)}" height="${barH}" fill="#c45c4e" />` : ""}
+          ${restW > 0.4 ? `<rect x="${(labelW + aiW).toFixed(1)}" y="${y}" width="${restW.toFixed(1)}" height="${barH}" fill="${restFill}" />` : ""}
+          <text x="${W - 4}" y="${y + barH - 1}" text-anchor="end" fill="#302417" font-size="11" font-family="Literata,Georgia,serif">${esc(right)}</text>
+        </g>`;
+      }).join("");
+      mount.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Subject mix and AI share of this visible set">${bars}</svg>`;
     }
 
     async function loadSignalMeans(id, summary) {
@@ -1686,8 +1633,7 @@
         ]);
         const seeded = summary.collectionSignals || wikipediaFallbackSignals(summary);
         applySummary(summary, { time: timeBr, signals: seeded });
-        renderTopicColumnsFromGraph();
-        loadAiCommon().catch(() => {});
+        renderSubjectChart();
         renderTimeChart(timeBr, timeChartNodes());
         renderBreakdown(br);
         if (!summary.collectionSignals) {
@@ -1722,8 +1668,7 @@
         headline: scored.length ? undefined : "Not yet analyzed",
         collectionSignals: state.lastSignals
       }, { time: state.timeBreakdown, signals: state.lastSignals });
-      renderTopicColumnsFromGraph();
-      loadAiCommon().catch(() => {});
+      renderSubjectChart();
     }
 
     async function loadAll(opts) {
@@ -2021,7 +1966,7 @@
         signals: state.lastSignals,
         nodes: (view && view.nodes) || (state.graphView && state.graphView.nodes) || []
       });
-      renderTopicColumnsFromGraph();
+      renderSubjectChart();
     }
 
     function selectCluster(name) {
@@ -2230,12 +2175,148 @@
       return [line1, line2, line3];
     }
 
-    function renderReadingSummary(summary, nodes) {
-      const lines = composeCorpusLines(nodes);
-      ["readingL1", "readingL2", "readingL3"].forEach((id, i) => {
+    function quoteCommon(items, key, limit) {
+      return joinWords((items || []).map(row => {
+        const s = String((row && (row[key] || row.phrase || row.word)) || "").trim();
+        return s ? `"${s}"` : "";
+      }).filter(Boolean).slice(0, limit || 4));
+    }
+
+    function aiCommonScopeKey() {
+      const ids = selectedClusterIds();
+      return [
+        document.getElementById("dataset").value || "",
+        document.getElementById("topic").value || "",
+        state.selectedCluster || "",
+        ids.join(",")
+      ].join("|");
+    }
+
+    function writeReadingLines(lines) {
+      ["readingL1", "readingL2", "readingL3", "readingL4", "readingL5"].forEach((id, i) => {
         const el = document.getElementById(id);
-        if (el) el.textContent = lines[i] || "";
+        if (el) el.textContent = (lines && lines[i]) || "";
       });
+    }
+
+    function commonSignalSense(key) {
+      if (key === "embeddingAnomaly") return "embedding distance from the pre-2019 writing centroid";
+      if (key === "stockPhrases") return "canned stock phrases in the page text";
+      if (key === "ngrams") return "repeated phrases in the page text";
+      if (key === "uniformity") return "even sentence length";
+      if (key === "stylometry") return "uniform writing style";
+      if (key === "stylometryDeviation") return "writing style that differs from typical pages here";
+      return "a mix of writing signals";
+    }
+
+    function composeAiCommonLines(data) {
+      const place = readingScopeLabel();
+      if (data && data.error) {
+        return [
+          `We could not read the shared wording for the AI-looking pages in ${place}.`,
+          "The strongest shared mark, stock phrases, and repeated n-grams stay blank until that read succeeds.",
+          "Try the same filter again after the collection finishes loading.",
+          "This note stays scoped to the collection, country, or cluster you have open."
+        ];
+      }
+      const n = data && Number(data.documentCount) || 0;
+      const sampled = data && Number(data.sampled) || 0;
+      if (!n) {
+        return [
+          `No pages in ${place} look AI-generated, so there is no shared wording to report.`,
+          "Unusual wording, stock phrases, and repeated n-grams need a likely-AI set before they can be compared.",
+          "Shared words and phrases will appear here when this filter has AI-looking pages.",
+          "The analysis stays scoped to the collection, country, or cluster you have open."
+        ];
+      }
+      const strong = (data && data.strongest) || {};
+      let line1 = `Across ${pageCountLabel(n)} in ${place} that look AI-generated, the strongest shared mark was ${strong.label || "a mix of writing signals"}`;
+      if (strong.score != null && Number.isFinite(Number(strong.score))) {
+        line1 += `, averaging ${Number(strong.score).toFixed(2)}`;
+      }
+      line1 += ".";
+
+      const sense = commonSignalSense(strong.key);
+      let line2;
+      if (strong.key === "embeddingAnomaly") {
+        line2 = `That shared signal is ${sense}, stronger here than canned stock phrases, repeated n-grams, or even sentences.`;
+      } else if (strong.key === "stockPhrases") {
+        line2 = `That shared signal is ${sense}, stronger here than unusual wording in the embedding space.`;
+      } else if (strong.key === "ngrams") {
+        line2 = `That shared signal is ${sense}, stronger here than unusual wording in the embedding space or canned stock phrases.`;
+      } else if (strong.key === "uniformity") {
+        line2 = `That shared signal is ${sense}, stronger here than unusual wording or canned stock phrases.`;
+      } else if (strong.key) {
+        line2 = `That shared signal is ${sense}.`;
+      } else {
+        line2 = "No single detector stood out above the others on those pages.";
+      }
+
+      const stocks = (data && data.stockPhrases) || [];
+      const phrases = (data && data.phrases) || [];
+      const words = (data && data.words) || [];
+      const stockScore = data && data.signals && data.signals.stockPhrases;
+      let line3;
+      if (stocks.length) {
+        line3 = `Stock phrases that recurred were ${quoteCommon(stocks, "phrase")}.`;
+      } else if (stockScore != null && Number(stockScore) > 0.2) {
+        line3 = `The stock-phrase detector was elevated, but canned markers such as "it is important to note" did not recur in the sampled page text.`;
+      } else {
+        line3 = "Canned stock phrases did not recur across those pages.";
+      }
+      if (sampled && sampled < n) {
+        line3 += ` Phrases and words below come from ${pageCountLabel(sampled)} with the highest scores.`;
+      }
+
+      const line4 = phrases.length
+        ? `Repeated phrases in the page text included ${quoteCommon(phrases, "phrase")}.`
+        : "No single repeated phrase rose above the rest once filler words were set aside.";
+      const line5 = words.length
+        ? `Shared words included ${quoteCommon(words, "word", 6)}.`
+        : "No single content word was shared widely enough to name.";
+      return [line1, line2, line3, line4, line5];
+    }
+
+    function renderAiCommon(data) {
+      writeReadingLines(composeAiCommonLines(data || {}));
+    }
+
+    async function loadAiCommon() {
+      const id = document.getElementById("dataset").value;
+      if (!id) return;
+      const key = aiCommonScopeKey();
+      if (state.lastAiCommon && state.lastAiCommonKey === key) {
+        renderAiCommon(state.lastAiCommon);
+        return;
+      }
+      if (state.aiCommonInflight && state.lastAiCommonKey === key) return;
+      const seq = ++state.aiCommonSeq;
+      state.lastAiCommonKey = key;
+      state.aiCommonInflight = true;
+      writeReadingLines([
+        `Reading the likely-AI pages in ${readingScopeLabel()} for shared wording, phrases, and embeddings.`,
+        "",
+        "",
+        "",
+        ""
+      ]);
+      try {
+        const q = scopeQuery().replace(/^&/, "");
+        const data = await j(`/datasets/${id}/ai-common${q ? `?${q}` : ""}`);
+        if (seq !== state.aiCommonSeq) return;
+        state.lastAiCommon = data;
+        renderAiCommon(data);
+      } catch (err) {
+        if (seq !== state.aiCommonSeq) return;
+        state.lastAiCommon = null;
+        renderAiCommon({ error: true });
+      } finally {
+        if (seq === state.aiCommonSeq) state.aiCommonInflight = false;
+      }
+    }
+
+    function renderReadingSummary() {
+      loadAiCommon().catch(() => {});
     }
 
     function onGraphClick(e) {

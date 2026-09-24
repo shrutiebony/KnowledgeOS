@@ -20,8 +20,8 @@ inline constexpr const char* SHARED_TOPIC_GEO_INDIA = "Geography of India";
 inline constexpr const char* SHARED_TOPIC_USA = "United States";
 inline constexpr const char* SHARED_TOPIC_GERMANY = "Germany";
 inline constexpr const char* SHARED_TOPIC_AUSTRALIA = "Australia";
-inline constexpr int WIKI_MIN_SHARED_PAGES = 1000;
-inline constexpr int WIKI_MIN_COUNTRY_PAGES = 1000;
+inline constexpr int WIKI_MIN_SHARED_PAGES = 500;
+inline constexpr int WIKI_MIN_COUNTRY_PAGES = 500;
 
 struct WikiPage {
     std::string url;

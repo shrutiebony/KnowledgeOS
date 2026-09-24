@@ -468,6 +468,18 @@ static bool country_topics_incomplete(const std::map<std::string, int>& counts, 
            topic_count_of(counts, SHARED_TOPIC_AUSTRALIA) < per_topic;
 }
 
+static int wiki_india_count(const std::map<std::string, int>& counts) {
+    return topic_count_of(counts, SHARED_TOPIC_INDIA) + topic_count_of(counts, SHARED_TOPIC_GEO_INDIA);
+}
+
+static bool wiki_topics_incomplete(const Config& cfg, const std::map<std::string, int>& counts, int per_topic) {
+    if (cfg.wikipedia_crawl_india && wiki_india_count(counts) < 500) return true;
+    if (cfg.wikipedia_crawl_germany && topic_count_of(counts, SHARED_TOPIC_GERMANY) < per_topic) return true;
+    if (cfg.wikipedia_crawl_usa && topic_count_of(counts, SHARED_TOPIC_USA) < per_topic) return true;
+    if (cfg.wikipedia_crawl_australia && topic_count_of(counts, SHARED_TOPIC_AUSTRALIA) < per_topic) return true;
+    return false;
+}
+
 int prune_extra_datasets(Store& store) {
     int renamed = 0;
     for (const auto& d : store.all_datasets()) {
@@ -869,17 +881,18 @@ static void crawl_and_analyze(Store& store, Config cfg, int64_t dataset_id) {
                   << " already-stored Wikipedia pages until country crawl flushes.\n";
     }
     auto topic_counts = stored_topic_counts(store, dataset_id);
-    std::cerr << "Crawling English Wikipedia (United States / Germany / Australia, 1000 each). Already stored="
+    std::cerr << "Crawling English Wikipedia (Germany / India; Australia harvest off). Already stored="
               << already.size() << " per-topic cap=" << cfg.wikipedia_max_pages
-              << " USA=" << topic_count_of(topic_counts, SHARED_TOPIC_USA)
               << " Germany=" << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY)
+              << " India=" << wiki_india_count(topic_counts)
+              << " USA=" << topic_count_of(topic_counts, SHARED_TOPIC_USA)
               << " Australia=" << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << "\n";
     int persisted = 0;
     WikiCrawlStats stats;
     try {
         stats = crawl_wikipedia(cfg, already, [&](const WikiPage& page) {
             const std::string topic = page.topic.empty() ? "General" : page.topic;
-            if (!is_shared_country_topic(topic)) return;
+            if (!is_shared_country_topic(topic) && !is_shared_india_topic(topic)) return;
             add_document(store, *dataset, page.title, page.text, page.url, WIKI_SOURCE,
                          topic, page.published_at, page.created_at);
             persisted++;
@@ -962,13 +975,13 @@ void seed_wikipedia(Store& store, const Config& cfg) {
         }
         long count = store.count_docs(existing->id);
         int stored_target = parse_wiki_target(existing->parent_topic);
-        target = std::max({WIKI_MIN_COUNTRY_PAGES, WIKI_MIN_SHARED_PAGES, cfg.wikipedia_max_pages, stored_target});
+        target = std::max({WIKI_MIN_COUNTRY_PAGES, WIKI_MIN_SHARED_PAGES, cfg.wikipedia_max_pages});
         if (stored_target != target || existing->parent_topic.rfind("countries:", 0) != 0) {
             existing->parent_topic = std::string("countries:") + std::to_string(target);
             store.save_dataset(*existing);
             std::cerr << "Wikipedia country-topic target: keep " << count
                       << " existing pages, aim for " << target
-                      << " each of United States / Germany / Australia.\n";
+                      << " each enabled country topic (Germany / India; Australia off).\n";
         }
     }
     if (!cfg.wikipedia_crawl) {
@@ -983,14 +996,14 @@ void seed_wikipedia(Store& store, const Config& cfg) {
         }
         return;
     }
-    if (existing && !country_topics_incomplete(stored_topic_counts(store, existing->id), target)) {
+    if (existing && !wiki_topics_incomplete(cfg, stored_topic_counts(store, existing->id), target)) {
         std::cerr << "Wikipedia country topics already stored (" << store.count_docs(existing->id)
                   << " pages total).\n";
         ensure_analyzed(store, cfg, existing->id);
         return;
     }
     Dataset dataset = existing ? *existing : create_dataset(store, WIKI_DATASET_NAME, KIND_WIKI);
-    if (!country_topics_incomplete(stored_topic_counts(store, dataset.id), target)) {
+    if (!wiki_topics_incomplete(cfg, stored_topic_counts(store, dataset.id), target)) {
         start_wiki_created_at_backfill(store, cfg, dataset.id);
     } else {
         std::cerr << "Skipping Wikipedia revision backfill until country topics are stored.\n";

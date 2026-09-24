@@ -14,6 +14,10 @@ struct Config {
     double graph_min_cosine = 0.32;
     bool seed_wikipedia = true;
     bool wikipedia_crawl = true;
+    bool wikipedia_crawl_india = true;
+    bool wikipedia_crawl_germany = true;
+    bool wikipedia_crawl_usa = false;
+    bool wikipedia_crawl_australia = false;
     int wikipedia_max_pages = 1000;
     int wikipedia_max_depth = 4;
     int wikipedia_delay_ms = 300;
