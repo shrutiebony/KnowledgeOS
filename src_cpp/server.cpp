@@ -56,6 +56,7 @@ static std::string find_web(const Config& cfg) {
 
 static void send_json(httplib::Response& res, const json& body, int status = 200) {
     res.status = status;
+    res.set_header("Cache-Control", "no-store, no-cache, must-revalidate");
     res.set_content(body.dump(), "application/json");
 }
 

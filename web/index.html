@@ -767,16 +767,16 @@
       <div class="aside-block">
         <label>Dataset</label>
         <select id="dataset"></select>
-        <div class="dataset-actions single">
-          <button class="primary" id="reload" type="button">Refresh</button>
-          <button id="deleteDataset" type="button" hidden>Delete</button>
-        </div>
       </div>
 
       <div id="wikiTopicBox" class="aside-block">
         <label>Topic</label>
         <select id="topic"><option value="">All topics</option></select>
         <p class="hint">Filters the current view to documents with this topic, from every source in that view. Does not create another dataset.</p>
+        <div class="dataset-actions single">
+          <button class="primary" id="reload" type="button">Refresh</button>
+          <button id="deleteDataset" type="button" hidden>Delete</button>
+        </div>
       </div>
 
       <div class="aside-block aside-ingest">
@@ -822,7 +822,7 @@
       </div>
       <div class="card">
         <div class="card-head">
-          <h3>Document graph</h3>
+          <h3>Country wise data sources</h3>
           <button type="button" class="linkish js-explain-insights" id="explainInsightsGraph">Explain insights</button>
         </div>
         <p class="hint" id="graphHint">Dots are documents. Each circle is a collection. Lines are similarity.</p>
@@ -1014,20 +1014,20 @@
       "Add extra data\n" +
       "Choose files to upload PDFs or text, or paste a public URL. A URL is accepted only if a same-host crawl can reach at least 1000 pages. Crawl and analyse. Each add is its own collection. Extra data is never mixed into Wikipedia or GDELT.\n\n" +
       "All sources\n" +
-      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together: Wikipedia, GDELT, and any PDFs or URLs you added. Documents keep their own source tags. Nothing is merged into one stored dataset.\n\n" +
+      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together: Wikipedia, GDELT, and any PDFs or URLs you added.\n\n" +
       "Topic\n" +
-      "Topics are countries: India, United States, Germany, and Australia. Pick a country to gather insight about that slice. Subjects such as computer science stay under a country when they belong there. On All sources the country includes matching documents from every collection. On one dataset it stays inside that collection. This is a filter only. It does not create another dataset.\n\n" +
+      "Topics are countries: India, United States, Germany, and Australia. Pick a country to gather insight about that slice. Subjects such as computer science stay under a country when they belong there. On All sources the country includes matching documents from every collection.\n\n" +
       "From add to delete\n" +
       "At most 7 collections, including Wikipedia and GDELT. The new collection appears in the Dataset dropdown. Select that one collection to analyze and view it in isolation. Click Explain insights to explain the currently visible graph or collection. When you are done, Delete that collection. Wikipedia cannot be deleted. GDELT cannot be deleted.\n\n" +
       "What the readings mean\n" +
-      "The subject chart shows the mix of this visible set and how much of each subject looks AI-generated. Individual articles are documents, not topics. GraphSAGE is not a detection signal.";
+      "The subject chart shows the mix of this visible set and how much of each subject looks AI-generated. Individual articles are documents, not topics.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
     };
 
     async function j(url, opts) {
-      const res = await fetch(url, opts);
+      const res = await fetch(url, Object.assign({ cache: "no-store" }, opts || {}));
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || res.statusText);
       return data;
@@ -1056,8 +1056,13 @@
         .replace(/\s*ESTIMATE, not proof of authorship\./g, "")
         .replace(/\s*ESTIMATE, not proof\./g, "")
         .replace(/,?\s*not proof of authorship\.?/gi, "")
+        .replace(/\s*GraphSAGE is not in this share\./gi, "")
+        .replace(/\s*GraphSAGE is not in the headline share\./gi, "")
+        .replace(/\s*No medical judgment is made\./gi, "")
+        .replace(/\s*No medical judgment\./gi, "")
         .replace(/\s+/g, " ")
         .replace(/\s+\./g, ".")
+        .replace(/([^.!?:])$/, "$1.")
         .trim();
     }
 
@@ -1132,6 +1137,42 @@
       else sel.value = "all";
       syncDeleteControl();
       return list;
+    }
+
+    function liveDatasetIds() {
+      return new Set((datasetsCache || []).map(d => String(d.id)));
+    }
+
+    function graphWithoutMissingCollections(graph) {
+      if (!graph || !Array.isArray(graph.nodes)) return graph;
+      const live = liveDatasetIds();
+      const nodes = graph.nodes.filter(n => {
+        if (n == null || n.datasetId == null || n.datasetId === "") return false;
+        return live.has(String(n.datasetId));
+      });
+      const keep = new Set(nodes.map(n => n.id));
+      const edges = (graph.edges || []).filter(e => keep.has(e.from) && keep.has(e.to));
+      return Object.assign({}, graph, { nodes, edges });
+    }
+
+    function dropCollectionFromClient(id) {
+      datasetsCache = (datasetsCache || []).filter(d => String(d.id) !== String(id));
+      const sel = document.getElementById("dataset");
+      if (sel) {
+        [...sel.options].forEach(o => { if (o.value === String(id)) o.remove(); });
+        if (!sel.value || String(sel.value) === String(id)) sel.value = "all";
+      }
+      state.selectedCluster = null;
+      state.selectedDocId = null;
+      if (state.rawGraph) state.rawGraph = graphWithoutMissingCollections(state.rawGraph);
+      if (state.fullView && state.fullView.nodes) {
+        state.fullView.nodes = state.fullView.nodes.filter(n => String(n.datasetId) !== String(id));
+      }
+      if (state.graphView && state.graphView.nodes) {
+        state.graphView.nodes = state.graphView.nodes.filter(n => String(n.datasetId) !== String(id));
+      }
+      if (state.rawGraph) drawGraph(state.rawGraph, { refreshAnalysis: false });
+      syncDeleteControl();
     }
 
     function bandColor(band) {
@@ -1774,6 +1815,7 @@
     }
 
     function drawGraph(graph, opts) {
+      graph = graphWithoutMissingCollections(graph);
       state.rawGraph = graph;
       let nodes = (graph && graph.nodes) || [];
       if (!nodes.length) {
@@ -2220,7 +2262,6 @@
         ];
       }
       const n = data && Number(data.documentCount) || 0;
-      const sampled = data && Number(data.sampled) || 0;
       if (!n) {
         return [
           `No pages in ${place} look AI-generated, so there is no shared wording to report.`,
@@ -2239,7 +2280,7 @@
       const sense = commonSignalSense(strong.key);
       let line2;
       if (strong.key === "embeddingAnomaly") {
-        line2 = `That shared signal is ${sense}, stronger here than canned stock phrases, repeated n-grams, or even sentences.`;
+        line2 = `That shared signal is ${sense}.`;
       } else if (strong.key === "stockPhrases") {
         line2 = `That shared signal is ${sense}, stronger here than unusual wording in the embedding space.`;
       } else if (strong.key === "ngrams") {
@@ -2253,28 +2294,10 @@
       }
 
       const stocks = (data && data.stockPhrases) || [];
-      const phrases = (data && data.phrases) || [];
-      const words = (data && data.words) || [];
-      const stockScore = data && data.signals && data.signals.stockPhrases;
-      let line3;
-      if (stocks.length) {
-        line3 = `Stock phrases that recurred were ${quoteCommon(stocks, "phrase")}.`;
-      } else if (stockScore != null && Number(stockScore) > 0.2) {
-        line3 = `The stock-phrase detector was elevated, but canned markers such as "it is important to note" did not recur in the sampled page text.`;
-      } else {
-        line3 = "Canned stock phrases did not recur across those pages.";
-      }
-      if (sampled && sampled < n) {
-        line3 += ` Phrases and words below come from ${pageCountLabel(sampled)} with the highest scores.`;
-      }
-
-      const line4 = phrases.length
-        ? `Repeated phrases in the page text included ${quoteCommon(phrases, "phrase")}.`
-        : "No single repeated phrase rose above the rest once filler words were set aside.";
-      const line5 = words.length
-        ? `Shared words included ${quoteCommon(words, "word", 6)}.`
-        : "No single content word was shared widely enough to name.";
-      return [line1, line2, line3, line4, line5];
+      const line3 = stocks.length
+        ? `Stock phrases that recurred were ${quoteCommon(stocks, "phrase")}.`
+        : "";
+      return [line1, line2, line3];
     }
 
     function renderAiCommon(data) {
@@ -2503,7 +2526,8 @@
       if (!ok) return;
       try {
         await j(`/datasets/${current.id}`, { method: "DELETE" });
-        await loadDatasets();
+        dropCollectionFromClient(current.id);
+        await loadDatasets("all");
         await loadDashboard();
         popup(`${label} has been deleted.`, "Collection removed", "ok");
       } catch (err) {

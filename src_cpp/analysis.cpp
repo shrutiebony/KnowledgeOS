@@ -558,6 +558,12 @@ static std::unordered_set<int64_t> wikipedia_dataset_ids(Store& store) {
     return out;
 }
 
+static std::unordered_set<int64_t> live_dataset_ids(Store& store) {
+    std::unordered_set<int64_t> out;
+    for (const auto& d : store.all_datasets()) out.insert(d.id);
+    return out;
+}
+
 static bool document_is_wikipedia(const Document& d, const std::unordered_set<int64_t>& wiki_ids) {
     if (wiki_ids.count(d.dataset_id)) return true;
     return iequals(d.source, WIKI_SOURCE);
@@ -667,6 +673,10 @@ std::vector<Document> docs_for_view(Store& store, int64_t dataset_id, const std:
         if (collection_is_wikipedia(store, dataset_id)) remap_wiki_topics(docs);
     }
     apply_country_topics(docs);
+    auto live = live_dataset_ids(store);
+    docs.erase(std::remove_if(docs.begin(), docs.end(), [&](const Document& d) {
+        return !live.count(d.dataset_id);
+    }), docs.end());
     std::string wanted = trim(topic);
     if (!wanted.empty()) {
         std::string needle = topic_needle(wanted);

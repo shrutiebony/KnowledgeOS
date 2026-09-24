@@ -405,7 +405,7 @@ UrlIngestResult ingest_urls(Store& store, const Config& cfg, const std::string& 
 }
 
 void delete_dataset_and_contents(Store& store, const Dataset& dataset) {
-    store.clear_dataset_contents(dataset.id);
+    // delete_dataset now drops documents, edges, child rows, and orphans in one transaction.
     store.delete_dataset(dataset.id);
 }
 

@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "sqlite3.h"
 
@@ -317,13 +318,62 @@ void Store::save_dataset(const Dataset& d) {
     sqlite3_finalize(st);
 }
 
+static void run_bound_sql(sqlite3* db, const char* sql, const std::vector<int64_t>& ids) {
+    sqlite3_stmt* st = nullptr;
+    if (sqlite3_prepare_v2(db, sql, -1, &st, nullptr) != SQLITE_OK) {
+        throw std::runtime_error(std::string("prepare failed: ") + sqlite3_errmsg(db));
+    }
+    for (size_t i = 0; i < ids.size(); ++i) {
+        sqlite3_bind_int64(st, static_cast<int>(i + 1), ids[i]);
+    }
+    int rc = sqlite3_step(st);
+    sqlite3_finalize(st);
+    if (rc != SQLITE_DONE) {
+        throw std::runtime_error(std::string("sql failed: ") + sqlite3_errmsg(db));
+    }
+}
+
+static void delete_dataset_rows_locked(sqlite3* db, int64_t id) {
+    // Drop edges owned by this collection, plus any edge that still points at its documents.
+    run_bound_sql(db,
+        "DELETE FROM edges WHERE dataset_id=? OR "
+        "source_document_id IN (SELECT id FROM documents WHERE dataset_id=?) OR "
+        "target_document_id IN (SELECT id FROM documents WHERE dataset_id=?)",
+        {id, id, id});
+    run_bound_sql(db,
+        "DELETE FROM edges WHERE dataset_id IN (SELECT id FROM datasets WHERE parent_dataset_id=?) OR "
+        "source_document_id IN (SELECT id FROM documents WHERE dataset_id IN "
+        "(SELECT id FROM datasets WHERE parent_dataset_id=?)) OR "
+        "target_document_id IN (SELECT id FROM documents WHERE dataset_id IN "
+        "(SELECT id FROM datasets WHERE parent_dataset_id=?))",
+        {id, id, id});
+    run_bound_sql(db,
+        "DELETE FROM documents WHERE dataset_id=? OR dataset_id IN "
+        "(SELECT id FROM datasets WHERE parent_dataset_id=?)",
+        {id, id});
+    run_bound_sql(db, "DELETE FROM datasets WHERE parent_dataset_id=?", {id});
+    run_bound_sql(db, "DELETE FROM datasets WHERE id=?", {id});
+    // Leftovers from older deletes that only dropped the datasets row.
+    sqlite3_exec(db, "DELETE FROM edges WHERE dataset_id NOT IN (SELECT id FROM datasets)",
+                 nullptr, nullptr, nullptr);
+    sqlite3_exec(db, "DELETE FROM documents WHERE dataset_id NOT IN (SELECT id FROM datasets)",
+                 nullptr, nullptr, nullptr);
+    sqlite3_exec(db,
+        "DELETE FROM edges WHERE source_document_id NOT IN (SELECT id FROM documents) OR "
+        "target_document_id NOT IN (SELECT id FROM documents)",
+        nullptr, nullptr, nullptr);
+}
+
 void Store::delete_dataset(int64_t id) {
     std::lock_guard<std::mutex> lock(mu_);
-    sqlite3_stmt* st = nullptr;
-    sqlite3_prepare_v2(db_, "DELETE FROM datasets WHERE id=?", -1, &st, nullptr);
-    sqlite3_bind_int64(st, 1, id);
-    sqlite3_step(st);
-    sqlite3_finalize(st);
+    exec("BEGIN IMMEDIATE");
+    try {
+        delete_dataset_rows_locked(db_, id);
+        exec("COMMIT");
+    } catch (...) {
+        sqlite3_exec(db_, "ROLLBACK", nullptr, nullptr, nullptr);
+        throw;
+    }
 }
 
 static void bind_opt(sqlite3_stmt* st, int i, const std::optional<double>& v) {
@@ -607,11 +657,11 @@ int Store::update_topic(int64_t doc_id, const std::string& topic) {
 
 void Store::delete_edges(int64_t dataset_id) {
     std::lock_guard<std::mutex> lock(mu_);
-    sqlite3_stmt* st = nullptr;
-    sqlite3_prepare_v2(db_, "DELETE FROM edges WHERE dataset_id=?", -1, &st, nullptr);
-    sqlite3_bind_int64(st, 1, dataset_id);
-    sqlite3_step(st);
-    sqlite3_finalize(st);
+    run_bound_sql(db_,
+        "DELETE FROM edges WHERE dataset_id=? OR "
+        "source_document_id IN (SELECT id FROM documents WHERE dataset_id=?) OR "
+        "target_document_id IN (SELECT id FROM documents WHERE dataset_id=?)",
+        {dataset_id, dataset_id, dataset_id});
 }
 
 void Store::insert_edges(const std::vector<DocumentEdge>& edges) {
@@ -681,8 +731,13 @@ std::vector<DocumentEdge> Store::edges_from(int64_t dataset_id, int64_t source_i
 }
 
 void Store::clear_dataset_contents(int64_t dataset_id) {
-    delete_edges(dataset_id);
-    delete_documents(dataset_id);
+    std::lock_guard<std::mutex> lock(mu_);
+    run_bound_sql(db_,
+        "DELETE FROM edges WHERE dataset_id=? "
+        "OR source_document_id IN (SELECT id FROM documents WHERE dataset_id=?) "
+        "OR target_document_id IN (SELECT id FROM documents WHERE dataset_id=?)",
+        {dataset_id, dataset_id, dataset_id});
+    run_bound_sql(db_, "DELETE FROM documents WHERE dataset_id=?", {dataset_id});
 }
 
 }  // namespace kos
