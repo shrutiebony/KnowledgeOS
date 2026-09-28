@@ -1,0 +1,28 @@
+Started Wikipedia India crawl in the background (maxPages=800, depth=4).
+Serving UI from C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\web
+KnowledgeOS listening on http://0.0.0.0:8080
+Database: ./data/knowledgeos.db
+Scoring 625 already-stored Wikipedia India pages.
+Crawling English Wikipedia (India seeds). Already stored=625 cap=800
+Wikipedia India stored 630 (State ownership)
+Wikipedia India stored 640 (Supply and demand)
+Wikipedia India stored 650 (Productive capacity)
+Wikipedia India stored 660 (Energy in India)
+Wikipedia India stored 670 (Active ingredient)
+Wikipedia India progress: 50 new pages this run, 675 stored. Analyzing incrementally.
+Wikipedia India stored 680 (Tea)
+Wikipedia India stored 690 (Kolkata)
+Wikipedia India stored 700 (Austroasiatic languages)
+Wikipedia India stored 710 (Sikhs)
+Wikipedia India stored 720 (Sarnaism)
+Wikipedia India progress: 100 new pages this run, 725 stored. Analyzing incrementally.
+Wikipedia India stored 730 (Minority group)
+Wikipedia India stored 740 (Education in India)
+Wikipedia India stored 750 (Masjid-i-Ala)
+Wikipedia India stored 760 (Smallpox)
+Wikipedia India stored 770 (Plasmodium falciparum)
+Wikipedia India progress: 150 new pages this run, 775 stored. Analyzing incrementally.
+Wikipedia India stored 780 (Factory)
+Wikipedia India stored 790 (Caste system in India)
+Wikipedia India stored 800 (Patrilineality)
+Wikipedia India crawl finished: 800 pages stored (175 new). Analyzing.
