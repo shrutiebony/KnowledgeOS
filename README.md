@@ -20,8 +20,35 @@ Optional explanations can use Claude. When that service is configured, you may a
 - SQLite for documents, workflow state, and results.
 - A local task scheduler and CPU worker pool: parsing, stylometry, hashed embeddings, calibration, a similarity graph, and GraphSAGE-style neighborhood representations (those representations are not the headline detection score).
 - Linux containers (Docker) for a self-contained runtime, with OpenSSL for HTTPS to the open web and, when configured, to Claude.
+- Optional KVM: the same application in a Linux virtual machine with allocated CPU, RAM, and disk. Docker remains how you run it locally, as documented below.
 - Python 3.12 for small helper steps (including optional wording polish when an API key is present).
 - External sources: Wikipedia, GDELT news, and sites you ask the product to crawl.
+
+```mermaid
+flowchart TB
+  subgraph runtime["Linux Docker container locally, or optional KVM virtual machine"]
+    browser["Browser dashboard"]
+    subgraph service["C++ analysis service"]
+      api["HTTP API"]
+      scheduler["Scheduler"]
+      workers["CPU workers"]
+      sqlite["SQLite"]
+    end
+    browser --> api
+    api --> scheduler
+    scheduler --> workers
+    workers --> sqlite
+    api --> sqlite
+  end
+  claude["Optional Claude"]
+  wiki["Wikipedia"]
+  gdelt["GDELT news"]
+  sites["Sites you crawl"]
+  api -->|"when configured"| claude
+  wiki --> api
+  gdelt --> api
+  sites --> api
+```
 
 ## Run it on your computer
 
@@ -51,5 +78,14 @@ This is the path of a collection you add yourself (files you upload). It is the 
 4. **Inspect.** The dashboard loads that collection. You see the share, bands, time chart when dates exist, the document graph, and the written analysis. You can filter by country topic; that is a view of the same collection, not a second dataset.
 5. **Ask (optional).** If Claude is configured, a question or “explain this collection” sends the measured numbers plus a bounded set of excerpts. The reply should keep KnowledgeOS numbers intact and cite those document ids. If Claude is unavailable, you still have the dashboard.
 6. **Remove.** When you are finished, you can delete that collection. Its documents and scores go away. Other collections, including Wikipedia and news, stay.
+
+```mermaid
+flowchart LR
+  create["Create"] --> extract["Extract"]
+  extract --> analyze["Analyze"]
+  analyze --> inspect["Inspect"]
+  inspect --> ask["Ask (optional)"]
+  ask --> remove["Remove"]
+```
 
 On a deployed host the same lifecycle applies: traffic reaches the container, data lives on the attached disk volume, analysis runs inside that instance, and Claude is reached over the network only after results are stored.
