@@ -1,0 +1,10 @@
+# Python 3.12.3 (Linux container)
+#
+# Dashboard helpers and neighborhood aggregation use the Python 3.12
+# standard library (json, urllib, argparse). These pins are installed in
+# the image so HTTPS certificate verification matches a known set.
+
+certifi==2024.12.14
+charset-normalizer==3.4.1
+idna==3.10
+urllib3==2.2.3

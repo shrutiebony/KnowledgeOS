@@ -109,6 +109,11 @@ Config Config::from_env() {
     c.url_probe_max_fetches = env_int("KNOWLEDGEOS_URL_PROBE_MAX_FETCHES", 150);
     c.worker_threads = env_int("KNOWLEDGEOS_WORKERS", 0);
     c.task_chunk_size = std::max(8, env_int("KNOWLEDGEOS_TASK_CHUNK", 32));
+    c.anthropic_api_key = env_str("ANTHROPIC_API_KEY", "");
+    c.anthropic_model = env_str("ANTHROPIC_MODEL", "claude-3-5-haiku-latest");
+    c.claude_timeout_ms = std::max(5000, env_int("KNOWLEDGEOS_CLAUDE_TIMEOUT_MS", 45000));
+    c.claude_max_excerpts = std::max(1, std::min(16, env_int("KNOWLEDGEOS_CLAUDE_EXCERPTS", 8)));
+    c.claude_excerpt_chars = std::max(200, env_int("KNOWLEDGEOS_CLAUDE_EXCERPT_CHARS", 900));
     c.band_ai_min = env_double("KNOWLEDGEOS_BAND_AI_MIN", 0.58);
     c.band_human_max = env_double("KNOWLEDGEOS_BAND_HUMAN_MAX", 0.42);
     c.band_max_interval = env_double("KNOWLEDGEOS_BAND_MAX_INTERVAL", 0.50);

@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/knowledgeos.dir/src_cpp/analysis.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj.d"
+  "CMakeFiles/knowledgeos.dir/src_cpp/claude.cpp.obj"
+  "CMakeFiles/knowledgeos.dir/src_cpp/claude.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj"
   "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj.d"
   "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj"

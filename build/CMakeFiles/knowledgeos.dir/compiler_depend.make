@@ -101,36 +101,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -138,16 +116,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -189,8 +183,19 @@ CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\queue"
+CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque"
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\wiki_crawl.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\set"
@@ -296,36 +301,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -333,16 +316,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -384,6 +383,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 
 
@@ -583,46 +589,55 @@ CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\ctype.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\list"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_format_ucd_tables.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_formatter.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_print.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_tuple_formatter.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\bit"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocale"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfacet"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocinfo"
@@ -630,7 +645,6 @@ CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\clocale"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\locale.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\charconv"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu.h"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu_tables.h"
@@ -644,14 +658,27 @@ CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocmon"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocnum"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xloctime"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iomanip"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\istream"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ostream.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ios"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sstream"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ranges"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_int128.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_to.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\span"
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\string_view"
-CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\sqlite3.h
 CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdarg.h"
 
@@ -756,36 +783,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -793,16 +798,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -844,6 +865,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\detectors.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 
 
@@ -947,36 +975,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -984,16 +990,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -1035,6 +1057,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Mi
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\embedding.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 
 
@@ -1770,54 +1799,47 @@ CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Micro
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\url_crawl.hpp
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\list"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -1859,6 +1881,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Micro
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\url_crawl.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\analysis.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set"
@@ -1978,36 +2008,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -2015,16 +2023,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -2066,6 +2090,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Mic
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\windows.h"
 CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\shared\winapifamily.h"
@@ -2344,6 +2375,382 @@ CMakeFiles\knowledgeos.dir\src_cpp\pdf.cpp.obj: C:\Users\sgoya\Downloads\Knowled
 CMakeFiles\knowledgeos.dir\src_cpp\pdf.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h
 
 
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.cpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\config.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\string"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\yvals_core.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sal.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\concurrencysal.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vadefs.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xkeycheck.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xstring"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_sanitizer_annotate_container.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_string_view.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iosfwd"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\yvals.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\crtdbg.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_new_debug.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_new.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\crtdefs.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\use_ansi.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdio"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstdio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_stdio_config.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstring"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\string.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_memory.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_memcpy_s.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\errno.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_string.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstring.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cwchar"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\wchar.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wconio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wctype.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wdirect.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_share.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wprocess.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstdlib.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wtime.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\sys\stat.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\sys\types.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin0.inl.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\setjmp.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\immintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\wmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\nmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\smmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\tmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\pmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\emmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\malloc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_malloc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\zmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ammintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtr1common"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xutility"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_iter_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\utility"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\initializer_list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstddef"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stddef.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\type_traits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdint"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdint.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\compare"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\concepts"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\climits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\limits.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdlib"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdlib.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_search.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xmemory"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\limits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cfloat"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\float.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin0.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\new"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\exception"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_exception.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\eh.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_terminate.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\tuple"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xpolymorphic_allocator.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cctype"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\ctype.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\db.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\optional"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_format_ucd_tables.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_formatter.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_print.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_tuple_formatter.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\bit"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfacet"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_xlocinfo_types.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\clocale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\locale.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\charconv"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu_tables.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_tables.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\locale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocbuf"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\streambuf"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xiosbase"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\share.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocmes"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocmon"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocnum"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xloctime"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iomanip"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\istream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ostream.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ios"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sstream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ranges"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_int128.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_to.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\span"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\string_view"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\queue"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\analysis.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\scheduler.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
+
+
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.cpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\yvals_core.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sal.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\concurrencysal.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vadefs.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xkeycheck.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xutility"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\yvals.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\crtdbg.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_new_debug.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_new.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\crtdefs.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\use_ansi.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_iter_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\utility"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\initializer_list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstddef"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stddef.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtr1common"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\type_traits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdint"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdint.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\compare"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\concepts"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\climits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\limits.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdlib"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdlib.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_malloc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_search.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstdlib.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstring"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\string.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_memory.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_memcpy_s.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\errno.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_string.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstring.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cwchar"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cstdio"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wstdio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_stdio_config.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\wchar.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wconio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wctype.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wdirect.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wio.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_share.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wprocess.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_wtime.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\sys\stat.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\sys\types.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin0.inl.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\setjmp.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\immintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\wmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\nmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\smmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\tmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\pmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\emmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\malloc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\zmmintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ammintrin.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xmemory"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\limits"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cfloat"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\float.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\intrin0.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\new"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\exception"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_exception.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\eh.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_terminate.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\tuple"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xpolymorphic_allocator.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_sanitizer_annotate_container.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iosfwd"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\string"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xstring"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_string_view.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cctype"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\ctype.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_format_ucd_tables.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_formatter.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_print.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_tuple_formatter.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\bit"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfacet"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_xlocinfo_types.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\clocale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\locale.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\charconv"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_ryu_tables.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcharconv_tables.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\locale"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocbuf"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\streambuf"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xiosbase"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\share.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocmes"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocmon"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xlocnum"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xloctime"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iomanip"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\istream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ostream.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ios"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\optional"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sstream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ranges"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_int128.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_ranges_to.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\span"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\string_view"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
+CMakeFiles\knowledgeos.dir\src_cpp\runtime\task.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+
+
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\server.cpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\analysis.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\config.hpp
@@ -2444,36 +2851,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Micro
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -2481,16 +2866,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Micro
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -2532,8 +2933,19 @@ CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Micro
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\ingest.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\url_crawl.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.hpp
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\queue"
+CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\httplib.h
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\io.h"
@@ -2655,7 +3067,6 @@ CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windo
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\shared\in6addr.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
-CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\fcntl.h"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\fstream"
 CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_filebuf.hpp"
@@ -2766,36 +3177,14 @@ CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\M
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xsmf_control.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vector"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
-CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\json.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\algorithm"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_heap_algorithms.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\functional"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xhash"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath"
@@ -2803,16 +3192,32 @@ CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\M
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xnode_handle.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\memory"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_threads_core.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\array"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\forward_list"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\map"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtree"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\assert.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_system_error_abi.hpp"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xerrc.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xfilesystem_abi.h"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_tzdb.hpp"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\format"
@@ -2854,6 +3259,13 @@ CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\M
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\numeric"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ostream"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\math.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h"
+CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token"
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp
 CMakeFiles\knowledgeos.dir\src_cpp\stylometry.cpp.obj: "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set"
 
@@ -3437,6 +3849,8 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\sqlite3.h:
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_math.h":
 
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\queue":
+
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdlib.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_search.h":
@@ -3487,55 +3901,7 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_bit_utils.hpp":
 
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\winnetwk.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\set":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\ioapiset.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_filebuf.hpp":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ios":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token":
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.hpp:
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\winnt.h":
 
@@ -3547,6 +3913,10 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_minmax.hpp":
 
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\typeinfo":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_typeinfo.h":
+
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_map":
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cmath":
@@ -3556,6 +3926,24 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp:
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xbit_ops.h":
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iterator":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\atomic":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xatomic_wait.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_filebuf.hpp":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xthreads.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xtimec.h":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\winnetwk.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\set":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ctime":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\time.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\mcx.h":
 
@@ -3573,6 +3961,8 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\valarray":
 
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stdexcept":
+
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\version":
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cassert":
@@ -3583,7 +3973,21 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\models.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\filesystem":
 
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.hpp:
+
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\chrono":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\__msvc_chrono.hpp":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ratio":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\system_error":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\ioapiset.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\cerrno":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\xcall_once.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\timezoneapi.h":
 
@@ -3651,6 +4055,10 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\pdf.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\istream":
 
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\vcruntime_startup.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\ios":
+
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\sstream":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\shared\in6addr.h":
@@ -3675,11 +4083,29 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz.h:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\any":
 
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\mutex":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\thread":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\process.h":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\corecrt_startup.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\stop_token":
+
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\threadpoollegacyapiset.h":
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\gdelt_crawl.hpp:
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\unordered_set":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\wincontypes.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable":
+
+"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\synchapi.h":
+
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque":
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\util.hpp:
 
@@ -3690,6 +4116,8 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\calibration.cpp:
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\config.cpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\db.cpp:
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\task.cpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\embedding.cpp:
 
@@ -3706,10 +4134,6 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_common.h:
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_tdef.h:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\third_party\miniz_zip.h:
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\synchapi.h":
-
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\deque":
 
 "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\iostream":
 
@@ -3807,10 +4231,6 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\http_client.cpp:
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\wincon.h":
 
-"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include\condition_variable":
-
-"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\wincontypes.h":
-
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\consoleapi2.h":
 
 "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\um\consoleapi3.h":
@@ -3844,6 +4264,8 @@ C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\url_crawl.hpp:
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\insights.cpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\pdf.cpp:
+
+C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\runtime\scheduler.cpp:
 
 C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\src_cpp\server.cpp:
 

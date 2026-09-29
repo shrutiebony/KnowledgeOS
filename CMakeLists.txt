@@ -43,6 +43,7 @@ add_executable(knowledgeos
   src_cpp/gdelt_crawl.cpp
   src_cpp/ingest.cpp
   src_cpp/insights.cpp
+  src_cpp/claude.cpp
   src_cpp/runtime/task.cpp
   src_cpp/runtime/scheduler.cpp
   src_cpp/server.cpp

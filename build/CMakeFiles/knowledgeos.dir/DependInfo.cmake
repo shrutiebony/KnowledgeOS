@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/analysis.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/analysis.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/analysis.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/calibration.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/calibration.cpp.obj.d"
+  "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/claude.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/claude.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/claude.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/config.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/config.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/db.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/db.cpp.obj.d"
   "C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/detectors.cpp" "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj" "msvc" "CMakeFiles/knowledgeos.dir/src_cpp/detectors.cpp.obj.d"

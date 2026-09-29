@@ -1,0 +1,24 @@
+[Unit]
+Description=KnowledgeOS C++ analysis service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=knowledgeos
+Group=knowledgeos
+WorkingDirectory=/var/lib/knowledgeos
+EnvironmentFile=-/etc/knowledgeos/knowledgeos.env
+Environment=KNOWLEDGEOS_DB=/var/lib/knowledgeos/data/knowledgeos.db
+Environment=KNOWLEDGEOS_WEB=/usr/local/share/knowledgeos/web
+ExecStart=/usr/local/bin/knowledgeos
+Restart=on-failure
+RestartSec=4
+LimitNOFILE=65535
+
+# Isolation suitable for a dedicated guest VM; analysis stays in-process.
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

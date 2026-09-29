@@ -1,0 +1,13 @@
+#cloud-config
+# First-boot setup for a single KnowledgeOS Linux guest.
+package_update: true
+packages:
+  - qemu-guest-agent
+  - python3
+users:
+  - name: kos
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: sudo
+    shell: /bin/bash
+runcmd:
+  - [ bash, -lc, "if [ -x /opt/knowledgeos/deploy/kvm/install-guest.sh ]; then /opt/knowledgeos/deploy/kvm/install-guest.sh /opt/knowledgeos; fi" ]

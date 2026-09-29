@@ -18,6 +18,8 @@
 #endif
 
 #include <algorithm>
+#include <utility>
+#include <vector>
 
 namespace kos {
 
@@ -51,7 +53,10 @@ static std::string header_value(HINTERNET req, DWORD info) {
     return trim(narrow(buf));
 }
 
-static HttpResponse http_get_once(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
+static HttpResponse http_once(const std::string& method, const std::string& url, const std::string& user_agent,
+                              int timeout_ms, int max_bytes,
+                              const std::vector<std::pair<std::string, std::string>>& extra_headers,
+                              const std::string* body) {
     HttpResponse out;
     out.final_url = url;
     auto nurl = normalize_url(url);
@@ -92,7 +97,7 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
         return out;
     }
     DWORD flags = https ? WINHTTP_FLAG_SECURE : 0;
-    HINTERNET req = WinHttpOpenRequest(connect, L"GET", path.c_str(), nullptr, WINHTTP_NO_REFERER,
+    HINTERNET req = WinHttpOpenRequest(connect, wide(method).c_str(), path.c_str(), nullptr, WINHTTP_NO_REFERER,
                                        WINHTTP_DEFAULT_ACCEPT_TYPES, flags);
     if (!req) {
         out.error = "open request failed";
@@ -104,7 +109,13 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
     WinHttpSetOption(req, WINHTTP_OPTION_REDIRECT_POLICY, &policy, sizeof(policy));
     WinHttpAddRequestHeaders(req, L"Accept: text/html,application/xhtml+xml,application/json,*/*\r\nAccept-Language: en",
                              static_cast<DWORD>(-1), WINHTTP_ADDREQ_FLAG_ADD);
-    if (!WinHttpSendRequest(req, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0) ||
+    for (const auto& h : extra_headers) {
+        std::wstring line = wide(h.first + ": " + h.second);
+        WinHttpAddRequestHeaders(req, line.c_str(), static_cast<DWORD>(-1), WINHTTP_ADDREQ_FLAG_ADD);
+    }
+    LPVOID payload = body && !body->empty() ? (LPVOID)body->data() : WINHTTP_NO_REQUEST_DATA;
+    DWORD plen = body ? static_cast<DWORD>(body->size()) : 0;
+    if (!WinHttpSendRequest(req, WINHTTP_NO_ADDITIONAL_HEADERS, 0, payload, plen, plen, 0) ||
         !WinHttpReceiveResponse(req, nullptr)) {
         out.error = "request failed";
         WinHttpCloseHandle(req);
@@ -126,17 +137,17 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
         out.final_url = narrow(final_buf);
     }
 
-    std::string body;
+    std::string accum;
     DWORD avail = 0;
     while (WinHttpQueryDataAvailable(req, &avail) && avail > 0) {
-        if (static_cast<int>(body.size()) >= max_bytes) break;
-        DWORD chunk = std::min(avail, static_cast<DWORD>(max_bytes - static_cast<int>(body.size())));
+        if (static_cast<int>(accum.size()) >= max_bytes) break;
+        DWORD chunk = std::min(avail, static_cast<DWORD>(max_bytes - static_cast<int>(accum.size())));
         std::string buf(chunk, '\0');
         DWORD read = 0;
         if (!WinHttpReadData(req, buf.data(), chunk, &read) || read == 0) break;
-        body.append(buf.data(), read);
+        accum.append(buf.data(), read);
     }
-    out.body = std::move(body);
+    out.body = std::move(accum);
     WinHttpCloseHandle(req);
     WinHttpCloseHandle(connect);
     WinHttpCloseHandle(session);
@@ -145,7 +156,10 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
 
 #else
 
-static HttpResponse http_get_once(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
+static HttpResponse http_once(const std::string& method, const std::string& url, const std::string& user_agent,
+                              int timeout_ms, int max_bytes,
+                              const std::vector<std::pair<std::string, std::string>>& extra_headers,
+                              const std::string* body) {
     HttpResponse out;
     out.final_url = url;
     auto nurl = normalize_url(url);
@@ -168,19 +182,25 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
         port = std::stoi(hostport.substr(colon + 1));
     }
     httplib::Headers headers = {{"User-Agent", user_agent}, {"Accept-Language", "en"}};
+    for (const auto& h : extra_headers) headers.emplace(h.first, h.second);
     httplib::Result res;
+    auto apply = [&](auto& cli) {
+        cli.set_connection_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
+        cli.set_read_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
+        cli.set_write_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
+        cli.set_follow_location(true);
+        if (method == "POST") {
+            res = cli.Post(path, headers, body ? *body : std::string{}, "application/json");
+        } else {
+            res = cli.Get(path, headers);
+        }
+    };
     if (scheme == "https") {
         httplib::SSLClient cli(host, port);
-        cli.set_connection_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
-        cli.set_read_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
-        cli.set_follow_location(true);
-        res = cli.Get(path, headers);
+        apply(cli);
     } else {
         httplib::Client cli(host, port);
-        cli.set_connection_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
-        cli.set_read_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
-        cli.set_follow_location(true);
-        res = cli.Get(path, headers);
+        apply(cli);
     }
     if (!res) {
         out.error = "request failed";
@@ -193,6 +213,12 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
     if (res->has_header("Location")) out.location = res->get_header_value("Location");
     return out;
 #else
+    (void)method;
+    (void)user_agent;
+    (void)timeout_ms;
+    (void)max_bytes;
+    (void)extra_headers;
+    (void)body;
     out.error = "HTTPS client not compiled";
     return out;
 #endif
@@ -203,8 +229,9 @@ static HttpResponse http_get_once(const std::string& url, const std::string& use
 HttpResponse http_get(const std::string& url, const std::string& user_agent, int timeout_ms, int max_bytes) {
     std::string current = url;
     HttpResponse out;
+    std::vector<std::pair<std::string, std::string>> none;
     for (int hop = 0; hop < 6; ++hop) {
-        out = http_get_once(current, user_agent, timeout_ms, max_bytes);
+        out = http_once("GET", current, user_agent, timeout_ms, max_bytes, none, nullptr);
         if (out.status < 300 || out.status >= 400) return out;
         if (out.location.empty()) return out;
         auto next = resolve_url(out.final_url.empty() ? current : out.final_url, out.location);
@@ -213,6 +240,14 @@ HttpResponse http_get(const std::string& url, const std::string& user_agent, int
         out.final_url = current;
     }
     return out;
+}
+
+HttpResponse http_post_json(const std::string& url, const std::string& user_agent,
+                            const std::vector<std::pair<std::string, std::string>>& headers,
+                            const std::string& json_body, int timeout_ms, int max_bytes) {
+    auto extra = headers;
+    extra.emplace_back("Content-Type", "application/json");
+    return http_once("POST", url, user_agent, timeout_ms, max_bytes, extra, &json_body);
 }
 
 }  // namespace kos

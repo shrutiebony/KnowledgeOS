@@ -1,0 +1,14 @@
+.git
+build
+build-kvm
+**/CMakeFiles
+**/*.obj
+**/*.exe
+**/*.lib
+**/*.pdb
+data/*.db
+data/*.db-wal
+data/*.db-shm
+tmp_*
+.cursor
+agent-transcripts

@@ -6,6 +6,7 @@
 #endif
 
 #include "analysis.hpp"
+#include "claude.hpp"
 #include "config.hpp"
 #include "db.hpp"
 #include "ingest.hpp"
@@ -18,6 +19,7 @@
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #ifdef _WIN32
@@ -141,7 +143,8 @@ int main() {
     svr.Get("/health", [&](const httplib::Request&, httplib::Response& res) {
         send_json(res, json{
             {"status", "ok"},
-            {"workers", kos::analysis_runtime().worker_count()}
+            {"workers", kos::analysis_runtime().worker_count()},
+            {"claude", kos::claude_status(cfg)}
         });
     });
 
@@ -423,6 +426,69 @@ int main() {
     };
     svr.Post("/datasets/:id/insights", post_insights);
     svr.Post("/insights", post_insights);
+
+    auto parse_ask_body = [&](const httplib::Request& req, std::string& question, std::string& topic,
+                              std::vector<int64_t>& ids) {
+        topic = param(req, "topic");
+        ids = parse_ids(req);
+        question.clear();
+        if (req.body.empty()) return;
+        try {
+            auto body = json::parse(req.body);
+            if (body.contains("question") && body["question"].is_string()) {
+                question = body["question"].get<std::string>();
+            }
+            if (topic.empty() && body.contains("topic") && body["topic"].is_string()) {
+                topic = body["topic"].get<std::string>();
+            }
+            if (ids.empty() && body.contains("ids") && body["ids"].is_array()) {
+                for (const auto& v : body["ids"]) {
+                    if (v.is_number_integer()) ids.push_back(v.get<int64_t>());
+                    else if (v.is_string()) {
+                        try {
+                            ids.push_back(std::stoll(v.get<std::string>()));
+                        } catch (...) {
+                        }
+                    }
+                }
+            }
+        } catch (...) {
+        }
+    };
+
+    auto post_ask = [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            std::string question, topic;
+            std::vector<int64_t> ids;
+            parse_ask_body(req, question, topic, ids);
+            send_json(res, kos::ask_dataset(store, cfg, id, question, topic, ids));
+        } catch (const std::runtime_error& e) {
+            send_error(res, e.what(), 404);
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    };
+    svr.Post("/datasets/:id/ask", post_ask);
+    svr.Post("/ask", post_ask);
+
+    auto post_explain = [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            int64_t id = parse_scope_id(req);
+            require_scope(id);
+            std::string question, topic;
+            std::vector<int64_t> ids;
+            parse_ask_body(req, question, topic, ids);
+            send_json(res, kos::explain_dataset(store, cfg, id, topic, ids));
+        } catch (const std::runtime_error& e) {
+            send_error(res, e.what(), 404);
+        } catch (const std::exception& e) {
+            send_error(res, e.what(), 500);
+        }
+    };
+    svr.Post("/datasets/:id/explain", post_explain);
+    svr.Post("/explain", post_explain);
 
     svr.Post("/datasets/:id/graphsage/train", [&](const httplib::Request& req, httplib::Response& res) {
         try {

@@ -41,6 +41,11 @@ struct Config {
     int url_probe_max_fetches = 150;
     int worker_threads = 0;
     int task_chunk_size = 32;
+    std::string anthropic_api_key;
+    std::string anthropic_model = "claude-3-5-haiku-latest";
+    int claude_timeout_ms = 45000;
+    int claude_max_excerpts = 8;
+    int claude_excerpt_chars = 900;
     double band_ai_min = 0.58;
     double band_human_max = 0.42;
     double band_max_interval = 0.50;

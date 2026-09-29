@@ -192,6 +192,30 @@ src_cpp\calibration.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\calibration.cpp.s
 .PHONY : src_cpp\calibration.cpp.s
 
+src_cpp\claude.obj: src_cpp\claude.cpp.obj
+.PHONY : src_cpp\claude.obj
+
+# target to build an object file
+src_cpp\claude.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude.cpp.obj
+.PHONY : src_cpp\claude.cpp.obj
+
+src_cpp\claude.i: src_cpp\claude.cpp.i
+.PHONY : src_cpp\claude.i
+
+# target to preprocess a source file
+src_cpp\claude.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude.cpp.i
+.PHONY : src_cpp\claude.cpp.i
+
+src_cpp\claude.s: src_cpp\claude.cpp.s
+.PHONY : src_cpp\claude.s
+
+# target to generate assembly for a file
+src_cpp\claude.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude.cpp.s
+.PHONY : src_cpp\claude.cpp.s
+
 src_cpp\config.obj: src_cpp\config.cpp.obj
 .PHONY : src_cpp\config.obj
 
@@ -713,6 +737,9 @@ help:
 	@echo ... src_cpp/calibration.obj
 	@echo ... src_cpp/calibration.i
 	@echo ... src_cpp/calibration.s
+	@echo ... src_cpp/claude.obj
+	@echo ... src_cpp/claude.i
+	@echo ... src_cpp/claude.s
 	@echo ... src_cpp/config.obj
 	@echo ... src_cpp/config.i
 	@echo ... src_cpp/config.s
