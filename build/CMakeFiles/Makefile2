@@ -55,12 +55,14 @@ CMAKE_BINARY_DIR = C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build
 all: CMakeFiles\sqlite3.dir\all
 all: CMakeFiles\miniz.dir\all
 all: CMakeFiles\knowledgeos.dir\all
+all: CMakeFiles\runtime_lambda.dir\all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles\sqlite3.dir\codegen
 codegen: CMakeFiles\miniz.dir\codegen
 codegen: CMakeFiles\knowledgeos.dir\codegen
+codegen: CMakeFiles\runtime_lambda.dir\codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -71,6 +73,7 @@ preinstall:
 clean: CMakeFiles\sqlite3.dir\clean
 clean: CMakeFiles\miniz.dir\clean
 clean: CMakeFiles\knowledgeos.dir\clean
+clean: CMakeFiles\runtime_lambda.dir\clean
 .PHONY : clean
 
 #=============================================================================
@@ -80,7 +83,7 @@ clean: CMakeFiles\knowledgeos.dir\clean
 CMakeFiles\sqlite3.dir\all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=26,27 "Built target sqlite3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=28,29 "Built target sqlite3"
 .PHONY : CMakeFiles\sqlite3.dir\all
 
 # Build rule for subdir invocation for target.
@@ -97,7 +100,7 @@ sqlite3: CMakeFiles\sqlite3.dir\rule
 # codegen rule for target.
 CMakeFiles\sqlite3.dir\codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\sqlite3.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\sqlite3.dir\codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=26,27 "Finished codegen for target sqlite3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=28,29 "Finished codegen for target sqlite3"
 .PHONY : CMakeFiles\sqlite3.dir\codegen
 
 # clean rule for target.
@@ -141,8 +144,8 @@ CMakeFiles\miniz.dir\clean:
 # Target rules for target CMakeFiles/knowledgeos.dir
 
 # All Build rule for target.
-CMakeFiles\knowledgeos.dir\all: CMakeFiles\sqlite3.dir\all
 CMakeFiles\knowledgeos.dir\all: CMakeFiles\miniz.dir\all
+CMakeFiles\knowledgeos.dir\all: CMakeFiles\sqlite3.dir\all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target knowledgeos"
@@ -169,6 +172,38 @@ CMakeFiles\knowledgeos.dir\codegen:
 CMakeFiles\knowledgeos.dir\clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\clean
 .PHONY : CMakeFiles\knowledgeos.dir\clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/runtime_lambda.dir
+
+# All Build rule for target.
+CMakeFiles\runtime_lambda.dir\all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=26,27 "Built target runtime_lambda"
+.PHONY : CMakeFiles\runtime_lambda.dir\all
+
+# Build rule for subdir invocation for target.
+CMakeFiles\runtime_lambda.dir\rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles 0
+.PHONY : CMakeFiles\runtime_lambda.dir\rule
+
+# Convenience name for target.
+runtime_lambda: CMakeFiles\runtime_lambda.dir\rule
+.PHONY : runtime_lambda
+
+# codegen rule for target.
+CMakeFiles\runtime_lambda.dir\codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\sgoya\Downloads\KnowledgeOS\KnowledgeOS\build\CMakeFiles --progress-num=26,27 "Finished codegen for target runtime_lambda"
+.PHONY : CMakeFiles\runtime_lambda.dir\codegen
+
+# clean rule for target.
+CMakeFiles\runtime_lambda.dir\clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\clean
+.PHONY : CMakeFiles\runtime_lambda.dir\clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

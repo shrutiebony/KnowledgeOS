@@ -1037,13 +1037,6 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
             std::cerr << "Wikipedia skip " << campaign.topic << " harvest (disabled).\n" << std::flush;
             continue;
         }
-        if ((iequals(campaign.topic, SHARED_TOPIC_INDIA) || iequals(campaign.topic, SHARED_TOPIC_GEO_INDIA)) &&
-            wiki_have(topic_counts, SHARED_TOPIC_INDIA) >= 500) {
-            std::cerr << "Wikipedia skip India harvest (already have "
-                      << wiki_have(topic_counts, SHARED_TOPIC_INDIA) << ").\n"
-                      << std::flush;
-            continue;
-        }
         if (wiki_have(topic_counts, campaign.topic) >= per_topic) continue;
         std::cerr << "Wikipedia extracts " << campaign.topic << " from en.wikipedia.org (have "
                   << wiki_have(topic_counts, campaign.topic) << ", want " << per_topic << ").\n"

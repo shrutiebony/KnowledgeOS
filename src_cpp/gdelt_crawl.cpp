@@ -125,6 +125,15 @@ static int topic_count_of(const std::map<std::string, int>& counts, const std::s
     return it == counts.end() ? 0 : it->second;
 }
 
+static int gdelt_topic_cap(const std::string& topic, int per_topic) {
+    if (iequals(topic, SHARED_TOPIC_GERMANY)) return std::min(per_topic, 1000);
+    return per_topic;
+}
+
+static bool gdelt_topic_accepted(const std::string& topic) {
+    return is_shared_country_topic(topic) || is_shared_india_topic(topic);
+}
+
 static bool country_topics_need_pages(const std::map<std::string, int>& topic_counts, int per_topic);
 
 static bool store_gdelt_page(GdeltCrawlStats& stats, std::unordered_set<std::string>& already,
@@ -136,12 +145,18 @@ static bool store_gdelt_page(GdeltCrawlStats& stats, std::unordered_set<std::str
     if (key && stored_keys.count(*key)) return false;
     if (count_words(text) < 40) return false;
     std::string assigned = classify_country_topic(title, text);
+    if (assigned.empty()) {
+        std::string india = classify_shared_india_topic(title, text);
+        if (is_shared_india_topic(india)) assigned = SHARED_TOPIC_INDIA;
+    }
     if (assigned.empty()) assigned = topic;
-    if (!is_shared_country_topic(assigned)) {
-        if (is_shared_country_topic(topic)) assigned = topic;
+    if (is_shared_india_topic(assigned)) assigned = SHARED_TOPIC_INDIA;
+    if (!gdelt_topic_accepted(assigned)) {
+        if (gdelt_topic_accepted(topic)) assigned = is_shared_india_topic(topic) ? std::string(SHARED_TOPIC_INDIA) : topic;
         else return false;
     }
-    if (topic_count_of(topic_counts, assigned) >= per_topic) return false;
+    const int cap = gdelt_topic_cap(assigned, per_topic);
+    if (topic_count_of(topic_counts, assigned) >= cap) return false;
     GdeltPage gp;
     gp.url = url;
     gp.title = title.empty() ? url : title;
@@ -156,7 +171,7 @@ static bool store_gdelt_page(GdeltCrawlStats& stats, std::unordered_set<std::str
         already.insert(url);
         if (stats.stored % 10 == 0 || topic_counts[assigned] % 25 == 0) {
             std::cerr << "GDELT stored " << stats.stored << " [" << assigned << " " << topic_counts[assigned] << "/"
-                      << per_topic << "] (" << gp.title << ")\n";
+                      << cap << "] (" << gp.title << ")\n";
         }
         return true;
     } catch (const std::exception& e) {
@@ -267,17 +282,34 @@ static std::string latest_gkg_stamp(const Config& cfg) {
     return "20260923213000";
 }
 
+static bool gkg_mentions_india(const std::string& loc, const std::string& v2) {
+    if (v2.find("#IN#IN") != std::string::npos || v2.find("#India#IN#") != std::string::npos) return true;
+    size_t start = 0;
+    while (start <= loc.size()) {
+        size_t semi = loc.find(';', start);
+        std::string seg = trim(loc.substr(start, semi == std::string::npos ? std::string::npos : semi - start));
+        if (seg == "India" || (seg.size() >= 7 && seg.compare(seg.size() - 7, 7, ", India") == 0)) return true;
+        if (semi == std::string::npos) break;
+        start = semi + 1;
+    }
+    return false;
+}
+
 static std::string gkg_country_topic(const std::string& loc, const std::string& v2,
                                      const std::map<std::string, int>& topic_counts, int per_topic) {
     bool usa = v2.find("#US#") != std::string::npos || loc.find("United States") != std::string::npos;
     bool de = v2.find("#GM#") != std::string::npos || loc.find("Germany") != std::string::npos;
     bool au = loc.find("Australia") != std::string::npos || v2.find("Australia#AS#") != std::string::npos ||
               v2.find("#AS#AS") != std::string::npos;
+    bool india = gkg_mentions_india(loc, v2);
     struct Cand {
         const char* topic;
         bool hit;
     };
-    const Cand cs[] = {{SHARED_TOPIC_USA, usa}, {SHARED_TOPIC_GERMANY, de}, {SHARED_TOPIC_AUSTRALIA, au}};
+    const Cand cs[] = {{SHARED_TOPIC_INDIA, india},
+                       {SHARED_TOPIC_USA, usa},
+                       {SHARED_TOPIC_GERMANY, de},
+                       {SHARED_TOPIC_AUSTRALIA, au}};
     int hits = 0;
     const char* only = nullptr;
     for (const auto& c : cs) {
@@ -285,13 +317,13 @@ static std::string gkg_country_topic(const std::string& loc, const std::string& 
         hits++;
         only = c.topic;
     }
-    if (hits == 1 && topic_count_of(topic_counts, only) < per_topic) return only;
+    if (hits == 1 && topic_count_of(topic_counts, only) < gdelt_topic_cap(only, per_topic)) return only;
     if (hits > 1) {
         int best_need = 0;
         const char* best = nullptr;
         for (const auto& c : cs) {
             if (!c.hit) continue;
-            int need = per_topic - topic_count_of(topic_counts, c.topic);
+            int need = gdelt_topic_cap(c.topic, per_topic) - topic_count_of(topic_counts, c.topic);
             if (need > best_need) {
                 best_need = need;
                 best = c.topic;
@@ -325,10 +357,11 @@ static void harvest_gdelt_gkg(const Config& cfg, GdeltCrawlStats& stats, std::un
                               std::string& last_error) {
     if (!country_topics_need_pages(topic_counts, per_topic)) return;
     std::string stamp = latest_gkg_stamp(cfg);
-    std::cerr << "Harvesting GDELT GKG files from data.gdeltproject.org (stamp " << stamp << "; have USA="
-              << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Germany="
-              << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << " Australia="
-              << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << ").\n"
+    std::cerr << "Harvesting GDELT GKG files from data.gdeltproject.org (stamp " << stamp << "; have India="
+              << topic_count_of(topic_counts, SHARED_TOPIC_INDIA) << " USA="
+              << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Australia="
+              << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << " Germany="
+              << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << ").\n"
               << std::flush;
     const int delay = std::max(cfg.gdelt_delay_ms, 4000);
     const int max_files = 160;
@@ -396,10 +429,11 @@ static void harvest_gdelt_gkg(const Config& cfg, GdeltCrawlStats& stats, std::un
                 file_stored++;
             }
         }
-        std::cerr << "GDELT GKG " << stamp << " stored +" << file_stored << " (USA="
-                  << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Germany="
-                  << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << " Australia="
-                  << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << ")\n"
+        std::cerr << "GDELT GKG " << stamp << " stored +" << file_stored << " (India="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_INDIA) << " USA="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_USA) << " Australia="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) << " Germany="
+                  << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) << ")\n"
                   << std::flush;
         stamp = prev_gkg_stamp(stamp);
         if (file_stored == 0) {
@@ -510,9 +544,10 @@ static void harvest_gdelt_country(const Config& cfg, const char* topic, const st
 }
 
 static bool country_topics_need_pages(const std::map<std::string, int>& topic_counts, int per_topic) {
-    return topic_count_of(topic_counts, SHARED_TOPIC_USA) < per_topic ||
-           topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) < per_topic ||
-           topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) < per_topic;
+    return topic_count_of(topic_counts, SHARED_TOPIC_INDIA) < gdelt_topic_cap(SHARED_TOPIC_INDIA, per_topic) ||
+           topic_count_of(topic_counts, SHARED_TOPIC_USA) < gdelt_topic_cap(SHARED_TOPIC_USA, per_topic) ||
+           topic_count_of(topic_counts, SHARED_TOPIC_AUSTRALIA) < gdelt_topic_cap(SHARED_TOPIC_AUSTRALIA, per_topic) ||
+           topic_count_of(topic_counts, SHARED_TOPIC_GERMANY) < gdelt_topic_cap(SHARED_TOPIC_GERMANY, per_topic);
 }
 
 GdeltCrawlStats crawl_gdelt(const Config& cfg, std::unordered_set<std::string>& already,
@@ -557,15 +592,22 @@ GdeltCrawlStats crawl_gdelt(const Config& cfg, std::unordered_set<std::string>& 
         harvest_gdelt_gkg(cfg, stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);
     }
     if (country_topics_need_pages(topic_counts, per_topic) && !g_doc_api_cool) {
+        harvest_gdelt_country(cfg, SHARED_TOPIC_INDIA,
+                              {"sourcecountry:IN sourcelang:english", "india sourcelang:english"},
+                              stats, already, stored_keys, topic_counts, gdelt_topic_cap(SHARED_TOPIC_INDIA, per_topic),
+                              on_page, last_error);
         harvest_gdelt_country(cfg, SHARED_TOPIC_USA,
                               {"sourcecountry:US sourcelang:english", "\"united states\" sourcelang:english"},
-                              stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);
+                              stats, already, stored_keys, topic_counts, gdelt_topic_cap(SHARED_TOPIC_USA, per_topic),
+                              on_page, last_error);
         harvest_gdelt_country(cfg, SHARED_TOPIC_GERMANY,
                               {"sourcecountry:GM sourcelang:english", "germany sourcelang:english"},
-                              stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);
+                              stats, already, stored_keys, topic_counts, gdelt_topic_cap(SHARED_TOPIC_GERMANY, per_topic),
+                              on_page, last_error);
         harvest_gdelt_country(cfg, SHARED_TOPIC_AUSTRALIA,
                               {"sourcecountry:AS sourcelang:english", "australia sourcelang:english"},
-                              stats, already, stored_keys, topic_counts, per_topic, on_page, last_error);
+                              stats, already, stored_keys, topic_counts,
+                              gdelt_topic_cap(SHARED_TOPIC_AUSTRALIA, per_topic), on_page, last_error);
     }
 
     const int max_site_fetches = 40;

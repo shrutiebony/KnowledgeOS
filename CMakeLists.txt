@@ -60,6 +60,17 @@ else()
   target_link_libraries(knowledgeos PRIVATE OpenSSL::SSL OpenSSL::Crypto pthread)
 endif()
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/runtime_lambda/main.cpp")
+  add_executable(runtime_lambda runtime_lambda/main.cpp)
+  if(WIN32)
+    target_link_libraries(runtime_lambda PRIVATE winhttp)
+  else()
+    target_compile_definitions(runtime_lambda PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+    target_include_directories(runtime_lambda PRIVATE third_party)
+    target_link_libraries(runtime_lambda PRIVATE OpenSSL::SSL OpenSSL::Crypto pthread)
+  endif()
+endif()
+
 add_custom_command(TARGET knowledgeos POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${CMAKE_SOURCE_DIR}/web

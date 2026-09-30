@@ -109,6 +109,8 @@ Config Config::from_env() {
     c.url_probe_max_fetches = env_int("KNOWLEDGEOS_URL_PROBE_MAX_FETCHES", 150);
     c.worker_threads = env_int("KNOWLEDGEOS_WORKERS", 0);
     c.task_chunk_size = std::max(8, env_int("KNOWLEDGEOS_TASK_CHUNK", 32));
+    c.gemini_api_key = env_str("GEMINI_API_KEY", "");
+    c.gemini_model = env_str("GEMINI_MODEL", "gemini-3.1-flash-lite");
     c.anthropic_api_key = env_str("ANTHROPIC_API_KEY", "");
     c.anthropic_model = env_str("ANTHROPIC_MODEL", "claude-3-5-haiku-latest");
     c.claude_timeout_ms = std::max(5000, env_int("KNOWLEDGEOS_CLAUDE_TIMEOUT_MS", 45000));

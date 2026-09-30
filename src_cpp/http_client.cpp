@@ -185,6 +185,7 @@ static HttpResponse http_once(const std::string& method, const std::string& url,
     for (const auto& h : extra_headers) headers.emplace(h.first, h.second);
     httplib::Result res;
     auto apply = [&](auto& cli) {
+        cli.set_url_encode(false);
         cli.set_connection_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
         cli.set_read_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);
         cli.set_write_timeout(timeout_ms / 1000, (timeout_ms % 1000) * 1000);

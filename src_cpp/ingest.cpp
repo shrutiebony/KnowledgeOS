@@ -462,10 +462,16 @@ static std::map<std::string, int> stored_topic_counts(Store& store, int64_t data
     return out;
 }
 
+static int gdelt_topic_target(const std::string& topic, int per_topic) {
+    if (iequals(topic, SHARED_TOPIC_GERMANY)) return std::min(per_topic, 1000);
+    return per_topic;
+}
+
 static bool country_topics_incomplete(const std::map<std::string, int>& counts, int per_topic) {
-    return topic_count_of(counts, SHARED_TOPIC_USA) < per_topic ||
-           topic_count_of(counts, SHARED_TOPIC_GERMANY) < per_topic ||
-           topic_count_of(counts, SHARED_TOPIC_AUSTRALIA) < per_topic;
+    return topic_count_of(counts, SHARED_TOPIC_USA) < gdelt_topic_target(SHARED_TOPIC_USA, per_topic) ||
+           topic_count_of(counts, SHARED_TOPIC_INDIA) < gdelt_topic_target(SHARED_TOPIC_INDIA, per_topic) ||
+           topic_count_of(counts, SHARED_TOPIC_AUSTRALIA) < gdelt_topic_target(SHARED_TOPIC_AUSTRALIA, per_topic) ||
+           topic_count_of(counts, SHARED_TOPIC_GERMANY) < gdelt_topic_target(SHARED_TOPIC_GERMANY, per_topic);
 }
 
 static int wiki_india_count(const std::map<std::string, int>& counts) {
@@ -473,7 +479,7 @@ static int wiki_india_count(const std::map<std::string, int>& counts) {
 }
 
 static bool wiki_topics_incomplete(const Config& cfg, const std::map<std::string, int>& counts, int per_topic) {
-    if (cfg.wikipedia_crawl_india && wiki_india_count(counts) < 500) return true;
+    if (cfg.wikipedia_crawl_india && wiki_india_count(counts) < per_topic) return true;
     if (cfg.wikipedia_crawl_germany && topic_count_of(counts, SHARED_TOPIC_GERMANY) < per_topic) return true;
     if (cfg.wikipedia_crawl_usa && topic_count_of(counts, SHARED_TOPIC_USA) < per_topic) return true;
     if (cfg.wikipedia_crawl_australia && topic_count_of(counts, SHARED_TOPIC_AUSTRALIA) < per_topic) return true;
@@ -881,7 +887,7 @@ static void crawl_and_analyze(Store& store, Config cfg, int64_t dataset_id) {
                   << " already-stored Wikipedia pages until country crawl flushes.\n";
     }
     auto topic_counts = stored_topic_counts(store, dataset_id);
-    std::cerr << "Crawling English Wikipedia (Germany / India; Australia harvest off). Already stored="
+    std::cerr << "Crawling English Wikipedia (India / United States / Australia). Already stored="
               << already.size() << " per-topic cap=" << cfg.wikipedia_max_pages
               << " Germany=" << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY)
               << " India=" << wiki_india_count(topic_counts)
@@ -981,7 +987,7 @@ void seed_wikipedia(Store& store, const Config& cfg) {
             store.save_dataset(*existing);
             std::cerr << "Wikipedia country-topic target: keep " << count
                       << " existing pages, aim for " << target
-                      << " each enabled country topic (Germany / India; Australia off).\n";
+                      << " each enabled country topic (India / United States / Australia).\n";
         }
     }
     if (!cfg.wikipedia_crawl) {
@@ -1041,7 +1047,7 @@ static void crawl_gdelt_and_analyze(Store& store, Config cfg, int64_t dataset_id
                   << " already-stored GDELT pages until country harvest flushes.\n";
     }
     auto topic_counts = stored_topic_counts(store, dataset_id);
-    std::cerr << "Crawling GDELT (United States / Germany / Australia, 1000 each). Already stored="
+    std::cerr << "Crawling GDELT (India / United States / Australia). Already stored="
               << already.size() << " per-topic cap=" << cfg.gdelt_max_pages
               << " USA=" << topic_count_of(topic_counts, SHARED_TOPIC_USA)
               << " Germany=" << topic_count_of(topic_counts, SHARED_TOPIC_GERMANY)
@@ -1050,7 +1056,7 @@ static void crawl_gdelt_and_analyze(Store& store, Config cfg, int64_t dataset_id
     GdeltCrawlStats stats;
     try {
         stats = crawl_gdelt(cfg, already, [&](const GdeltPage& page) {
-            if (!is_shared_country_topic(page.topic)) return;
+            if (!is_shared_country_topic(page.topic) && !is_shared_india_topic(page.topic)) return;
             add_document(store, *dataset, page.title, page.text, page.url, GDELT_SOURCE,
                          page.topic, page.published_at, page.published_at);
             persisted++;

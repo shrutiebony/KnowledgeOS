@@ -176,7 +176,12 @@
       overscroll-behavior: contain;
     }
     main {
-      padding: 4px 56px 72px 40px;
+      width: min(56rem, 100%);
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 76px 32px 24px;
+      box-sizing: border-box;
+      text-align: center;
     }
     label {
       display: block;
@@ -328,7 +333,7 @@
       border: none;
       border-radius: 0;
       padding: 0;
-      margin: 0 0 64px;
+      margin: 0;
       box-shadow: none;
     }
     .card + .card {
@@ -337,13 +342,17 @@
       border-top: none;
     }
     .stage {
-      margin: 0 0 72px;
-    }
-    .stage .card {
+      display: flex;
+      flex-direction: column;
+      gap: 72px;
       margin: 0;
     }
+    .stage .card,
     .stage .card + .card {
-      margin-top: 4px;
+      margin: 0;
+    }
+    main > .card {
+      margin-top: 72px;
     }
     .card h3 {
       font-family: var(--display);
@@ -364,7 +373,7 @@
     .card-head {
       display: flex;
       align-items: baseline;
-      justify-content: space-between;
+      justify-content: center;
       gap: 10px;
       margin: 0 0 8px;
       flex-wrap: wrap;
@@ -418,6 +427,8 @@
       stroke-width: 5px;
     }
     #graph .g-hull { cursor: pointer; }
+    #graph .g-hit { cursor: pointer; }
+    #graph svg line { pointer-events: none; }
     #graph .g-bg { cursor: default; }
     #graphLegend .swatch.dot {
       width: 8px;
@@ -438,10 +449,8 @@
       margin: 8px 0;
       resize: vertical;
     }
-    .ask-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+    .ask-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 16px; justify-content: center; }
     #claudeAnswer p { margin: 0 0 10px; }
-    #claudeEvidence { margin: 0; padding-left: 1.2em; }
-    #claudeEvidence a { color: inherit; }
     .analysis-portrait {
       margin: 6px 0 28px;
       max-width: 46rem;
@@ -526,15 +535,20 @@
     #timeChart { min-height: 120px; }
     #timeChart svg { display: block; width: 100%; height: auto; }
     .reading {
-      padding: 4px 56px 28px 40px;
-      max-width: 44rem;
+      width: min(56rem, 100%);
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 72px 32px 48px;
+      box-sizing: border-box;
+      text-align: center;
     }
-    .reading .kicker { margin: 0 0 10px; }
+    .reading .kicker { margin: 0 0 12px; text-align: center; }
     .reading p {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-size: 15px;
       line-height: 1.55;
       color: #302417;
+      text-align: center;
     }
     .site-footer {
       border-top: none;
@@ -569,10 +583,13 @@
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
-      margin: 8px 0 4px;
+      justify-content: center;
+      margin: 14px 0 18px;
       font-size: 12px;
       color: var(--muted);
     }
+    .card h3, .card .hint, .card p, .analysis-note, #claudeAnswer { text-align: center; }
+    #timeChart, #graph, #subjectChart { margin-top: 8px; }
     .compare {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -620,11 +637,38 @@
       display: none;
       place-items: center;
       z-index: 40;
-      background: rgba(42, 36, 28, 0.28);
-      backdrop-filter: blur(10px);
       padding: 24px;
     }
     #overlay.open { display: grid; }
+    #askLoading {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+    }
+    #overlay,
+    #askLoading {
+      background-color: rgba(6, 6, 6, 0.9);
+    }
+    .saree-cloth {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #askLoading[hidden] { display: none !important; }
+    #overlay .popup,
+    #askLoading p { position: relative; z-index: 1; }
+    #askLoading p {
+      margin: 0;
+      color: #f4efe6;
+      font-family: var(--display);
+      font-size: 28px;
+      letter-spacing: 0.04em;
+    }
     .popup {
       width: min(520px, 100%);
       border-radius: 0;
@@ -644,6 +688,10 @@
     }
     .popup p { margin: 0; color: #302417; line-height: 1.55; }
     #popupBody { white-space: pre-wrap; color: #302417; max-height: 60vh; overflow-y: auto; }
+    .popup.graph-pop { width: min(960px, 100%); }
+    #popupBody.cluster-list { white-space: normal; text-align: center; }
+    #clusterNodeDetail { margin-top: 14px; text-align: left; }
+    #clusterNodeDetail a { color: #302417; }
     .popup .mark {
       width: 42px;
       height: 42px;
@@ -655,6 +703,7 @@
       background: rgba(138, 90, 42, 0.1);
       color: var(--gold);
     }
+    .popup .mark[hidden] { display: none !important; }
     .popup.warn .mark { color: var(--ai); background: rgba(196, 92, 78, 0.12); }
     .popup.ok .mark { color: var(--human); background: rgba(47, 143, 110, 0.12); }
     .popup-actions {
@@ -739,6 +788,30 @@
       align-self: stretch !important;
       overflow: hidden !important;
     }
+    .aside-toggle {
+      position: absolute;
+      z-index: 6;
+      top: 14px;
+      left: 272px;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      place-items: center;
+    }
+    .aside-toggle svg { width: 9px; height: 9px; display: block; }
+    html.kos-pin.panel-collapsed .aside-toggle .eye-open { display: none; }
+    html.kos-pin:not(.panel-collapsed) .aside-toggle .eye-shut { display: none; }
+    html.kos-pin.panel-collapsed .wrap {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+    html.kos-pin.panel-collapsed aside {
+      display: none !important;
+    }
+    html.kos-pin.panel-collapsed .aside-toggle {
+      left: 14px;
+    }
     html.kos-pin .main-col {
       overflow-x: hidden !important;
       overflow-y: auto !important;
@@ -772,8 +845,9 @@
     <h1>KnowledgeOS</h1>
     <p>Estimate how much of a document collection is likely AI-generated or AI-assisted.</p>
   </header>
-  <div class="wrap" style="display:grid !important;grid-template-columns:320px 1fr !important;flex:1 1 auto !important;min-height:0 !important;overflow:hidden !important">
-    <aside style="display:flex !important;flex-direction:column !important;position:relative !important;min-height:0 !important;height:100% !important;align-self:stretch !important;overflow:hidden !important">
+  <div class="wrap" style="display:grid !important;flex:1 1 auto !important;min-height:0 !important;overflow:hidden !important">
+    <button type="button" class="aside-toggle" id="asideToggle" aria-expanded="true" aria-controls="appAside" aria-label="Hide the left panel"><svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg><svg class="eye-shut" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 6.2A10.8 10.8 0 0 1 12 6c6.5 0 10 6 10 6a18.5 18.5 0 0 1-4.2 4.7"/><path d="M6.1 6.1C3.5 8 2 12 2 12s3.5 7 10 7c1.5 0 2.9-.3 4.2-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button>
+    <aside id="appAside" style="flex-direction:column !important;position:relative !important;min-height:0 !important;height:100% !important;align-self:stretch !important;overflow:hidden !important">
       <div class="aside-block">
         <label>Dataset</label>
         <select id="dataset"></select>
@@ -833,7 +907,7 @@
       <div class="card">
         <div class="card-head">
           <h3>Document graph</h3>
-          <button type="button" class="linkish js-explain-insights" id="explainInsightsGraph">Explain insights</button>
+          <button type="button" class="linkish" id="explainInsightsGraph">Explain the data</button>
         </div>
         <p class="hint" id="graphHint">Dots are documents. Each circle is a collection. Lines are similarity.</p>
         <div class="chart-legend" id="graphLegend" hidden></div>
@@ -843,7 +917,7 @@
       <div class="card" id="collectionAnalysisCard">
         <div class="card-head">
           <h3 id="analysisHeading">Analysis across collection</h3>
-          <button type="button" class="linkish js-explain-insights" id="explainInsights">Explain insights</button>
+          <button type="button" class="linkish" id="explainInsights">Explain insights</button>
         </div>
         <div class="analysis-portrait" id="analysisOverview"></div>
         <p class="hint analysis-note" id="analysisHint">Later pages are scored against pre-2019 writing in this visible set.</p>
@@ -856,12 +930,11 @@
       </div>
       <div class="card ask-box" id="claudeCard">
         <h3>Ask about these results</h3>
-        <p class="hint">KnowledgeOS computes the scores. Optional Claude only explains stored excerpts and those numbers. The dashboard works without an API key.</p>
+        <p class="hint">Ask answers your question from the scores, the year chart, the subjects, and short excerpts of the pages.</p>
         <label for="claudeQuestion">Question</label>
         <textarea id="claudeQuestion" rows="3" placeholder="Why is this collection’s AI share high?"></textarea>
         <div class="ask-actions">
           <button class="primary" id="askClaude" type="button">Ask</button>
-          <button id="explainClaude" type="button">Explain collection</button>
         </div>
         <div id="claudeAnswer" hidden></div>
       </div>
@@ -872,31 +945,21 @@
       </div>
     </main>
 
-  <section class="reading" id="readingSummary" aria-label="Final analysis of shared AI marks">
+  <section class="reading" id="readingSummary" aria-label="Final analysis of the visible set">
     <p class="kicker">Final analysis</p>
     <p id="readingL1"></p>
     <p id="readingL2"></p>
-    <p id="readingL3"></p>
-    <p id="readingL4"></p>
-    <p id="readingL5"></p>
   </section>
 
-  <footer class="site-footer">
-    <h3>How we analyze</h3>
-    <p class="hint">Each document gets a likelihood estimate from local signals, then a band. Authorship is not proven. GraphSAGE neighborhood embeddings exist for the document graph only and are not a detection signal. HITS is not part of this product.</p>
-    <ul class="methods">
-      <li><strong>Stylometry.</strong> Type-token ratio, sentence-length burstiness, and character entropy. Formulaic text tends to look more uniform and less bursty.</li>
-      <li><strong>Local detectors.</strong> Stock-phrase markers, sentence uniformity, and n-gram repetition, each scored 0–1 on the same document.</li>
-      <li><strong>Embedding anomaly.</strong> Distance from the pre-2019 writing centroid in the same visible collection (or the same topic when a topic is selected). Pages dated before 2019 are the human baseline.</li>
-      <li><strong>Stylometry deviation.</strong> How far the document’s TTR and burstiness sit from that pre-2019 baseline, not a global internet prior.</li>
-      <li><strong>Logistic blend + interval.</strong> Those signals are combined with a weighted logistic mix. Disagreement among core scores widens the uncertainty interval.</li>
-      <li><strong>Three bands.</strong> Likely AI-generated, likely human-written, or uncertain when the estimate is mid-range or the interval is too wide.</li>
-    </ul>
-  </footer>
     </div>
   </div>
 
+  <div id="askLoading" hidden>
+    <svg class="saree-cloth" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" pointer-events="none"><line x1="40.0" y1="42.8" x2="132.3" y2="28.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="132.3" y1="28.6" x2="226.6" y2="53.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="226.6" y1="53.8" x2="249.6" y2="149.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="249.6" y1="149.2" x2="329.3" y2="114.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="249.6" y1="149.2" x2="309.7" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="309.7" y1="216.5" x2="246.6" y2="252.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="246.6" y1="252.1" x2="244.3" y2="329.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="244.3" y1="329.5" x2="316.2" y2="345.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="316.2" y1="345.7" x2="265.9" y2="428.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="265.9" y1="428.9" x2="348.2" y2="451.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="433.8" y2="426.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="433.8" y1="426.1" x2="533.3" y2="440.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="533.3" y1="440.5" x2="530.7" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.7" y1="345.2" x2="456.8" y2="325.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="456.8" y1="325.6" x2="440.1" y2="247.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="440.1" y1="247.1" x2="509.8" y2="235.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.7" y1="345.2" x2="629.4" y2="364.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="629.4" y1="364.5" x2="636.6" y2="454.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="636.6" y1="454.9" x2="657.6" y2="542.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="657.6" y1="542.9" x2="738.1" y2="577.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="738.1" y1="577.6" x2="832.5" y2="552.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="832.5" y1="552.8" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="329.3" y1="114.7" x2="322.5" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="322.5" y1="14.0" x2="423.5" y2="15.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="448.3" y2="112.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="836.1" y1="474.8" x2="739.5" y2="439.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="739.5" y1="439.4" x2="763.8" y2="368.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="763.8" y1="368.2" x2="861.1" y2="353.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="861.1" y1="353.9" x2="939.8" y2="344.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="939.8" y1="344.7" x2="962.6" y2="258.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="738.1" y1="577.6" x2="779.9" y2="673.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="779.9" y1="673.4" x2="781.5" y2="755.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="781.5" y1="755.1" x2="827.6" y2="790.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="779.9" y1="673.4" x2="874.7" y2="683.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="874.7" y1="683.8" x2="938.9" y2="660.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="874.7" y1="683.8" x2="924.2" y2="759.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="827.6" y1="790.7" x2="850.6" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="850.6" y1="886.0" x2="948.7" y2="873.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="938.9" y1="660.3" x2="941.1" y2="559.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="941.1" y1="559.8" x2="947.0" y2="474.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="947.0" y1="474.6" x2="1034.6" y2="458.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1034.6" y1="458.5" x2="1077.4" y2="535.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1077.4" y1="535.9" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1139.2" y1="532.8" x2="1164.0" y2="460.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1264.2" y2="469.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1237.8" y2="556.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1237.8" y1="556.6" x2="1230.7" y2="639.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1230.7" y1="639.9" x2="1192.0" y2="657.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1159.5" y2="753.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1159.5" y1="753.6" x2="1149.9" y2="855.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1149.9" y1="855.8" x2="1090.4" y2="873.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1130.5" y2="362.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1130.5" y1="362.7" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="530.9" y2="15.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.9" y1="15.9" x2="618.9" y2="18.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.9" y1="15.9" x2="556.6" y2="107.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="556.6" y1="107.9" x2="642.5" y2="132.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="722.7" y2="132.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="630.3" y2="217.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="722.7" y1="132.5" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="722.7" y1="132.5" x2="735.7" y2="31.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="735.7" y1="31.6" x2="831.2" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="831.2" y1="14.0" x2="934.2" y2="30.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="962.6" y1="258.7" x2="981.3" y2="152.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="981.3" y1="152.5" x2="1083.9" y2="120.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1049.8" y2="40.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1069.8" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1069.8" y1="216.5" x2="1170.4" y2="246.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1170.4" y1="246.0" x2="1229.8" y2="233.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1236.9" y2="144.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.9" y1="144.2" x2="1236.0" y2="39.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.0" y1="39.9" x2="1180.9" y2="23.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="132.3" y1="28.6" x2="112.8" y2="135.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="112.8" y1="135.9" x2="47.9" y2="157.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="47.9" y1="157.1" x2="100.0" y2="223.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="100.0" y1="223.9" x2="14.5" y2="248.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.5" y1="248.2" x2="14.0" y2="345.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="345.0" x2="101.1" y2="358.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="345.0" x2="16.1" y2="443.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="16.1" y1="443.2" x2="50.8" y2="543.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="50.8" y1="543.9" x2="107.0" y2="544.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="107.0" y1="544.5" x2="127.2" y2="467.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="307.7" y2="552.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="307.7" y1="552.9" x2="240.0" y2="552.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="307.7" y1="552.9" x2="313.4" y2="644.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="313.4" y1="644.7" x2="209.1" y2="662.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="209.1" y1="662.8" x2="150.5" y2="656.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="209.1" y1="662.8" x2="201.6" y2="744.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="201.6" y1="744.3" x2="101.7" y2="788.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="130.3" y2="849.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="14.0" y2="749.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="749.9" x2="15.0" y2="647.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="749.9" x2="15.4" y2="856.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1239.7" y2="342.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="781.5" y1="755.1" x2="731.6" y2="854.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="924.2" y1="759.4" x2="1035.6" y2="773.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1159.5" y1="753.6" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="831.2" y1="14.0" x2="851.5" y2="126.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="851.5" y1="126.7" x2="849.2" y2="218.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1372.1" y2="426.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.1" y1="426.4" x2="1395.4" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1395.4" y1="345.2" x2="1376.5" y2="262.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1395.4" y1="345.2" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1494.1" y1="332.0" x2="1569.7" y2="338.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1569.7" y1="338.2" x2="1578.0" y2="262.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1578.0" y1="262.8" x2="1498.2" y2="242.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.1" y1="426.4" x2="1481.5" y2="455.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1481.5" y1="455.9" x2="1554.7" y2="462.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1554.7" y1="462.0" x2="1539.8" y2="541.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1539.8" y1="541.2" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1465.9" y1="556.8" x2="1365.4" y2="578.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1365.4" y1="578.7" x2="1361.2" y2="636.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.9" y1="144.2" x2="1350.0" y2="114.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1350.0" y1="114.2" x2="1383.5" y2="22.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1383.5" y1="22.6" x2="1479.8" y2="17.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1350.0" y1="114.2" x2="1454.4" y2="128.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1479.8" y1="17.6" x2="1586.0" y2="45.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1586.0" y1="45.4" x2="1586.0" y2="131.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1149.9" y1="855.8" x2="1264.7" y2="878.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.7" y1="878.8" x2="1372.4" y2="856.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.4" y1="856.1" x2="1435.9" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.4" y1="856.1" x2="1399.0" y2="781.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1399.0" y1="781.2" x2="1449.3" y2="771.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1476.5" y2="686.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1556.5" y2="770.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1556.5" y1="770.4" x2="1586.0" y2="686.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1073.7" y2="655.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1556.5" y1="770.4" x2="1584.8" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="731.6" y1="854.5" x2="616.3" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="616.3" y1="886.0" x2="534.7" y2="883.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="534.7" y1="883.2" x2="511.1" y2="783.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="511.1" y1="783.1" x2="442.1" y2="743.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.1" y1="743.8" x2="447.1" y2="639.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="447.1" y1="639.5" x2="442.9" y2="559.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.9" y1="559.6" x2="532.7" y2="570.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="532.7" y1="570.3" x2="560.1" y2="657.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="560.1" y1="657.8" x2="616.0" y2="670.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="616.0" y1="670.1" x2="658.4" y2="756.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.1" y1="743.8" x2="348.2" y2="789.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="789.8" x2="318.3" y2="877.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="318.3" y1="877.1" x2="267.4" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="789.8" x2="417.8" y2="854.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="226.6" y1="53.8" x2="322.5" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="329.3" y2="114.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="735.7" y1="31.6" x2="642.5" y2="132.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1049.8" y1="40.1" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1180.9" y1="23.6" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1479.8" y1="17.6" x2="1454.4" y2="128.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="47.9" y1="157.1" x2="14.5" y2="248.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="329.3" y1="114.7" x2="309.7" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="851.5" y1="126.7" x2="981.3" y2="152.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="981.3" y1="152.5" x2="1069.8" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1586.0" y1="131.5" x2="1578.0" y2="262.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="100.0" y1="223.9" x2="101.1" y2="358.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="246.6" y1="252.1" x2="316.2" y2="345.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="440.1" y1="247.1" x2="530.7" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="509.8" y1="235.7" x2="456.8" y2="325.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="630.3" y1="217.4" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="726.2" y1="227.9" x2="849.2" y2="218.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="849.2" y1="218.8" x2="962.6" y2="258.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1069.8" y1="216.5" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1376.5" y2="262.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1376.5" y1="262.4" x2="1498.2" y2="242.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1498.2" y1="242.6" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1578.0" y1="262.8" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="244.3" y1="329.5" x2="265.9" y2="428.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="316.2" y1="345.7" x2="348.2" y2="451.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="456.8" y1="325.6" x2="433.8" y2="426.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="629.4" y1="364.5" x2="533.3" y2="440.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="763.8" y1="368.2" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="861.1" y1="353.9" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="939.8" y1="344.7" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1052.5" y1="343.4" x2="1034.6" y2="458.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="127.2" y1="467.8" x2="50.8" y2="543.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="265.9" y1="428.9" x2="240.0" y2="552.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="442.9" y2="559.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="636.6" y1="454.9" x2="739.5" y2="439.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="739.5" y1="439.4" x2="657.6" y2="542.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="836.1" y1="474.8" x2="947.0" y2="474.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="947.0" y1="474.6" x2="832.5" y2="552.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1034.6" y1="458.5" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1077.4" y2="535.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1481.5" y1="455.9" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1554.7" y1="462.0" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="107.0" y1="544.5" x2="150.5" y2="656.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="657.6" y1="542.9" x2="616.0" y2="670.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="832.5" y1="552.8" x2="941.1" y2="559.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1139.2" y1="532.8" x2="1237.8" y2="556.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1237.8" y1="556.6" x2="1192.0" y2="657.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1365.4" y1="578.7" x2="1230.7" y2="639.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1465.9" y1="556.8" x2="1476.5" y2="686.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="150.5" y1="656.7" x2="201.6" y2="744.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="313.4" y1="644.7" x2="447.1" y2="639.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="938.9" y1="660.3" x2="924.2" y2="759.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1073.7" y1="655.6" x2="1035.6" y2="773.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1230.7" y1="639.9" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="15.4" y2="856.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="201.6" y1="744.3" x2="130.3" y2="849.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="658.4" y1="756.6" x2="731.6" y2="854.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="924.2" y1="759.4" x2="948.7" y2="873.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1399.0" y1="781.2" x2="1435.9" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1372.4" y2="856.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="130.3" y1="849.7" x2="267.4" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1435.9" y1="886.0" x2="1584.8" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><circle cx="40.0" cy="42.8" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="132.3" cy="28.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="226.6" cy="53.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="322.5" cy="14.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="423.5" cy="15.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="530.9" cy="15.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="618.9" cy="18.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="735.7" cy="31.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="831.2" cy="14.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="934.2" cy="30.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1049.8" cy="40.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1180.9" cy="23.6" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1236.0" cy="39.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1383.5" cy="22.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1479.8" cy="17.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="45.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="47.9" cy="157.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="112.8" cy="135.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="249.6" cy="149.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="329.3" cy="114.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="448.3" cy="112.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="556.6" cy="107.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="642.5" cy="132.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="722.7" cy="132.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="851.5" cy="126.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="981.3" cy="152.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1083.9" cy="120.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1128.0" cy="127.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1236.9" cy="144.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1350.0" cy="114.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1454.4" cy="128.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="131.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.5" cy="248.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="100.0" cy="223.9" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="246.6" cy="252.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="309.7" cy="216.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="440.1" cy="247.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="509.8" cy="235.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="630.3" cy="217.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="726.2" cy="227.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="849.2" cy="218.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="962.6" cy="258.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1069.8" cy="216.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1170.4" cy="246.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1229.8" cy="233.0" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1376.5" cy="262.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1498.2" cy="242.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1578.0" cy="262.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.0" cy="345.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="101.1" cy="358.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="244.3" cy="329.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="316.2" cy="345.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="456.8" cy="325.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="530.7" cy="345.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="629.4" cy="364.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="763.8" cy="368.2" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="861.1" cy="353.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="939.8" cy="344.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1052.5" cy="343.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1130.5" cy="362.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1239.7" cy="342.3" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1395.4" cy="345.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1494.1" cy="332.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1569.7" cy="338.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="16.1" cy="443.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="127.2" cy="467.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="265.9" cy="428.9" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="348.2" cy="451.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="433.8" cy="426.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="533.3" cy="440.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="636.6" cy="454.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="739.5" cy="439.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="836.1" cy="474.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="947.0" cy="474.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1034.6" cy="458.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1164.0" cy="460.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1264.2" cy="469.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1372.1" cy="426.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1481.5" cy="455.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1554.7" cy="462.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="50.8" cy="543.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="107.0" cy="544.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="240.0" cy="552.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="307.7" cy="552.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="442.9" cy="559.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="532.7" cy="570.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="657.6" cy="542.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="738.1" cy="577.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="832.5" cy="552.8" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="941.1" cy="559.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1077.4" cy="535.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1139.2" cy="532.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1237.8" cy="556.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1365.4" cy="578.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1465.9" cy="556.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1539.8" cy="541.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="15.0" cy="647.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="150.5" cy="656.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="209.1" cy="662.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="313.4" cy="644.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="447.1" cy="639.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="560.1" cy="657.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="616.0" cy="670.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="779.9" cy="673.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="874.7" cy="683.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="938.9" cy="660.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1073.7" cy="655.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1192.0" cy="657.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1230.7" cy="639.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1361.2" cy="636.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1476.5" cy="686.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="686.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.0" cy="749.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="101.7" cy="788.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="201.6" cy="744.3" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="348.2" cy="789.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="442.1" cy="743.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="511.1" cy="783.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="658.4" cy="756.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="781.5" cy="755.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="827.6" cy="790.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="924.2" cy="759.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1035.6" cy="773.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1159.5" cy="753.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1271.9" cy="746.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1399.0" cy="781.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1449.3" cy="771.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1556.5" cy="770.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="15.4" cy="856.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="130.3" cy="849.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="267.4" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="318.3" cy="877.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="417.8" cy="854.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="534.7" cy="883.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="616.3" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="731.6" cy="854.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="850.6" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="948.7" cy="873.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1090.4" cy="873.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1149.9" cy="855.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1264.7" cy="878.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1372.4" cy="856.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1435.9" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1584.8" cy="886.0" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/></svg>
+    <p>loading</p>
+  </div>
   <div id="overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <svg class="saree-cloth" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" pointer-events="none"><line x1="40.0" y1="42.8" x2="132.3" y2="28.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="132.3" y1="28.6" x2="226.6" y2="53.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="226.6" y1="53.8" x2="249.6" y2="149.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="249.6" y1="149.2" x2="329.3" y2="114.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="249.6" y1="149.2" x2="309.7" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="309.7" y1="216.5" x2="246.6" y2="252.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="246.6" y1="252.1" x2="244.3" y2="329.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="244.3" y1="329.5" x2="316.2" y2="345.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="316.2" y1="345.7" x2="265.9" y2="428.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="265.9" y1="428.9" x2="348.2" y2="451.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="433.8" y2="426.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="433.8" y1="426.1" x2="533.3" y2="440.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="533.3" y1="440.5" x2="530.7" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.7" y1="345.2" x2="456.8" y2="325.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="456.8" y1="325.6" x2="440.1" y2="247.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="440.1" y1="247.1" x2="509.8" y2="235.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.7" y1="345.2" x2="629.4" y2="364.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="629.4" y1="364.5" x2="636.6" y2="454.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="636.6" y1="454.9" x2="657.6" y2="542.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="657.6" y1="542.9" x2="738.1" y2="577.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="738.1" y1="577.6" x2="832.5" y2="552.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="832.5" y1="552.8" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="329.3" y1="114.7" x2="322.5" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="322.5" y1="14.0" x2="423.5" y2="15.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="448.3" y2="112.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="836.1" y1="474.8" x2="739.5" y2="439.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="739.5" y1="439.4" x2="763.8" y2="368.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="763.8" y1="368.2" x2="861.1" y2="353.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="861.1" y1="353.9" x2="939.8" y2="344.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="939.8" y1="344.7" x2="962.6" y2="258.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="738.1" y1="577.6" x2="779.9" y2="673.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="779.9" y1="673.4" x2="781.5" y2="755.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="781.5" y1="755.1" x2="827.6" y2="790.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="779.9" y1="673.4" x2="874.7" y2="683.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="874.7" y1="683.8" x2="938.9" y2="660.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="874.7" y1="683.8" x2="924.2" y2="759.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="827.6" y1="790.7" x2="850.6" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="850.6" y1="886.0" x2="948.7" y2="873.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="938.9" y1="660.3" x2="941.1" y2="559.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="941.1" y1="559.8" x2="947.0" y2="474.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="947.0" y1="474.6" x2="1034.6" y2="458.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1034.6" y1="458.5" x2="1077.4" y2="535.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1077.4" y1="535.9" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1139.2" y1="532.8" x2="1164.0" y2="460.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1264.2" y2="469.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1237.8" y2="556.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1237.8" y1="556.6" x2="1230.7" y2="639.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1230.7" y1="639.9" x2="1192.0" y2="657.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1159.5" y2="753.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1159.5" y1="753.6" x2="1149.9" y2="855.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1149.9" y1="855.8" x2="1090.4" y2="873.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1130.5" y2="362.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1130.5" y1="362.7" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="530.9" y2="15.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.9" y1="15.9" x2="618.9" y2="18.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="530.9" y1="15.9" x2="556.6" y2="107.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="556.6" y1="107.9" x2="642.5" y2="132.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="722.7" y2="132.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="630.3" y2="217.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="722.7" y1="132.5" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="722.7" y1="132.5" x2="735.7" y2="31.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="735.7" y1="31.6" x2="831.2" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="831.2" y1="14.0" x2="934.2" y2="30.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="962.6" y1="258.7" x2="981.3" y2="152.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="981.3" y1="152.5" x2="1083.9" y2="120.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1049.8" y2="40.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1083.9" y1="120.2" x2="1069.8" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1069.8" y1="216.5" x2="1170.4" y2="246.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1170.4" y1="246.0" x2="1229.8" y2="233.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1236.9" y2="144.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.9" y1="144.2" x2="1236.0" y2="39.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.0" y1="39.9" x2="1180.9" y2="23.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="132.3" y1="28.6" x2="112.8" y2="135.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="112.8" y1="135.9" x2="47.9" y2="157.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="47.9" y1="157.1" x2="100.0" y2="223.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="100.0" y1="223.9" x2="14.5" y2="248.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.5" y1="248.2" x2="14.0" y2="345.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="345.0" x2="101.1" y2="358.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="345.0" x2="16.1" y2="443.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="16.1" y1="443.2" x2="50.8" y2="543.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="50.8" y1="543.9" x2="107.0" y2="544.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="107.0" y1="544.5" x2="127.2" y2="467.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="307.7" y2="552.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="307.7" y1="552.9" x2="240.0" y2="552.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="307.7" y1="552.9" x2="313.4" y2="644.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="313.4" y1="644.7" x2="209.1" y2="662.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="209.1" y1="662.8" x2="150.5" y2="656.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="209.1" y1="662.8" x2="201.6" y2="744.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="201.6" y1="744.3" x2="101.7" y2="788.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="130.3" y2="849.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="14.0" y2="749.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="749.9" x2="15.0" y2="647.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="14.0" y1="749.9" x2="15.4" y2="856.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1239.7" y2="342.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="781.5" y1="755.1" x2="731.6" y2="854.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="924.2" y1="759.4" x2="1035.6" y2="773.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1159.5" y1="753.6" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="831.2" y1="14.0" x2="851.5" y2="126.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="851.5" y1="126.7" x2="849.2" y2="218.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1372.1" y2="426.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.1" y1="426.4" x2="1395.4" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1395.4" y1="345.2" x2="1376.5" y2="262.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1395.4" y1="345.2" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1494.1" y1="332.0" x2="1569.7" y2="338.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1569.7" y1="338.2" x2="1578.0" y2="262.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1578.0" y1="262.8" x2="1498.2" y2="242.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.1" y1="426.4" x2="1481.5" y2="455.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1481.5" y1="455.9" x2="1554.7" y2="462.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1554.7" y1="462.0" x2="1539.8" y2="541.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1539.8" y1="541.2" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1465.9" y1="556.8" x2="1365.4" y2="578.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1365.4" y1="578.7" x2="1361.2" y2="636.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1236.9" y1="144.2" x2="1350.0" y2="114.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1350.0" y1="114.2" x2="1383.5" y2="22.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1383.5" y1="22.6" x2="1479.8" y2="17.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1350.0" y1="114.2" x2="1454.4" y2="128.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1479.8" y1="17.6" x2="1586.0" y2="45.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1586.0" y1="45.4" x2="1586.0" y2="131.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1149.9" y1="855.8" x2="1264.7" y2="878.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.7" y1="878.8" x2="1372.4" y2="856.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.4" y1="856.1" x2="1435.9" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1372.4" y1="856.1" x2="1399.0" y2="781.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1399.0" y1="781.2" x2="1449.3" y2="771.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1476.5" y2="686.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1556.5" y2="770.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1556.5" y1="770.4" x2="1586.0" y2="686.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1073.7" y2="655.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1556.5" y1="770.4" x2="1584.8" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="731.6" y1="854.5" x2="616.3" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="616.3" y1="886.0" x2="534.7" y2="883.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="534.7" y1="883.2" x2="511.1" y2="783.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="511.1" y1="783.1" x2="442.1" y2="743.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.1" y1="743.8" x2="447.1" y2="639.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="447.1" y1="639.5" x2="442.9" y2="559.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.9" y1="559.6" x2="532.7" y2="570.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="532.7" y1="570.3" x2="560.1" y2="657.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="560.1" y1="657.8" x2="616.0" y2="670.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="616.0" y1="670.1" x2="658.4" y2="756.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="442.1" y1="743.8" x2="348.2" y2="789.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="789.8" x2="318.3" y2="877.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="318.3" y1="877.1" x2="267.4" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="789.8" x2="417.8" y2="854.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="226.6" y1="53.8" x2="322.5" y2="14.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="423.5" y1="15.5" x2="329.3" y2="114.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="735.7" y1="31.6" x2="642.5" y2="132.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1049.8" y1="40.1" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1180.9" y1="23.6" x2="1128.0" y2="127.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1479.8" y1="17.6" x2="1454.4" y2="128.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="47.9" y1="157.1" x2="14.5" y2="248.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="329.3" y1="114.7" x2="309.7" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="642.5" y1="132.4" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="851.5" y1="126.7" x2="981.3" y2="152.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="981.3" y1="152.5" x2="1069.8" y2="216.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1586.0" y1="131.5" x2="1578.0" y2="262.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="100.0" y1="223.9" x2="101.1" y2="358.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="246.6" y1="252.1" x2="316.2" y2="345.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="440.1" y1="247.1" x2="530.7" y2="345.2" stroke="#2a2a2a" stroke-width="1.15"/><line x1="509.8" y1="235.7" x2="456.8" y2="325.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="630.3" y1="217.4" x2="726.2" y2="227.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="726.2" y1="227.9" x2="849.2" y2="218.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="849.2" y1="218.8" x2="962.6" y2="258.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1069.8" y1="216.5" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1229.8" y1="233.0" x2="1376.5" y2="262.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1376.5" y1="262.4" x2="1498.2" y2="242.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1498.2" y1="242.6" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1578.0" y1="262.8" x2="1494.1" y2="332.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="244.3" y1="329.5" x2="265.9" y2="428.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="316.2" y1="345.7" x2="348.2" y2="451.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="456.8" y1="325.6" x2="433.8" y2="426.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="629.4" y1="364.5" x2="533.3" y2="440.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="763.8" y1="368.2" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="861.1" y1="353.9" x2="836.1" y2="474.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="939.8" y1="344.7" x2="1052.5" y2="343.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1052.5" y1="343.4" x2="1034.6" y2="458.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="127.2" y1="467.8" x2="50.8" y2="543.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="265.9" y1="428.9" x2="240.0" y2="552.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="348.2" y1="451.5" x2="442.9" y2="559.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="636.6" y1="454.9" x2="739.5" y2="439.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="739.5" y1="439.4" x2="657.6" y2="542.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="836.1" y1="474.8" x2="947.0" y2="474.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="947.0" y1="474.6" x2="832.5" y2="552.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1034.6" y1="458.5" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1164.0" y1="460.9" x2="1077.4" y2="535.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1264.2" y1="469.4" x2="1139.2" y2="532.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1481.5" y1="455.9" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1554.7" y1="462.0" x2="1465.9" y2="556.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="107.0" y1="544.5" x2="150.5" y2="656.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="657.6" y1="542.9" x2="616.0" y2="670.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="832.5" y1="552.8" x2="941.1" y2="559.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1139.2" y1="532.8" x2="1237.8" y2="556.6" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1237.8" y1="556.6" x2="1192.0" y2="657.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1365.4" y1="578.7" x2="1230.7" y2="639.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1465.9" y1="556.8" x2="1476.5" y2="686.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="150.5" y1="656.7" x2="201.6" y2="744.3" stroke="#2a2a2a" stroke-width="1.15"/><line x1="313.4" y1="644.7" x2="447.1" y2="639.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="938.9" y1="660.3" x2="924.2" y2="759.4" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1073.7" y1="655.6" x2="1035.6" y2="773.8" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1192.0" y1="657.0" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1230.7" y1="639.9" x2="1271.9" y2="746.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="101.7" y1="788.9" x2="15.4" y2="856.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="201.6" y1="744.3" x2="130.3" y2="849.7" stroke="#2a2a2a" stroke-width="1.15"/><line x1="658.4" y1="756.6" x2="731.6" y2="854.5" stroke="#2a2a2a" stroke-width="1.15"/><line x1="924.2" y1="759.4" x2="948.7" y2="873.9" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1399.0" y1="781.2" x2="1435.9" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1449.3" y1="771.5" x2="1372.4" y2="856.1" stroke="#2a2a2a" stroke-width="1.15"/><line x1="130.3" y1="849.7" x2="267.4" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><line x1="1435.9" y1="886.0" x2="1584.8" y2="886.0" stroke="#2a2a2a" stroke-width="1.15"/><circle cx="40.0" cy="42.8" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="132.3" cy="28.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="226.6" cy="53.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="322.5" cy="14.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="423.5" cy="15.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="530.9" cy="15.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="618.9" cy="18.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="735.7" cy="31.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="831.2" cy="14.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="934.2" cy="30.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1049.8" cy="40.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1180.9" cy="23.6" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1236.0" cy="39.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1383.5" cy="22.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1479.8" cy="17.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="45.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="47.9" cy="157.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="112.8" cy="135.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="249.6" cy="149.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="329.3" cy="114.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="448.3" cy="112.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="556.6" cy="107.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="642.5" cy="132.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="722.7" cy="132.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="851.5" cy="126.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="981.3" cy="152.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1083.9" cy="120.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1128.0" cy="127.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1236.9" cy="144.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1350.0" cy="114.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1454.4" cy="128.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="131.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.5" cy="248.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="100.0" cy="223.9" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="246.6" cy="252.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="309.7" cy="216.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="440.1" cy="247.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="509.8" cy="235.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="630.3" cy="217.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="726.2" cy="227.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="849.2" cy="218.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="962.6" cy="258.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1069.8" cy="216.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1170.4" cy="246.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1229.8" cy="233.0" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1376.5" cy="262.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1498.2" cy="242.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1578.0" cy="262.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.0" cy="345.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="101.1" cy="358.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="244.3" cy="329.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="316.2" cy="345.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="456.8" cy="325.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="530.7" cy="345.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="629.4" cy="364.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="763.8" cy="368.2" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="861.1" cy="353.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="939.8" cy="344.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1052.5" cy="343.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1130.5" cy="362.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1239.7" cy="342.3" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1395.4" cy="345.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1494.1" cy="332.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1569.7" cy="338.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="16.1" cy="443.2" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="127.2" cy="467.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="265.9" cy="428.9" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="348.2" cy="451.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="433.8" cy="426.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="533.3" cy="440.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="636.6" cy="454.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="739.5" cy="439.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="836.1" cy="474.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="947.0" cy="474.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1034.6" cy="458.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1164.0" cy="460.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1264.2" cy="469.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1372.1" cy="426.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1481.5" cy="455.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1554.7" cy="462.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="50.8" cy="543.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="107.0" cy="544.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="240.0" cy="552.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="307.7" cy="552.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="442.9" cy="559.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="532.7" cy="570.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="657.6" cy="542.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="738.1" cy="577.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="832.5" cy="552.8" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="941.1" cy="559.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1077.4" cy="535.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1139.2" cy="532.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1237.8" cy="556.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1365.4" cy="578.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1465.9" cy="556.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1539.8" cy="541.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="15.0" cy="647.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="150.5" cy="656.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="209.1" cy="662.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="313.4" cy="644.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="447.1" cy="639.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="560.1" cy="657.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="616.0" cy="670.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="779.9" cy="673.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="874.7" cy="683.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="938.9" cy="660.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1073.7" cy="655.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1192.0" cy="657.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1230.7" cy="639.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1361.2" cy="636.0" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1476.5" cy="686.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1586.0" cy="686.3" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="14.0" cy="749.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="101.7" cy="788.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="201.6" cy="744.3" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="348.2" cy="789.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="442.1" cy="743.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="511.1" cy="783.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="658.4" cy="756.6" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="781.5" cy="755.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="827.6" cy="790.7" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="924.2" cy="759.4" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1035.6" cy="773.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1159.5" cy="753.6" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1271.9" cy="746.1" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1399.0" cy="781.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1449.3" cy="771.5" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1556.5" cy="770.4" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="15.4" cy="856.9" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="130.3" cy="849.7" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="267.4" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="318.3" cy="877.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="417.8" cy="854.7" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="534.7" cy="883.2" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="616.3" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="731.6" cy="854.5" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="850.6" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="948.7" cy="873.9" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1090.4" cy="873.4" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1149.9" cy="855.8" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1264.7" cy="878.8" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1372.4" cy="856.1" r="6.2" fill="#3a3a3a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1435.9" cy="886.0" r="6.2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.2"/><circle cx="1584.8" cy="886.0" r="6.2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.2"/></svg>
     <div class="popup" id="popup">
       <div class="mark" id="popupMark">!</div>
       <h2 id="popupTitle">Notice</h2>
@@ -971,7 +1034,7 @@
       if (isOtherGroup(name)) return name;
       return displayTopic(name);
     }
-    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null, lastAiCommon: null, lastAiCommonKey: "", aiCommonSeq: 0 };
+    const state = { metric: "documents", by: "source", rawGraph: null, fullView: null, graphView: null, selectedDocId: null, selectedCluster: null, timeBreakdown: null, lastSummary: null, lastSignals: null };
     let datasetsCache = [];
     const overlay = document.getElementById("overlay");
     const popupEl = document.getElementById("popup");
@@ -992,8 +1055,14 @@
     function popup(message, title = "Notice", kind = "info") {
       finishPopup(false);
       document.getElementById("popupTitle").textContent = title;
-      document.getElementById("popupBody").textContent = String(message || "");
-      document.getElementById("popupMark").textContent = kind === "ok" ? "✓" : kind === "warn" ? "!" : "✦";
+      const bodyEl = document.getElementById("popupBody");
+      bodyEl.classList.remove("cluster-list");
+      bodyEl.onclick = null;
+      bodyEl.textContent = String(message || "");
+      const mark = document.getElementById("popupMark");
+      if (kind === "ok") { mark.hidden = false; mark.textContent = "✓"; }
+      else if (kind === "warn") { mark.hidden = false; mark.textContent = "!"; }
+      else { mark.textContent = ""; mark.hidden = true; }
       popupEl.className = "popup" + (kind === "info" ? "" : " " + kind);
       popupConfirmBtn.hidden = true;
       popupActions.classList.remove("confirm");
@@ -1007,6 +1076,7 @@
         popupResolver = resolve;
         document.getElementById("popupTitle").textContent = title;
         document.getElementById("popupBody").textContent = String(message || "");
+        document.getElementById("popupBody").classList.remove("cluster-list");
         document.getElementById("popupMark").textContent = "!";
         popupEl.className = "popup warn";
         popupConfirmBtn.hidden = false;
@@ -1032,28 +1102,37 @@
     const URL_MIN_PAGES_ERROR =
       "You may only submit a public URL where at least 1000 pages can be crawled.";
     const howToUseBody =
-      "Add extra data\n" +
-      "Choose files to upload PDFs or text, or paste a public URL. A URL is accepted only if a same-host crawl can reach at least 1000 pages. Crawl and analyse. Each add is its own collection. Extra data is never mixed into Wikipedia or GDELT.\n\n" +
-      "All sources\n" +
-      "Leave Dataset on All sources, with All topics, to analyze and graph every collection together: Wikipedia, GDELT, and any PDFs or URLs you added. Documents keep their own source tags. Nothing is merged into one stored dataset.\n\n" +
-      "Topic\n" +
-      "Topics are countries: India, United States, Germany, and Australia. Pick a country to gather insight about that slice. Subjects such as computer science stay under a country when they belong there. On All sources the country includes matching documents from every collection. On one dataset it stays inside that collection. This is a filter only. It does not create another dataset.\n\n" +
-      "From add to delete\n" +
-      "At most 7 collections, including Wikipedia and GDELT. The new collection appears in the Dataset dropdown. Select that one collection to analyze and view it in isolation. Click Explain insights to explain the currently visible graph or collection. When you are done, Delete that collection. Wikipedia cannot be deleted. GDELT cannot be deleted.\n\n" +
-      "What the readings mean\n" +
-      "The subject chart shows the mix of this visible set and how much of each subject looks AI-generated. Individual articles are documents, not topics. GraphSAGE is not a detection signal.\n\n" +
-      "Ask / explain\n" +
-      "Ask sends the visible collection’s measured scores and a few source excerpts to Claude. Explain collection does the same without a custom question. If ANTHROPIC_API_KEY is unset, metrics and Explain insights still work.";
+      "KnowledgeOS estimates how much of a document collection looks AI-generated. How to use opens this note.\n\n" +
+      "A small eye sits at the top edge. An open eye means the left panel is showing. Click it to hide that panel so the charts use the full page. A closed eye brings the panel back.\n\n" +
+      "The left panel starts with Dataset. Wikipedia is the encyclopedia sample, GDELT is the news sample, and All sources looks at both together, plus anything you add. Topic sits under that menu. Leave it on All topics to see the whole collection. The countries are India, the United States, Germany, and Australia. Choosing one only narrows this view to pages about that country. It does not create a new collection.\n\n" +
+      "Further down, Choose files takes PDFs or text files. Or paste a public web address and click Crawl and analyse. A web address is accepted only when at least 1,000 pages on that site can be crawled. Each thing you add becomes its own collection, separate from Wikipedia and GDELT. You can keep 7 collections in all, and the two already here count toward that seven. Refresh, next to Dataset, reloads the view. Delete appears beside Refresh only after you select a collection you added. Wikipedia, GDELT, and All sources stay.\n\n" +
+      "The charts begin under the eye. AI share over time is the year-by-year picture. Under it, the document graph draws each page as a dot and groups a source in a circle. Click a source circle, such as Wikipedia or GDELT, to open that source as its own graph. Each dot carries a short gist of the page. Click one dot to get the link to that page.\n\n" +
+      "Explain the data, on the graph, reads the pages in this view and explains them in everyday language. That can take a moment, and a dark loading screen appears while it works. Explain insights, on the analysis, opens immediately and explains how the score is calculated.\n\n" +
+      "Ask sits under the analysis. Type a question and press Enter, or click Ask. The answer is in plain language from the scores on screen. A loading screen appears if the answer takes time.\n\n" +
+      "Final analysis, at the bottom, is two short sentences: how many pages were looked at, and about what percent of the text looks AI-generated.";
 
     document.getElementById("howToUse").onclick = () => {
       popup(howToUseBody, "How to use KnowledgeOS", "info");
     };
 
+    document.getElementById("asideToggle").addEventListener("click", () => {
+      const root = document.documentElement;
+      const collapsed = root.classList.toggle("panel-collapsed");
+      const btn = document.getElementById("asideToggle");
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      btn.setAttribute("aria-label", collapsed ? "Show the left panel" : "Hide the left panel");
+    });
+
     async function j(url, opts) {
-      const res = await fetch(url, opts);
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || res.statusText);
-      return data;
+      setAskLoading(true);
+      try {
+        const res = await fetch(url, opts);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.statusText);
+        return data;
+      } finally {
+        setAskLoading(false);
+      }
     }
 
     function datasetLabel(d) {
@@ -1079,8 +1158,10 @@
         .replace(/\s*ESTIMATE, not proof of authorship\./g, "")
         .replace(/\s*ESTIMATE, not proof\./g, "")
         .replace(/,?\s*not proof of authorship\.?/gi, "")
-        .replace(/\s+/g, " ")
-        .replace(/\s+\./g, ".")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .replace(/[ \t]{2,}/g, " ")
+        .replace(/[ \t]+\./g, ".")
         .trim();
     }
 
@@ -1392,24 +1473,66 @@
       };
     }
 
+    const SIGNAL_COPY = {
+      stylometry: {
+        label: "formulaic style",
+        clue: "formulaic style (more uniform wording and less bursty sentence lengths)"
+      },
+      stockPhrases: {
+        label: "template phrases",
+        clue: "template phrases such as “it is important to note”"
+      },
+      uniformity: {
+        label: "even sentence lengths",
+        clue: "unusually even sentence lengths (low sentence-length variance)"
+      },
+      ngrams: {
+        label: "repeated phrases",
+        clue: "the same short phrases recurring inside a page"
+      },
+      embeddingAnomaly: {
+        label: "wording unlike typical pre-2019 pages",
+        clue: "wording that sits far from typical pre-2019 pages here"
+      },
+      stylometryDeviation: {
+        label: "style unlike typical pre-2019 pages",
+        clue: "style that differs from typical pre-2019 pages here"
+      },
+      postChatgpt: {
+        label: "published after Sept 2019",
+        clue: "publish date after Sept 2019"
+      }
+    };
+
+    function signalCopy(key, field) {
+      const row = SIGNAL_COPY[key];
+      if (row && row[field]) return row[field];
+      return "a mix of writing measures";
+    }
+
     function detectorMeans(sig) {
       sig = sig || {};
       return [
-        { key: "stylometry", sym: "s", label: "writing style", clue: "writing style", v: sig.stylometry },
-        { key: "stockPhrases", sym: "p<sub>stock</sub>", label: "stock phrases", clue: "stock phrases", v: sig.stockPhrases },
-        { key: "uniformity", sym: "u", label: "even sentences", clue: "even sentences", v: sig.uniformity },
-        { key: "ngrams", sym: "g", label: "repeated phrases", clue: "repeated phrases", v: sig.ngrams },
-        { key: "embeddingAnomaly", sym: "e", label: "unusual wording vs typical human pages", clue: "unusual wording (embedding)", v: sig.embeddingAnomaly },
-        { key: "stylometryDeviation", sym: "d", label: "writing style vs typical pages here", clue: "writing style that differs from typical pages here", v: sig.stylometryDeviation },
-        { key: "postChatgpt", sym: "c", label: "published after Sept 2019", clue: "publish date after Sept 2019", v: sig.postChatgpt }
+        { key: "stylometry", sym: "s", v: sig.stylometry },
+        { key: "stockPhrases", sym: "p<sub>stock</sub>", v: sig.stockPhrases },
+        { key: "uniformity", sym: "u", v: sig.uniformity },
+        { key: "ngrams", sym: "g", v: sig.ngrams },
+        { key: "embeddingAnomaly", sym: "e", v: sig.embeddingAnomaly },
+        { key: "stylometryDeviation", sym: "d", v: sig.stylometryDeviation },
+        { key: "postChatgpt", sym: "c", v: sig.postChatgpt }
       ].map(row => {
         const shown = score2(row.v);
-        return Object.assign({}, row, { shown, n: shown == null ? NaN : Number(row.v) });
+        return Object.assign({}, row, {
+          label: signalCopy(row.key, "label"),
+          clue: signalCopy(row.key, "clue"),
+          shown,
+          n: shown == null ? NaN : Number(row.v)
+        });
       });
     }
 
     function strongestDetector(sig) {
-      const rows = detectorMeans(sig).filter(r => r.key !== "postChatgpt" && Number.isFinite(r.n));
+      const rows = detectorMeans(sig).filter(r => r.key !== "postChatgpt" && r.key !== "uniformity" && Number.isFinite(r.n));
       if (!rows.length) return null;
       return rows.reduce((best, row) => row.n > best.n ? row : best);
     }
@@ -1443,7 +1566,6 @@
       const cluster = displayCluster(state.selectedCluster);
       const sig = extras.signals || summary.collectionSignals || state.lastSignals || {};
       const live = detectorMeans(sig).filter(row => row.shown != null);
-      const strongest = strongestDetector(sig);
       const maxTopic = maxFieldShare(nodes, "topic");
       const share = summary.shareOfDocuments;
       const era = eraCompare(nodes);
@@ -1472,6 +1594,7 @@
       }
 
       const reading = composeReadingLines(summary, nodes, sig);
+      const outLines = reading.filter(Boolean);
 
       return `
         <section class="paper-sec">
@@ -1480,9 +1603,7 @@
         </section>
         <section class="paper-sec">
           <h4><span class="rn">II</span> Output</h4>
-          <p class="paper-out">${esc(reading[0] || "")}</p>
-          <p class="paper-out">${esc(reading[1] || "")}</p>
-          <p class="paper-out">${esc(reading[2] || "")}</p>
+          ${outLines.map(t => `<p class="paper-out">${esc(t)}</p>`).join("\n          ")}
         </section>`;
     }
 
@@ -1513,7 +1634,25 @@
           nodes: extras.nodes || (state.graphView && state.graphView.nodes) || []
         });
       }
-      renderReadingSummary(summary, extras.nodes || (state.graphView && state.graphView.nodes) || []);
+      renderFinalAnalysis(summary, extras.nodes || (state.graphView && state.graphView.nodes) || []);
+    }
+
+    function renderFinalAnalysis(summary, nodes) {
+      const line1 = document.getElementById("readingL1");
+      const line2 = document.getElementById("readingL2");
+      if (!line1 || !line2) return;
+      summary = summary || {};
+      nodes = nodes || [];
+      let n = nodes.length;
+      if (!n && summary.documentCount != null) n = Number(summary.documentCount) || 0;
+      if (!Number.isFinite(n) || n < 0) n = 0;
+      const share = summary.shareOfDocuments;
+      line1.textContent = `We looked at ${pageCountLabel(n)}.`;
+      if (share == null || share === "" || !Number.isFinite(Number(share))) {
+        line2.textContent = "The writing checks do not have a result for this view yet.";
+      } else {
+        line2.textContent = `From the writing checks, about ${Number(share)}% of the text looks AI-generated.`;
+      }
     }
 
 
@@ -1718,7 +1857,8 @@
       const q = topicQuery();
       try {
         const graph = await j(q ? `/datasets/${id}/graph?${q.slice(1)}` : `/datasets/${id}/graph`);
-        drawGraph(graph);
+        drawGraph(graph, { refreshAnalysis: false });
+        await loadVisibleAnalysis();
       } catch (err) {
         state.rawGraph = null;
         state.fullView = null;
@@ -1865,6 +2005,7 @@
         : Math.min(w, h) * (nGroups <= 3 ? 0.15 : 0.105);
       const pos = {};
       const hulls = [];
+      const hits = [];
       const headings = [];
       names.forEach((name, gi) => {
         const members = buckets.get(name) || [];
@@ -1884,6 +2025,7 @@
         const tint = hexTint(colorOf[name], 0.08, 0.28);
         const on = state.selectedCluster === name ? " on" : "";
         hulls.push(`<circle class="g-hull" data-cluster="${esc(name)}" cx="${gcx.toFixed(1)}" cy="${gcy.toFixed(1)}" r="${hullR.toFixed(1)}" fill="${tint.fill}" stroke="${tint.stroke}" stroke-dasharray="5 4" />`);
+        hits.push(`<circle class="g-hit" data-cluster="${esc(name)}" cx="${gcx.toFixed(1)}" cy="${gcy.toFixed(1)}" r="${(hullR + 10).toFixed(1)}" fill="transparent" stroke="none" pointer-events="all" />`);
         const lx = orbit === 0 ? gcx : gcx + (hullR + 13) * Math.cos(ga);
         const ly = orbit === 0 ? gcy - hullR - 12 : gcy + (hullR + 13) * Math.sin(ga);
         const anchor = orbit === 0 ? "middle" : Math.cos(ga) > 0.28 ? "start" : Math.cos(ga) < -0.28 ? "end" : "middle";
@@ -1912,7 +2054,9 @@
         const country = displayTopic(n.topic);
         const tip = `${n.title || "Untitled"} · ${isCountryTopic(country) ? country : dsName} · ${dsName}`;
         const selected = state.selectedDocId != null && String(n.id) === String(state.selectedDocId);
-        return `<g data-doc="${n.id}" style="cursor:pointer">
+        const clusterName = (g && colorOf[g]) ? g : ((dsName && colorOf[dsName]) ? dsName : "");
+        const clusterAttr = clusterName ? ` data-cluster="${esc(clusterName)}"` : "";
+        return `<g data-doc="${n.id}"${clusterAttr} style="cursor:pointer">
           <title>${esc(tip)}</title>
           <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${selected ? 6.2 : 3.6}" fill="${fill}" stroke="${selected ? "#302417" : "#FFFEFB"}" stroke-width="${selected ? 2 : 1}" />
         </g>`;
@@ -1922,7 +2066,7 @@
         ? `<text class="g-filter" x="${cx.toFixed(1)}" y="26" text-anchor="middle">${esc(filterTitle)}</text>`
         : "";
       document.getElementById("graph").innerHTML =
-        `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(filterTitle || "Document graph by collection")}"><rect class="g-bg" width="${w}" height="${h}" fill="transparent"></rect>${hulls.join("")}${lines}${dots}${headings.join("")}${title}</svg>`;
+        `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(filterTitle || "Document graph by collection")}"><rect class="g-bg" width="${w}" height="${h}" fill="transparent"></rect>${hulls.join("")}${lines}${dots}${hits.join("")}${headings.join("")}${title}</svg>`;
       state.graphView = { nodes, links, groupBy, names, buckets, colorOf, datasetColor };
       const hint = document.getElementById("graphHint");
       if (hint) {
@@ -2019,10 +2163,8 @@
       const n = nodes.length || Number(summary.documentCount) || 0;
       const share = summary.shareOfDocuments;
       const era = eraCompare(nodes);
-      const strongest = strongestDetector(signals) || strongestDetector(summary.collectionSignals) || strongestDetector(state.lastSignals);
       const maxTopic = maxFieldShare(nodes, "topic");
       const country = selectedCountryTopic();
-      const cluster = displayCluster(state.selectedCluster);
 
       const line1 = n
         ? (share != null
@@ -2044,15 +2186,9 @@
         line2 = "There are not enough dated pages on both sides of September 2019 to compare earlier human writing with later pages.";
       }
 
-      let line3;
-      if (strongest && maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && !country && maxTopic.name !== cluster) {
-        line3 = `The strongest clue was ${strongest.clue || strongest.label}. ${maxTopic.name} pages scored about ${maxTopic.pct}%.`;
-      } else if (strongest) {
-        line3 = `The strongest clue on this set was ${strongest.clue || strongest.label}.`;
-      } else if (maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && !country) {
+      let line3 = "";
+      if (maxTopic && maxTopic.n >= MIN_TOPIC_DOCS && !country) {
         line3 = `${maxTopic.name} pages scored about ${maxTopic.pct}%.`;
-      } else {
-        line3 = "Readings stay an estimate from writing style, repeated phrases, and unusual wording versus earlier human pages.";
       }
       return [line1, line2, line3];
     }
@@ -2198,154 +2334,155 @@
       return [line1, line2, line3];
     }
 
-    function quoteCommon(items, key, limit) {
-      return joinWords((items || []).map(row => {
-        const s = String((row && (row[key] || row.phrase || row.word)) || "").trim();
-        return s ? `"${s}"` : "";
-      }).filter(Boolean).slice(0, limit || 4));
+    function nodeGist(n) {
+      const raw = String((n && (n.gist || n.excerpt || n.text || n.title)) || "Untitled").replace(/\s+/g, " ").trim();
+      let s = raw;
+      if (/^https?:\/\//i.test(s) || (/^[a-z0-9.-]+\//i.test(s) && !s.includes(" "))) {
+        s = s.replace(/^https?:\/\//i, "").replace(/[?#].*$/, "").replace(/[/_-]+/g, " ").replace(/\./g, " ");
+      } else if (s.includes("-") && !s.includes(" ")) {
+        s = s.replace(/[-_]+/g, " ");
+      }
+      s = s.replace(/\s+/g, " ").trim();
+      if (s.length > 180) s = s.slice(0, 176).replace(/\s+\S*$/, "") + "…";
+      return s || "Untitled";
     }
 
-    function aiCommonScopeKey() {
-      const ids = selectedClusterIds();
-      return [
-        document.getElementById("dataset").value || "",
-        document.getElementById("topic").value || "",
-        state.selectedCluster || "",
-        ids.join(",")
-      ].join("|");
-    }
+    const SOURCE_GRAPH_CAP = 100;
 
-    function writeReadingLines(lines) {
-      ["readingL1", "readingL2", "readingL3", "readingL4", "readingL5"].forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = (lines && lines[i]) || "";
+    function pickSourceGraphNodes(members, links) {
+      if (members.length <= SOURCE_GRAPH_CAP) return members.slice();
+      const degree = {};
+      members.forEach(n => { degree[n.id] = 0; });
+      links.forEach(l => {
+        if (degree[l.from] != null) degree[l.from] += 1;
+        if (degree[l.to] != null) degree[l.to] += 1;
       });
+      const connected = members.filter(n => degree[n.id] > 0)
+        .sort((a, b) => degree[b.id] - degree[a.id] || String(a.id).localeCompare(String(b.id)));
+      const chosen = connected.slice(0, Math.min(connected.length, 60));
+      const chosenIds = new Set(chosen.map(n => n.id));
+      const rest = members.filter(n => !chosenIds.has(n.id));
+      const need = SOURCE_GRAPH_CAP - chosen.length;
+      if (need > 0 && rest.length) {
+        const step = Math.max(1, Math.floor(rest.length / need));
+        for (let i = 0; i < rest.length && chosen.length < SOURCE_GRAPH_CAP; i += step) chosen.push(rest[i]);
+      }
+      return chosen.slice(0, SOURCE_GRAPH_CAP);
     }
 
-    function commonSignalSense(key) {
-      if (key === "embeddingAnomaly") return "embedding distance from the pre-2019 writing centroid";
-      if (key === "stockPhrases") return "canned stock phrases in the page text";
-      if (key === "ngrams") return "repeated phrases in the page text";
-      if (key === "uniformity") return "even sentence length";
-      if (key === "stylometry") return "uniform writing style";
-      if (key === "stylometryDeviation") return "writing style that differs from typical pages here";
-      return "a mix of writing signals";
+    function layoutSourceGraph(nodes, w, h) {
+      const pos = {};
+      const bunch = 12;
+      const groups = [];
+      for (let i = 0; i < nodes.length; i += bunch) groups.push(nodes.slice(i, i + bunch));
+      const g = Math.max(groups.length, 1);
+      const cx = w / 2;
+      const cy = h / 2;
+      const orbit = g <= 1 ? 0 : Math.min(w, h) * 0.34;
+      groups.forEach((group, gi) => {
+        const a = (2 * Math.PI * gi) / g - Math.PI / 2;
+        const gx = cx + orbit * Math.cos(a);
+        const gy = cy + orbit * Math.sin(a);
+        const ring = group.length <= 1 ? 0 : Math.min(78, 22 + group.length * 4);
+        placeClusterRing(group, pos, gx, gy, ring);
+      });
+      return pos;
     }
 
-    function composeAiCommonLines(data) {
-      const place = readingScopeLabel();
-      if (data && data.error) {
-        return [
-          `We could not read the shared wording for the AI-looking pages in ${place}.`,
-          "The strongest shared mark, stock phrases, and repeated n-grams stay blank until that read succeeds.",
-          "Try the same filter again after the collection finishes loading.",
-          "This note stays scoped to the collection, country, or cluster you have open."
-        ];
-      }
-      const n = data && Number(data.documentCount) || 0;
-      const sampled = data && Number(data.sampled) || 0;
-      if (!n) {
-        return [
-          `No pages in ${place} look AI-generated, so there is no shared wording to report.`,
-          "Unusual wording, stock phrases, and repeated n-grams need a likely-AI set before they can be compared.",
-          "Shared words and phrases will appear here when this filter has AI-looking pages.",
-          "The analysis stays scoped to the collection, country, or cluster you have open."
-        ];
-      }
-      const strong = (data && data.strongest) || {};
-      let line1 = `Across ${pageCountLabel(n)} in ${place} that look AI-generated, the strongest shared mark was ${strong.label || "a mix of writing signals"}`;
-      if (strong.score != null && Number.isFinite(Number(strong.score))) {
-        line1 += `, averaging ${Number(strong.score).toFixed(2)}`;
-      }
-      line1 += ".";
-
-      const sense = commonSignalSense(strong.key);
-      let line2;
-      if (strong.key === "embeddingAnomaly") {
-        line2 = `That shared signal is ${sense}, stronger here than canned stock phrases, repeated n-grams, or even sentences.`;
-      } else if (strong.key === "stockPhrases") {
-        line2 = `That shared signal is ${sense}, stronger here than unusual wording in the embedding space.`;
-      } else if (strong.key === "ngrams") {
-        line2 = `That shared signal is ${sense}, stronger here than unusual wording in the embedding space or canned stock phrases.`;
-      } else if (strong.key === "uniformity") {
-        line2 = `That shared signal is ${sense}, stronger here than unusual wording or canned stock phrases.`;
-      } else if (strong.key) {
-        line2 = `That shared signal is ${sense}.`;
-      } else {
-        line2 = "No single detector stood out above the others on those pages.";
-      }
-
-      const stocks = (data && data.stockPhrases) || [];
-      const phrases = (data && data.phrases) || [];
-      const words = (data && data.words) || [];
-      const stockScore = data && data.signals && data.signals.stockPhrases;
-      let line3;
-      if (stocks.length) {
-        line3 = `Stock phrases that recurred were ${quoteCommon(stocks, "phrase")}.`;
-      } else if (stockScore != null && Number(stockScore) > 0.2) {
-        line3 = `The stock-phrase detector was elevated, but canned markers such as "it is important to note" did not recur in the sampled page text.`;
-      } else {
-        line3 = "Canned stock phrases did not recur across those pages.";
-      }
-      if (sampled && sampled < n) {
-        line3 += ` Phrases and words below come from ${pageCountLabel(sampled)} with the highest scores.`;
-      }
-
-      const line4 = phrases.length
-        ? `Repeated phrases in the page text included ${quoteCommon(phrases, "phrase")}.`
-        : "No single repeated phrase rose above the rest once filler words were set aside.";
-      const line5 = words.length
-        ? `Shared words included ${quoteCommon(words, "word", 6)}.`
-        : "No single content word was shared widely enough to name.";
-      return [line1, line2, line3, line4, line5];
+    function clusterGraphMarkup(members) {
+      const view = state.fullView || state.graphView;
+      const idSet = new Set(members.map(n => n.id));
+      const allLinks = ((view && view.links) || []).filter(l => idSet.has(l.from) && idSet.has(l.to));
+      const drawn = pickSourceGraphNodes(members, allLinks);
+      const drawnIds = new Set(drawn.map(n => n.id));
+      const links = allLinks.filter(l => drawnIds.has(l.from) && drawnIds.has(l.to));
+      const w = 860;
+      const h = 520;
+      const pos = layoutSourceGraph(drawn, w, h);
+      const lines = links.map(e => {
+        const a = pos[e.from];
+        const b = pos[e.to];
+        if (!a || !b) return "";
+        const op = 0.22 + 0.4 * Math.min(1, e.cosine || 0);
+        return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="#8a5a2a" stroke-opacity="${op}" stroke-width="1.2" />`;
+      }).join("");
+      const showLabels = drawn.length <= 24;
+      const dots = drawn.map(node => {
+        const p = pos[node.id];
+        if (!p) return "";
+        const gist = nodeGist(node);
+        const label = showLabels ? esc(gist.length > 36 ? gist.slice(0, 34).replace(/\s+\S*$/, "") + "…" : gist) : "";
+        return `<g data-pop-doc="${node.id}" style="cursor:pointer">
+          <title>${esc(gist)}</title>
+          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="18" fill="transparent" pointer-events="all" />
+          <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6.5" fill="#8a5a2a" stroke="#FFFEFB" stroke-width="1.4" pointer-events="none" />
+          ${label ? `<text x="${p.x.toFixed(1)}" y="${(p.y + 18).toFixed(1)}" text-anchor="middle" fill="#302417" font-size="11" font-family="Literata,Georgia,serif">${label}</text>` : ""}
+        </g>`;
+      }).join("");
+      const caption = members.length === drawn.length
+        ? `${pageCountLabel(members.length)} in this source.`
+        : `This source has ${pageCountLabel(members.length)}. This graph draws ${fmtInt(drawn.length)} of them.`;
+      return `<p class="hint">${esc(caption)}</p><svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Documents in this source"><rect width="${w}" height="${h}" fill="transparent"></rect>${lines}${dots}</svg><div id="clusterNodeDetail" class="hint">Click a dot to open that page.</div>`;
     }
 
-    function renderAiCommon(data) {
-      writeReadingLines(composeAiCommonLines(data || {}));
+    async function revealClusterNode(n) {
+      const slot = document.getElementById("clusterNodeDetail");
+      if (!slot || !n) return;
+      let gist = nodeGist(n);
+      const dsId = n.datasetId;
+      const id = n.id;
+      let link = "";
+      if (id != null && dsId != null && dsId !== "" && String(dsId) !== "all") {
+        link = `<p><a href="/datasets/${encodeURIComponent(dsId)}/documents/${encodeURIComponent(id)}">Open this page</a></p>`;
+        if (!n.gist && !n.excerpt && !n.text) {
+          try {
+            const doc = await j(`/datasets/${encodeURIComponent(dsId)}/documents/${encodeURIComponent(id)}`);
+            const text = String(doc.excerpt || doc.text || "").replace(/\s+/g, " ").trim();
+            if (text && !/^https?:\/\//i.test(text.slice(0, 12))) {
+              gist = text.length > 360 ? text.slice(0, 340).replace(/\s+\S*$/, "") + "…" : text;
+            }
+          } catch (err) { /* title gist remains */ }
+        }
+      }
+      slot.innerHTML = `<p>${esc(gist)}</p>${link}`;
     }
 
-    async function loadAiCommon() {
-      const id = document.getElementById("dataset").value;
-      if (!id) return;
-      const key = aiCommonScopeKey();
-      if (state.lastAiCommon && state.lastAiCommonKey === key) {
-        renderAiCommon(state.lastAiCommon);
-        return;
-      }
-      if (state.aiCommonInflight && state.lastAiCommonKey === key) return;
-      const seq = ++state.aiCommonSeq;
-      state.lastAiCommonKey = key;
-      state.aiCommonInflight = true;
-      writeReadingLines([
-        `Reading the likely-AI pages in ${readingScopeLabel()} for shared wording, phrases, and embeddings.`,
-        "",
-        "",
-        "",
-        ""
-      ]);
-      try {
-        const q = scopeQuery().replace(/^&/, "");
-        const data = await j(`/datasets/${id}/ai-common${q ? `?${q}` : ""}`);
-        if (seq !== state.aiCommonSeq) return;
-        state.lastAiCommon = data;
-        renderAiCommon(data);
-      } catch (err) {
-        if (seq !== state.aiCommonSeq) return;
-        state.lastAiCommon = null;
-        renderAiCommon({ error: true });
-      } finally {
-        if (seq === state.aiCommonSeq) state.aiCommonInflight = false;
-      }
-    }
-
-    function renderReadingSummary() {
-      loadAiCommon().catch(() => {});
+    function showClusterNodes(name) {
+      const view = state.fullView || state.graphView;
+      const buckets = view && view.buckets;
+      const members = (buckets && buckets.get && buckets.get(name)) || [];
+      const title = displayCluster(name) || name || "Collection";
+      finishPopup(false);
+      document.getElementById("popupTitle").textContent = title;
+      const bodyEl = document.getElementById("popupBody");
+      bodyEl.classList.add("cluster-list");
+      bodyEl.innerHTML = members.length
+        ? clusterGraphMarkup(members)
+        : "<p>No documents in this circle.</p>";
+      bodyEl.onclick = (ev) => {
+        const dot = ev.target.closest && ev.target.closest("[data-pop-doc]");
+        if (!dot) return;
+        const id = dot.getAttribute("data-pop-doc");
+        const node = members.find(item => String(item.id) === String(id));
+        if (node) revealClusterNode(node);
+      };
+      const mark = document.getElementById("popupMark");
+      mark.textContent = "";
+      mark.hidden = true;
+      popupEl.className = "popup graph-pop";
+      popupConfirmBtn.hidden = true;
+      popupActions.classList.remove("confirm");
+      popupClose.textContent = "Close";
+      overlay.classList.add("open");
+      popupClose.focus();
     }
 
     function onGraphClick(e) {
       const clusterEl = e.target.closest("[data-cluster]");
       if (clusterEl) {
-        selectCluster(clusterEl.getAttribute("data-cluster"));
+        const name = clusterEl.getAttribute("data-cluster");
+        showClusterNodes(name);
+        selectCluster(name);
         return;
       }
       const tag = (e.target.tagName || "").toLowerCase();
@@ -2506,13 +2643,13 @@
       </svg>`;
     }
 
-    document.getElementById("reload").onclick = () => loadDatasets().then(loadDashboard).catch(err => popup(err.message, "Refresh failed", "warn"));
+    document.getElementById("reload").onclick = () => withDataLoading(() => loadDatasets().then(loadDashboard)).catch(err => popup(err.message, "Refresh failed", "warn"));
     document.getElementById("dataset").onchange = () => {
       document.getElementById("topic").value = "";
       state.selectedDocId = null;
       state.selectedCluster = null;
       syncDeleteControl();
-      loadDashboard().catch(err => popup(err.message, "Load failed", "warn"));
+      withDataLoading(() => loadDashboard()).catch(err => popup(err.message, "Load failed", "warn"));
     };
     document.getElementById("deleteDataset").onclick = async () => {
       const current = selectedDataset();
@@ -2536,60 +2673,761 @@
     document.getElementById("topic").onchange = () => {
       state.selectedDocId = null;
       state.selectedCluster = null;
-      loadDashboard().catch(err => popup(err.message, "Load failed", "warn"));
+      withDataLoading(() => loadDashboard()).catch(err => popup(err.message, "Load failed", "warn"));
     };
     document.getElementById("graph").addEventListener("click", onGraphClick);
     document.getElementById("showAllGraph").onclick = () => selectCluster(null);
 
-    async function explainVisibleInsights() {
+    function insightTimeRows(time) {
+      if (Array.isArray(time)) return time;
+      if (time && Array.isArray(time.rows)) return time.rows;
+      return [];
+    }
+
+    function formatInsightValue(v) {
+      if (v == null) return "n/a";
+      if (typeof v === "string") return v;
+      if (typeof v === "number") return Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000);
+      if (Array.isArray(v)) {
+        return v.map(formatInsightValue).join(", ");
+      }
+      if (typeof v === "object") {
+        return Object.keys(v).map(k => k + " = " + formatInsightValue(v[k])).join("; ");
+      }
+      return String(v);
+    }
+
+    function formatCalculationStep(step) {
+      if (!step) return "";
+      const n = step.n != null ? step.n : "";
+      const title = step.title || "";
+      const lines = [(n ? n + ". " : "") + title];
+      if (step.formula) lines.push("   Formula: " + step.formula);
+      const inputs = step.inputs && typeof step.inputs === "object" ? step.inputs : null;
+      if (inputs && Object.keys(inputs).length) {
+        lines.push("   Inputs: " + Object.keys(inputs).map(k => k + " = " + formatInsightValue(inputs[k])).join("; "));
+      }
+      const mid = step.intermediates && typeof step.intermediates === "object" ? step.intermediates : null;
+      if (mid && Object.keys(mid).length) {
+        lines.push("   Intermediate: " + Object.keys(mid).map(k => k + " = " + formatInsightValue(mid[k])).join("; "));
+      }
+      if (step.result) lines.push("   Result: " + step.result);
+      if (step.decision) lines.push("   Decision rule: " + step.decision);
+      return lines.join("\n");
+    }
+
+    function formatCalculationSteps(calcs) {
+      if (!calcs) return "";
+      if (calcs.prose && String(calcs.prose).trim()) return String(calcs.prose).trim();
+      const steps = Array.isArray(calcs.steps) ? calcs.steps : [];
+      return steps.map(formatCalculationStep).filter(Boolean).join("\n\n");
+    }
+
+    function buildInsightCalculationsFromView() {
+      const summary = state.lastSummary || {};
+      const nodes = (state.graphView && state.graphView.nodes) || (state.rawGraph && state.rawGraph.nodes) || [];
+      const links = (state.graphView && state.graphView.links) || (state.rawGraph && state.rawGraph.edges) || [];
+      const n = Number(summary.documentCount);
+      const visible = Number.isFinite(n) ? n : nodes.length;
+      const corpus = Number(summary.corpusDocumentCount);
+      const bands = summary.bands || {};
+      const ai = Number(bands.LIKELY_AI) || 0;
+      const human = Number(bands.LIKELY_HUMAN) || 0;
+      const unc = Number(bands.UNCERTAIN) || 0;
+      const scored = scoredDocumentCount(summary, nodes) || (ai + human + unc);
+      const pending = Math.max(0, visible - scored);
+      const share = summary.shareOfDocuments;
+      const wordShare = summary.shareOfAnalyzedWords;
+      const docRange = Array.isArray(summary.shareOfDocumentsRange) ? summary.shareOfDocumentsRange : [];
+      const wordRange = Array.isArray(summary.shareOfAnalyzedWordsRange) ? summary.shareOfAnalyzedWordsRange : [];
+      const words = Number(summary.analyzedWordCount) || 0;
+      const sig = summary.collectionSignals || state.lastSignals || {};
+      const meanP = sig.pAi != null ? Number(sig.pAi) : (share != null ? Number(share) / 100 : null);
+      const aiMin = 0.58;
+      const humanMax = 0.42;
+      const maxInterval = 0.50;
+      const steps = [];
+
+      steps.push({
+        n: 1,
+        title: "What we counted",
+        formula: "pending = visible documents - scored documents. A page is scored when it already has an AI-likelihood estimate p_ai and a band.",
+        inputs: {
+          visibleDocuments: visible,
+          collectionDocuments: Number.isFinite(corpus) ? corpus : visible,
+          likelyAiGenerated: ai,
+          likelyHumanWritten: human,
+          uncertain: unc
+        },
+        intermediates: { scoredDocuments: scored, pendingDocuments: pending },
+        result: visible + " visible document" + (visible === 1 ? "" : "s") + ", " + scored + " scored, " + pending + " pending",
+        decision: "Only scored pages enter the collection percent. Pending pages are omitted from the mean."
+      });
+
+      if (share == null || share === "") {
+        steps.push({
+          n: 2,
+          title: "Headline AI share of documents",
+          formula: "share% = round(100 × mean of p_ai over scored documents).",
+          inputs: { scoredDocuments: scored },
+          intermediates: {},
+          result: summary.headline || "This visible set is not yet analyzed.",
+          decision: "No stored p_ai scores, so a collection percent cannot be formed. GraphSAGE is not used in this share."
+        });
+      } else {
+        const mid = { roundedPercent: Number(share) };
+        if (Number.isFinite(meanP)) mid["100TimesMeanPAi"] = Math.round(meanP * 10000) / 100;
+        steps.push({
+          n: 2,
+          title: "Headline AI share of documents",
+          formula: "share% = round(100 × mean of p_ai over scored documents). p_ai is already stored per page (logistic blend of stylometry, template phrases, sentence-length variance, repeated phrases, and embedding distance from the pre-2019 writing centroid in this visible set). Pages dated before 2019 stay near zero.",
+          inputs: {
+            scoredDocuments: scored,
+            meanPAi: Number.isFinite(meanP) ? Math.round(meanP * 1000) / 1000 : "n/a",
+            storedShareOfDocumentsPercent: Number(share)
+          },
+          intermediates: mid,
+          result: Number(share) + "% of documents",
+          decision: "This percent is the mean of document scores — the share of documents — not a count of proven AI pages. GraphSAGE is not used in this share."
+        });
+      }
+
+      if (share != null && share !== "" && docRange.length >= 2) {
+        steps.push({
+          n: steps.length + 1,
+          title: "Uncertainty range for the document share",
+          formula: "SE = s / √n, where s is the sample standard deviation of p_ai. If n < 2, SE is taken as 0.08. Interval = [clip01(mean - 1.96×SE), clip01(mean + 1.96×SE)], then each end × 100 and rounded.",
+          inputs: {
+            scoredDocuments: scored,
+            meanPAi: Number.isFinite(meanP) ? Math.round(meanP * 1000) / 1000 : "n/a",
+            storedRangePercent: docRange[0] + "–" + docRange[1]
+          },
+          intermediates: {},
+          result: "range " + docRange[0] + "–" + docRange[1] + "%",
+          decision: "The stored range is that interval. It is a conventional 95% interval around the mean of the scores, not a claim that authorship is proven inside the band."
+        });
+      }
+
+      if (wordShare != null && wordShare !== "") {
+        let wordResult = Number(wordShare) + "% of analyzed words";
+        if (wordRange.length >= 2) wordResult += " (range " + wordRange[0] + "–" + wordRange[1] + "%)";
+        steps.push({
+          n: steps.length + 1,
+          title: "AI share of analyzed words",
+          formula: "word share = Σ(p_ai × word_count) / Σ(word_count). The stored word range uses the same SE as the document scores (not a separate word-weighted SE), then clip01(mean ± 1.96×SE) × 100.",
+          inputs: {
+            scoredDocuments: scored,
+            analyzedWordCount: words,
+            storedShareOfAnalyzedWordsPercent: Number(wordShare)
+          },
+          intermediates: {},
+          result: wordResult,
+          decision: "This is a word-weighted mean of the same stored p_ai scores. GraphSAGE is not used here either."
+        });
+      }
+
+      steps.push({
+        n: steps.length + 1,
+        title: "How each page gets a band",
+        formula: "If (ci_high - ci_low) > max interval, the band is uncertain. Else if p_ai ≥ likely-AI cutoff → likely AI-generated. Else if p_ai ≤ likely-human cutoff → likely human-written. Else uncertain.",
+        inputs: {
+          likelyAiMinPAi: aiMin,
+          likelyHumanMaxPAi: humanMax,
+          uncertainIfIntervalWiderThan: maxInterval,
+          likelyAiGeneratedCount: ai,
+          likelyHumanWrittenCount: human,
+          uncertainCount: unc
+        },
+        intermediates: { likelyAiMinPercent: 58, likelyHumanMaxPercent: 42 },
+        result: ai + " likely AI-generated, " + human + " likely human-written, " + unc + " uncertain",
+        decision: "Bands classify each stored score against those cutoffs. They are labels on the same p_ai values, not a second model."
+      });
+
+      const timeRows = insightTimeRows(state.timeBreakdown);
+      const dated = timeRows.filter(r => r && r.estimatePercent != null && r.estimatePercent !== "");
+      const last = dated.length ? dated[dated.length - 1] : null;
+      let timeResult = "No dated pages in this visible set, so a yearly series cannot be drawn.";
+      if (timeRows.length && dated.length) {
+        timeResult = timeRows.length + " year-bin" + (timeRows.length === 1 ? "" : "s") +
+          " from 2015 through the latest dated year";
+        if (last) {
+          timeResult += ". Latest bin " + last.key + " = " + last.estimatePercent + "%";
+          if (last.documentCount != null) timeResult += " on " + last.documentCount + " page(s)";
+        }
+      }
+      const examples = dated.slice(0, 1).concat(dated.length > 1 ? [dated[dated.length - 1]] : []);
+      steps.push({
+        n: steps.length + 1,
+        title: "Yearly series",
+        formula: "A year-bin is the calendar year of the document date (created / first-revision if present, else published). Years before 2015 are omitted. The estimate for a year is the mean of p_ai in that bin, then × 100 and rounded — the same mean as the headline, restricted to that year. The range in a bin uses the same 1.96×SE rule.",
+        inputs: {
+          yearBinStartsAt: 2015,
+          dateRule: "calendar year of first-revision / created date when stored, otherwise published date",
+          yearBinCount: timeRows.length,
+          binsWithAMean: dated.length,
+          exampleBins: examples.map(r => r.key + " → " + r.estimatePercent + "% on " + (r.documentCount || 0)).join("; ") || "none"
+        },
+        intermediates: {},
+        result: timeResult,
+        decision: "A later date can mean an edit, not a newly written page. Combined All sources unions years from every collection."
+      });
+
+      const groupBy = (state.graphView && state.graphView.groupBy) || (state.rawGraph && state.rawGraph.groupBy) || "topic";
+      const groupPlain = groupBy === "topic" ? "country heading (stored topic label)"
+        : (groupBy === "dataset" || groupBy === "source") ? "collection"
+        : groupBy === "band" ? "estimate band" : "heading";
+      const nodeCount = nodes.length;
+      const edgeCount = links.length;
+      steps.push({
+        n: steps.length + 1,
+        title: "Graph grouping",
+        formula: "Nodes are documents. Edges are nearest-neighbor text similarity (up to k neighbors, cosine at least the stored minimum). Group labels come from stored metadata (country or collection), not from a second authorship model.",
+        inputs: {
+          nodeCount,
+          edgeCount,
+          groupBy,
+          groupByPlain: groupPlain,
+          nearestNeighbors: 8,
+          minCosineSimilarity: 0.32
+        },
+        intermediates: {},
+        result: nodeCount + " document node" + (nodeCount === 1 ? "" : "s") + ", " +
+          edgeCount + " similarity edge" + (edgeCount === 1 ? "" : "s") + ", grouped by " + groupPlain,
+        decision: "Clicking a heading only filters this same collection. GraphSAGE is not in the headline share."
+      });
+
+      const gs = (summary.graphsage && summary.graphsage.usedInHeadline) ? true : false;
+      steps.push({
+        n: steps.length + 1,
+        title: "What is not in the headline",
+        formula: "headline share uses only the mean of stored document p_ai scores.",
+        inputs: {
+          graphsageUsedInHeadline: gs,
+          graphsageStatus: (summary.graphsage && summary.graphsage.status) || "NOT_TRAINED"
+        },
+        intermediates: {},
+        result: gs
+          ? "GraphSAGE was marked as used — unexpected; the share should still be read as the mean of p_ai."
+          : "GraphSAGE is not in this share.",
+        decision: "Similarity clustering and GraphSAGE embeddings may appear as graph context. They do not enter the collection percent."
+      });
+
+      return { title: "How we calculated this", steps, prose: steps.map(formatCalculationStep).join("\n\n") };
+    }
+
+    function pctRangeLabel(pair) {
+      if (!Array.isArray(pair) || pair.length < 2) return "";
+      const a = Number(pair[0]);
+      const b = Number(pair[1]);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) return "";
+      return a + "–" + b + "%";
+    }
+
+    function statisticalInsightNote(data) {
+      const c = (data && data.calculations) || {};
+      const counts = c.counts || {};
+      const th = c.thresholds || {};
+      const summary = state.lastSummary || {};
+      const bands = summary.bands || {};
+      const name = (data && data.name) || summary.name || "This collection";
+      const n = Number.isFinite(Number(counts.visibleDocuments))
+        ? Number(counts.visibleDocuments)
+        : (Number(summary.documentCount) || 0);
+      const ai = Number.isFinite(Number(counts.likelyAiGenerated))
+        ? Number(counts.likelyAiGenerated)
+        : (Number(bands.LIKELY_AI) || 0);
+      const human = Number.isFinite(Number(counts.likelyHumanWritten))
+        ? Number(counts.likelyHumanWritten)
+        : (Number(bands.LIKELY_HUMAN) || 0);
+      const unc = Number.isFinite(Number(counts.uncertain))
+        ? Number(counts.uncertain)
+        : (Number(bands.UNCERTAIN) || 0);
+      const scored = Number.isFinite(Number(counts.scoredDocuments))
+        ? Number(counts.scoredDocuments)
+        : (ai + human + unc);
+      const pending = Number.isFinite(Number(counts.pendingDocuments))
+        ? Number(counts.pendingDocuments)
+        : Math.max(0, n - scored);
+      const words = Number.isFinite(Number(counts.analyzedWordCount))
+        ? Number(counts.analyzedWordCount)
+        : (Number(summary.analyzedWordCount) || 0);
+      const share = c.shareOfDocuments != null ? Number(c.shareOfDocuments)
+        : (summary.shareOfDocuments != null ? Number(summary.shareOfDocuments) : null);
+      const wordShare = c.shareOfAnalyzedWords != null ? Number(c.shareOfAnalyzedWords)
+        : (summary.shareOfAnalyzedWords != null ? Number(summary.shareOfAnalyzedWords) : null);
+      const docIv = pctRangeLabel(c.shareOfDocumentsRange || summary.shareOfDocumentsRange);
+      const wordIv = pctRangeLabel(c.shareOfAnalyzedWordsRange || summary.shareOfAnalyzedWordsRange);
+      let meanP = c.meanPAi != null ? Number(c.meanPAi) : null;
+      if (!Number.isFinite(meanP) && Number.isFinite(share)) meanP = share / 100;
+      const aiMin = Number(th.likelyAiMinPAi);
+      const humanMax = Number(th.likelyHumanMaxPAi);
+      const maxIv = Number(th.uncertainIfIntervalWiderThan);
+      const k = Number(th.graphNearestNeighbors);
+      const minCos = Number(th.graphMinCosine);
+      const aiCut = Number.isFinite(aiMin) ? aiMin.toFixed(2) : "0.58";
+      const humanCut = Number.isFinite(humanMax) ? humanMax.toFixed(2) : "0.42";
+      const widthCut = Number.isFinite(maxIv) ? maxIv.toFixed(2) : "0.50";
+      const kTxt = Number.isFinite(k) ? String(k) : "8";
+      const cosTxt = Number.isFinite(minCos) ? String(minCos) : "0.32";
+
+      const topic = (data && data.topic) || summary.topic;
+      const topicView = !!(data && data.topicView) || !!summary.topicView;
+      const idView = !!(data && data.idView) || !!summary.idView;
+      let where = String(name);
+      if (idView) where += ", selected cluster only";
+      else if (topicView && topic) where += ', topic "' + topic + '"';
+
+      const howWeAnalyze =
+        "How we analyze\n" +
+        "Each page is scored from 0 to 1. The percent on screen is the average of those scores, rounded. The graph is only for browsing and is not part of the score.\n\n" +
+        "1. Measure the page. Seven readings, each from 0 to 1: formulaic style (uniform wording, low burstiness, character entropy), template phrases, even sentence lengths, repeated short phrases, how far the wording sits from pre-2019 pages in this same set, how far the style sits from those pages, and whether the date is after Sept 2019.\n\n" +
+        "2. Combine them. Start at 0.58. Add a weight times (reading − 0.5). Weights: date 1.15, template phrases 1.10, even sentences 0.85, formulaic style 0.70, wording distance 0.50, style distance 0.30, repeated phrases 0.28. The date term uses (reading − 0.45). Turn that sum into a 0–1 score with 1 / (1 + e to the minus sum). Then blend 62% of that score with 38% of the page’s rank among later pages.\n\n" +
+        "3. Baseline. Pages dated before 2019 are set near 0 and labeled human-written. Later pages are compared with them, so those early pages pull the average down.\n\n" +
+        "4. Label the page. 0.58 or higher: likely AI-generated. 0.42 or lower: likely human-written. In between, or if that page’s own range is wider than 0.50: uncertain. The range widens when formulaic style, sentence evenness, and the date disagree.\n\n" +
+        "5. The collection percent. Average the page scores and multiply by 100. The band around it is that average plus or minus 1.96 times (the standard deviation of the scores, divided by the square root of the number of pages).";
+
+      if (!Number.isFinite(share) && !Number.isFinite(wordShare)) {
+        return where + "\n\nThese pages do not have scores yet, so there is no average to report.\n\n" + howWeAnalyze;
+      }
+
+      const sig = summary.collectionSignals || state.lastSignals || {};
+      const live = detectorMeans(sig).filter(row => row.shown != null);
+      const weights = {
+        stylometry: "0.70",
+        stockPhrases: "1.10",
+        uniformity: "0.85",
+        ngrams: "0.28",
+        embeddingAnomaly: "0.50",
+        stylometryDeviation: "0.30",
+        postChatgpt: "1.15"
+      };
+      const measureLines = live.map(row =>
+        row.label + " " + row.shown + " (weight " + (weights[row.key] || "") + ")"
+      );
+
+      const nodes = (state.graphView && state.graphView.nodes) || (state.rawGraph && state.rawGraph.nodes) || [];
+      const era = eraCompare(nodes);
+      const meanTxt = Number.isFinite(meanP) ? meanP.toFixed(3) : "n/a";
+      const paragraphs = [];
+
+      let headline = where + ". " + scored + " of " + n + " pages have a score";
+      if (pending) headline += " (" + pending + " are still waiting and are left out)";
+      headline += ".";
+      if (Number.isFinite(share)) {
+        headline += " The " + share + "% is the average of those scores";
+        if (Number.isFinite(meanP)) headline += " (" + meanTxt + ")";
+        headline += docIv ? ", with a range of " + docIv + "." : ".";
+      }
+      paragraphs.push(headline);
+
+      paragraphs.push(
+        "How one page is scored\n" +
+        "Each page gets seven readings from 0 to 1. Higher means more like the pattern the score treats as AI-assisted." +
+        (measureLines.length ? "\nOn this set, the averages are:\n" + measureLines.map(line => "• " + line).join("\n") : "") +
+        "\n\nThose readings are combined like this:\n" +
+        "sum = 0.58\n" +
+        "  + 0.70 × (formulaic style − 0.5)\n" +
+        "  + 1.10 × (template phrases − 0.5)\n" +
+        "  + 0.85 × (even sentence lengths − 0.5)\n" +
+        "  + 0.28 × (repeated phrases − 0.5)\n" +
+        "  + 0.50 × (wording distance from pre-2019 pages − 0.5)\n" +
+        "  + 0.30 × (style distance from those pages − 0.5)\n" +
+        "  + 1.15 × (date after Sept 2019 − 0.45)\n" +
+        "page score = 1 / (1 + e^(−sum))\n\n" +
+        "A reading of 0.5 adds nothing. Above 0.5 it pushes the score up, and the larger weights (date, template phrases, even sentences) push harder. " +
+        "For pages from 2019 on, the stored score is 62% of that result and 38% of the page’s rank among those later pages. " +
+        "Pages dated before 2019 are set near 0 and labeled human-written. They are the comparison set, so they pull the average down. " +
+        "If formulaic style, sentence evenness, and the date disagree, that page’s own range gets wider."
+      );
+
+      if ((era.beforeN || era.afterN) && (era.beforePct != null || era.afterPct != null)) {
+        let eraLine = "Split by date. ";
+        if (era.beforeN && era.beforePct != null) {
+          eraLine += era.beforeN + " page" + (era.beforeN === 1 ? "" : "s") +
+            " from before September 2019 average " + era.beforePct + "%. ";
+        }
+        if (era.afterN && era.afterPct != null) {
+          eraLine += era.afterN + " page" + (era.afterN === 1 ? "" : "s") +
+            " from September 2019 or later average " + era.afterPct + "%.";
+        }
+        if (era.beforePct != null && era.afterPct != null) {
+          const gap = era.afterPct - era.beforePct;
+          if (gap > 0) eraLine += " That is " + gap + " points higher than the earlier pages.";
+          else if (gap < 0) eraLine += " That is " + Math.abs(gap) + " points lower than the earlier pages.";
+        }
+        paragraphs.push(eraLine);
+      }
+
+      let collection = "The collection number\n";
+      if (Number.isFinite(share)) {
+        collection += share + "% = round(100 × average of the " + scored + " page scores).";
+        if (Number.isFinite(meanP)) collection += " Average = " + meanTxt + ".";
+      }
+      if (Number.isFinite(wordShare)) {
+        collection += "\nThe word figure weights each score by how long the page is: " +
+          wordShare + "% = sum(score × word count) / " +
+          (words ? words.toLocaleString("en-US") + " words" : "the total words") + ".";
+        if (wordIv && docIv && wordIv === docIv) {
+          collection += " The range beside it is the same " + docIv + " as the page average.";
+        } else if (wordIv) {
+          collection += " Range " + wordIv + ".";
+        }
+      }
+      paragraphs.push(collection);
+
+      if (docIv && Number.isFinite(share)) {
+        paragraphs.push(
+          "The range " + docIv + "\n" +
+          "Take how far the " + scored + " scores sit from their average (the standard deviation), divide by the square root of " +
+          scored + ", and step 1.96 of those steps above and below the average. " +
+          "Keep the ends between 0 and 1, multiply by 100, and round. " +
+          (scored < 2 ? "With fewer than 2 scores, that step is taken as 0.08. " : "") +
+          "It describes the spread of these scores. The pages were scored against the same earlier pages, so they are not separate samples."
+        );
+      }
+
+      paragraphs.push(
+        "The three labels\n" +
+        ai + " likely AI-generated: score at least " + aiCut + ".\n" +
+        human + " likely human-written: score at most " + humanCut + ".\n" +
+        unc + " uncertain: between those cutoffs, or the page’s own range is wider than " + widthCut + "." +
+        (scored && Number.isFinite(share)
+          ? "\n" + ai + "/" + scored + " is how many pages clear " + aiCut + ". The " + share + "% is the average of the scores, a different number."
+          : "")
+      );
+
+      const timeRows = insightTimeRows(state.timeBreakdown);
+      const dated = timeRows.filter(r => r && r.estimatePercent != null && r.estimatePercent !== "");
+      if (!timeRows.length) {
+        paragraphs.push(
+          "By year\nNo dated pages in this view. A year is the first-revision date when one is stored, otherwise the published date. Years before 2015 are left off the chart."
+        );
+      } else {
+        const keys = timeRows.map(r => String(r.key || "")).filter(Boolean).sort();
+        const span = keys.length ? keys[0] + "–" + keys[keys.length - 1] : "";
+        const last = dated.length ? dated[dated.length - 1] : null;
+        let line = "By year\nThe chart is the same average, one year at a time" +
+          (span ? " (" + span + ", " + dated.length + " years with scores)" : "") + ". " +
+          "The year is the first-revision date when that is stored, otherwise the published date. ";
+        if (last) {
+          const lr = pctRangeLabel(last.rangePercent);
+          line += last.key + " is " + last.estimatePercent + "% on " +
+            (last.documentCount != null ? last.documentCount : "?") + " page" +
+            (Number(last.documentCount) === 1 ? "" : "s") +
+            (lr ? " (range " + lr + ")" : "") + ". ";
+        }
+        line += "A later year can be an edit, not the year the prose was written.";
+        paragraphs.push(line);
+      }
+
+      const graphStep = Array.isArray(c.steps) ? c.steps.find(s => s && s.id === "graph") : null;
+      const gin = (graphStep && graphStep.inputs) || {};
+      const raw = state.rawGraph || {};
+      const nodeCount = Number.isFinite(Number(gin.nodeCount))
+        ? Number(gin.nodeCount)
+        : ((raw.nodes && raw.nodes.length) || 0);
+      const edgeCount = Number.isFinite(Number(gin.edgeCount))
+        ? Number(gin.edgeCount)
+        : ((raw.edges && raw.edges.length) || 0);
+      const groups = Array.isArray(gin.exampleGroups) ? gin.exampleGroups : [];
+      const groupBits = groups.map(g => {
+        const label = g.label || g.key || "";
+        return g.count != null && label ? label + " (" + g.count + ")" : label;
+      }).filter(Boolean);
+      paragraphs.push(
+        "The graph\n" +
+        nodeCount + " dots, " + edgeCount + " lines. Each page links to up to " + kTxt +
+        " similar pages, and only when the similarity is at least " + cosTxt + "." +
+        (groupBits.length ? " Circles on screen: " + groupBits.join("; ") + "." : "") +
+        " Those lines are not used in the " + (Number.isFinite(share) ? share + "%" : "score") + "."
+      );
+      paragraphs.push(howWeAnalyze);
+      return paragraphs.join("\n\n");
+    }
+
+    function formatInsightsPopup(data) {
+      return statisticalInsightNote(data);
+    }
+
+    function calculationMethodText() {
+      const howWeAnalyze =
+        "How we analyze\n" +
+        "Each page is scored from 0 to 1. The percent on screen is the average of those scores, rounded. The graph is only for browsing and is not part of the score.\n\n" +
+        "1. Measure the page. Seven readings, each from 0 to 1: formulaic style (uniform wording, low burstiness, character entropy), template phrases, even sentence lengths, repeated short phrases, how far the wording sits from pre-2019 pages in this same set, how far the style sits from those pages, and whether the date is after Sept 2019.\n\n" +
+        "2. Combine them. Start at 0.58. Add a weight times (reading − 0.5). Weights: date 1.15, template phrases 1.10, even sentences 0.85, formulaic style 0.70, wording distance 0.50, style distance 0.30, repeated phrases 0.28. The date term uses (reading − 0.45). Turn that sum into a 0–1 score with 1 / (1 + e to the minus sum). Then blend 62% of that score with 38% of the page’s rank among later pages.\n\n" +
+        "3. Baseline. Pages dated before 2019 are set near 0 and labeled human-written. Later pages are compared with them, so those early pages pull the average down.\n\n" +
+        "4. Label the page. 0.58 or higher: likely AI-generated. 0.42 or lower: likely human-written. In between, or if that page’s own range is wider than 0.50: uncertain. The range widens when formulaic style, sentence evenness, and the date disagree.\n\n" +
+        "5. The collection percent. Average the page scores and multiply by 100. The band around it is that average plus or minus 1.96 times (the standard deviation of the scores, divided by the square root of the number of pages).";
+      const formula =
+        "How one page is scored\n" +
+        "Each page gets seven readings from 0 to 1. Higher means more like the pattern the score treats as AI-assisted.\n\n" +
+        "Those readings are combined like this:\n" +
+        "sum = 0.58\n" +
+        "  + 0.70 × (formulaic style − 0.5)\n" +
+        "  + 1.10 × (template phrases − 0.5)\n" +
+        "  + 0.85 × (even sentence lengths − 0.5)\n" +
+        "  + 0.28 × (repeated phrases − 0.5)\n" +
+        "  + 0.50 × (wording distance from pre-2019 pages − 0.5)\n" +
+        "  + 0.30 × (style distance from those pages − 0.5)\n" +
+        "  + 1.15 × (date after Sept 2019 − 0.45)\n" +
+        "page score = 1 / (1 + e^(−sum))\n\n" +
+        "A reading of 0.5 adds nothing. Above 0.5 it pushes the score up, and the larger weights (date, template phrases, even sentences) push harder. " +
+        "For pages from 2019 on, the stored score is 62% of that result and 38% of the page’s rank among those later pages. " +
+        "Pages dated before 2019 are set near 0 and labeled human-written. They are the comparison set, so they pull the average down. " +
+        "If formulaic style, sentence evenness, and the date disagree, that page’s own range gets wider.";
+      return howWeAnalyze + "\n\n" + formula;
+    }
+
+    function explainInsightsNow() {
+      popup(calculationMethodText(), "How this share was calculated", "info");
+    }
+
+    function composeDataExplanation(summary, nodes) {
+      summary = summary || {};
+      nodes = nodes || [];
+      const n = nodes.length || Number(summary.documentCount) || 0;
+      const share = summary.shareOfDocuments;
+      const place = readingScopeLabel();
+      const lines = [`We looked at ${pageCountLabel(n)} in ${place}.`];
+      const cols = {};
+      nodes.forEach(doc => {
+        const col = collectionName(doc);
+        if (col && col !== "Unknown collection") cols[col] = (cols[col] || 0) + 1;
+      });
+      const names = Object.keys(cols);
+      if (names.length === 1) lines.push(`These pages come from ${names[0]}.`);
+      else if (names.length > 1) lines.push(`These pages come from ${joinWords(names)}.`);
+      if (share == null || share === "" || !Number.isFinite(Number(share))) {
+        lines.push("The writing checks do not have a result for this view yet.");
+      } else {
+        lines.push(`From the writing checks, about ${Number(share)}% of the text looks AI-generated.`);
+        const era = eraCompare(nodes);
+        if (era.beforePct != null && era.afterPct != null && era.afterPct !== era.beforePct) {
+          lines.push(era.afterPct > era.beforePct
+            ? "Pages from later years look more like that than the earlier pages."
+            : "Pages from later years look less like that than the earlier pages.");
+        }
+        lines.push("That percent is an estimate, not proof of who wrote the pages.");
+      }
+      return lines.join("\n\n");
+    }
+
+    async function explainTheData() {
       const id = document.getElementById("dataset").value;
-      if (!id) return popup("Pick a collection first.", "Explain insights", "warn");
-      const buttons = document.querySelectorAll(".js-explain-insights");
-      buttons.forEach(b => { b.disabled = true; });
-      popup("Reading the numbers on this visible set…", "Explain insights", "info");
+      if (!id) return popup("Pick a collection first.", "Explain the data", "warn");
+      const btn = document.getElementById("explainInsightsGraph");
+      if (btn) btn.disabled = true;
       try {
         const q = scopeQuery();
-        const data = await j(`/datasets/${id}/insights${q ? "?" + q.slice(1) : ""}`, { method: "POST" });
-        popup(stripProofDisclaimer(data.text) || "No explanation was returned.", "Visible-collection insights", "info");
+        const summary = await j(`/datasets/${id}/summary${q ? "?" + q.slice(1) : ""}`);
+        const nodes = visibleAnalysisNodes();
+        popup(composeDataExplanation(summary, nodes), "Explain the data", "info");
       } catch (err) {
-        popup(err.message, "Insights failed", "warn");
+        popup(err.message, "Explain the data failed", "warn");
       } finally {
-        buttons.forEach(b => { b.disabled = false; });
+        if (btn) btn.disabled = false;
       }
     }
-    document.querySelectorAll(".js-explain-insights").forEach(btn => {
-      btn.addEventListener("click", explainVisibleInsights);
+
+    document.getElementById("explainInsights").addEventListener("click", explainInsightsNow);
+    document.getElementById("explainInsightsGraph").addEventListener("click", () => {
+      explainTheData().catch(err => popup(err.message, "Explain the data failed", "warn"));
     });
+
+    function clipSentence(text, max) {
+      const clean = String(text || "").replace(/\s+/g, " ").replace(/^…+/, "").trim();
+      if (clean.length <= max) return clean;
+      return clean.slice(0, max).replace(/\s+\S*$/, "") + "…";
+    }
+
+    function pageScoreLabel(row) {
+      if (row.pAi == null || row.pAi === "") return "";
+      const pct = Math.round(Number(row.pAi) * 100);
+      const band = row.band === "LIKELY_AI" ? "likely AI-generated"
+        : row.band === "LIKELY_HUMAN" ? "likely human-written"
+        : row.band === "UNCERTAIN" ? "uncertain" : "";
+      return pct + "%" + (band ? ", " + band : "");
+    }
+
+    function answerFromCollection(question, data) {
+      const q = String(question || "").toLowerCase();
+      const measured = (data && data.measured) || {};
+      const summary = state.lastSummary || {};
+      const share = measured.shareOfDocuments != null ? Number(measured.shareOfDocuments) : Number(summary.shareOfDocuments);
+      const range = measured.shareOfDocumentsRange || summary.shareOfDocumentsRange || [];
+      const bands = measured.bands || summary.bands || {};
+      const n = Number(measured.documentCount || summary.documentCount || 0);
+      const aiN = Number(bands.LIKELY_AI) || 0;
+      const humanN = Number(bands.LIKELY_HUMAN) || 0;
+      const uncN = Number(bands.UNCERTAIN) || 0;
+      const words = Number(summary.analyzedWordCount) || 0;
+      const wordShare = summary.shareOfAnalyzedWords != null ? Number(summary.shareOfAnalyzedWords) : null;
+      const evidence = ((data && data.evidence) || []).filter(row => row && row.title);
+      const nodes = visibleAnalysisNodes();
+      const era = eraCompare(nodes);
+      const subjects = aggregateSubjects(nodes).rows
+        .filter(r => r.pAi != null)
+        .map(r => ({
+          name: displaySubject(r.subject),
+          count: r.documentCount,
+          pct: Math.round(Number(r.pAi) * 100),
+          mix: Math.round(Number(r.mixShare) * 100)
+        }));
+      const timeRows = insightTimeRows(state.timeBreakdown)
+        .filter(r => r && r.estimatePercent != null && r.estimatePercent !== "");
+      const signals = detectorMeans(summary.collectionSignals || state.lastSignals || {})
+        .filter(r => r.shown != null && Number.isFinite(r.n));
+      const highSignals = signals.slice().sort((a, b) => b.n - a.n);
+      const lowSignals = signals.slice().sort((a, b) => a.n - b.n);
+      const rangeTxt = Array.isArray(range) && range.length >= 2 ? range[0] + "–" + range[1] + "%" : "";
+      const asksWhy = /why|high|elevated|driven|cause|reason|lift|so much/.test(q);
+      const asksTime = /year|time|trend|20\d\d|rise|later|over time|chart/.test(q);
+      const asksHow = /how (is|was|do|does)|calculat|method|formula|weight|scored/.test(q);
+      const asksBand = /uncertain|band|human-written|cutoff|label/.test(q);
+      const asksSubject = /subject|politic|sport|food|art|histor|econom|geograph|compar|culture/.test(q);
+      const asksWords = /word/.test(q);
+      const named = evidence.filter(row => q.includes(String(row.title || "").toLowerCase()));
+
+      function pageBit(row) {
+        const score = pageScoreLabel(row);
+        const excerpt = clipSentence(row.excerpt, 110);
+        let bit = row.title;
+        if (score) bit += " (" + score + ")";
+        if (excerpt) bit += ": " + excerpt;
+        return bit;
+      }
+
+      if (!Number.isFinite(share)) {
+        return "This view does not have page scores yet, so there is nothing to answer from. Run the analysis, then ask again.";
+      }
+
+      const highPages = evidence.filter(row => row.band === "LIKELY_AI" || (row.pAi != null && Number(row.pAi) >= 0.58)).slice(0, 3);
+      const lowPages = evidence.filter(row => row.band === "LIKELY_HUMAN" || (row.pAi != null && Number(row.pAi) <= 0.42)).slice(0, 2);
+      const parts = [];
+
+      if (named.length) {
+        parts.push(named.slice(0, 2).map(row => {
+          const score = pageScoreLabel(row);
+          const excerpt = clipSentence(row.excerpt, 180);
+          return row.title + (score ? " scores " + score + "." : ".") +
+            (excerpt ? " The stored excerpt reads: " + excerpt : "") +
+            " That score comes from the writing measures on the page, then goes into the collection average with the other pages.";
+        }).join(" "));
+      }
+
+      if (asksHow) {
+        parts.push(
+          "Each page is scored from 0 to 1. Seven readings are combined, starting at 0.58, with weights of 1.15 for the date, 1.10 for template phrases, 0.85 for even sentence lengths, 0.70 for formulaic style, 0.50 for wording distance from pre-2019 pages, 0.30 for style distance, and 0.28 for repeated phrases. The sum goes through 1 / (1 + e to the minus sum). Pages from 2019 on then keep 62% of that score and 38% of their rank among later pages. Pages before 2019 are set near 0. The " +
+          share + "% on screen is that average, times 100" + (rangeTxt ? ", with a range of " + rangeTxt : "") + "."
+        );
+      }
+
+      if (asksBand) {
+        parts.push(
+          aiN + " pages are called likely AI-generated because the score is at least 0.58. " +
+          humanN + " are likely human-written at 0.42 or below. " +
+          uncN + " are uncertain, either because the score sits between those cutoffs or because that page’s own range is wider than 0.50. " +
+          aiN + " out of " + n + " is a count. The " + share + "% is the average of the scores."
+        );
+      }
+
+      if (asksWords && Number.isFinite(wordShare)) {
+        parts.push(
+          "Weighting each page score by its length gives " + wordShare + "%" +
+          (words ? " across " + words.toLocaleString("en-US") + " words" : "") +
+          ". That uses the same page scores. Longer pages count more."
+        );
+      }
+
+      const explainLevel = asksWhy || (!asksHow && !asksBand && !asksTime && !asksSubject && !named.length && !asksWords);
+      if (explainLevel) {
+        let lead = "The " + share + "% is the average of " + n + " page scores";
+        if (rangeTxt) lead += ", and the scores spread enough that the range around that average is " + rangeTxt;
+        lead += ".";
+        if (era.afterN && era.beforePct != null && era.afterPct != null) {
+          lead += " " + era.afterN + " pages dated September 2019 or later average " + era.afterPct + "%.";
+          if (era.beforeN) lead += " " + era.beforeN + " earlier pages average " + era.beforePct + "%, and those early pages are held near the human baseline, so they pull the collection average down.";
+        }
+        const up = highSignals.filter(s => s.n >= 0.45).slice(0, 2);
+        const flat = lowSignals.filter(s => s.n <= 0.2).slice(0, 2);
+        if (up.length) lead += " The higher readings on this set are " + up.map(s => s.label + " at " + s.shown).join(" and ") + ".";
+        if (flat.length) lead += " " + flat.map(s => s.label + " reads " + s.shown).join(". ") + ".";
+        if (highPages.length) lead += " The highest-scoring pages here are " + highPages.map(pageBit).join("; ") + ".";
+        if (lowPages.length) lead += " " + lowPages.map(row => row.title + " at " + Math.round(Number(row.pAi) * 100) + "%").join(" and ") + " sit much lower and hold the average down.";
+        lead += " " + aiN + " pages clear 0.58, " + humanN + " are at or below 0.42, and " + uncN + " are uncertain. The " + share + "% is the average, not " + aiN + " divided by " + n + ".";
+        parts.push(lead);
+      }
+
+      if (asksTime || explainLevel) {
+        if (timeRows.length) {
+          const rise = timeRows.find(r => Number(r.estimatePercent) >= 40);
+          const recent = timeRows.filter(r => Number(r.key) >= 2023);
+          let line = "By year, the same average is taken inside each year.";
+          if (rise) {
+            line += " It first gets clearly higher in " + rise.key + " at " + rise.estimatePercent + "%";
+            if (rise.documentCount != null) line += " on " + rise.documentCount + " pages";
+            line += ".";
+          }
+          if (recent.length) {
+            line += " " + recent.map(r => r.key + " is " + r.estimatePercent + "% on " + r.documentCount + " pages").join(", and ") + ".";
+          }
+          line += " The year is the stored first-revision date when one exists, otherwise the published date, so a later year can be an edit.";
+          parts.push(line);
+        }
+      }
+
+      if ((asksSubject || explainLevel) && subjects.length) {
+        const hot = subjects.slice().sort((a, b) => b.pct - a.pct).slice(0, 3);
+        const cool = subjects.slice().sort((a, b) => a.pct - b.pct).slice(0, 2);
+        let line = "By subject, " + hot.map(s => s.name + " averages " + s.pct + "% (" + s.mix + "% of the pages)").join(", ") + ".";
+        const coolDistinct = cool.filter(s => !hot.some(h => h.name === s.name));
+        if (coolDistinct.length) {
+          line += " " + coolDistinct.map(s => s.name + " averages " + s.pct + "%").join(" and ") + ".";
+          const large = coolDistinct.find(s => s.mix >= 10);
+          if (large) line += " " + large.name + " is " + large.mix + "% of the set, so that lower score has more weight in the collection average than a small high-scoring subject.";
+        }
+        parts.push(line);
+      }
+
+      if (!parts.length) {
+        parts.push("Across " + n + " pages the average score is " + share + "%" + (rangeTxt ? " (range " + rangeTxt + ")" : "") + ".");
+      }
+      return parts.join("\n\n");
+    }
+
+    function laymanAskFallback(question, data) {
+      const measured = (data && data.measured) || {};
+      const summary = state.lastSummary || {};
+      const n = Number(measured.documentCount != null ? measured.documentCount : summary.documentCount) || 0;
+      const share = measured.shareOfDocuments != null ? Number(measured.shareOfDocuments) : Number(summary.shareOfDocuments);
+      const q = String(question || "").toLowerCase();
+      let text = `We looked at ${pageCountLabel(n)}.`;
+      if (!Number.isFinite(share)) {
+        return text + " The writing checks do not have a result for this view yet.";
+      }
+      text += ` From the writing checks, about ${share}% of the text looks AI-generated.`;
+      if (/why|high/.test(q)) {
+        text += " That percent is high when many of the pages score high on those checks.";
+      } else if (/how/.test(q)) {
+        text += " Each page is checked for writing that looks formulaic, and the percent is the average of those page scores.";
+      } else {
+        text += " That percent is the average of the page scores.";
+      }
+      text += " It is an estimate, not proof of who wrote the pages.";
+      return text;
+    }
 
     function renderClaudeResult(data) {
       const box = document.getElementById("claudeAnswer");
       if (!box) return;
-      const measured = (data && data.measured) || {};
-      const share = measured.shareOfDocuments;
-      const measuredLine = share == null || share === ""
-        ? "KnowledgeOS measured this: AI share is not available yet for this visible set."
-        : `KnowledgeOS measured this: about ${share}% of documents look AI-generated (unchanged by Claude).`;
-      const inferred = !!(data && data.inferred);
-      const src = (data && data.source) || "";
-      const inferredLine = inferred
-        ? "Claude inferred this from the provided excerpts:"
-        : (src === "unavailable"
-          ? "Claude is optional and was not used."
-          : "No Claude inference.");
-      const answer = stripProofDisclaimer((data && data.answer) || "");
-      const ev = (data && data.evidence) || [];
-      const lis = ev.map(row => {
-        const id = row.documentId;
-        const title = esc(row.title || ("Document " + id));
-        const href = `/datasets/${document.getElementById("dataset").value}/documents/${id}`;
-        return `<li><a href="${href}">#${id} ${title}</a></li>`;
-      }).join("");
+      const question = document.getElementById("claudeQuestion").value.trim();
+      let answer = String((data && data.answer) || "").trim();
+      if (!answer || /Gemini did not|GEMINI_API_KEY|did not return|Pages behind/i.test(answer)) {
+        answer = laymanAskFallback(question, data);
+      }
+      const paras = answer.split(/\n+/).map(s => s.trim()).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("");
       box.hidden = false;
-      box.innerHTML =
-        `<p><strong>${esc(measuredLine)}</strong></p>` +
-        `<p>${esc(inferredLine)}</p>` +
-        `<p>${esc(answer)}</p>` +
-        (lis ? `<p class="hint">Evidence</p><ul id="claudeEvidence">${lis}</ul>` : "");
+      box.innerHTML = paras;
     }
 
     async function postClaude(path) {
@@ -2606,33 +3444,80 @@
         body: JSON.stringify(body)
       });
       renderClaudeResult(data);
+      return data;
     }
-    document.getElementById("askClaude").onclick = async () => {
+    let dataLoadDepth = 0;
+    let dataLoadTimer = 0;
+    let loadingDotsTimer = 0;
+    function startLoadingDots() {
+      const p = document.querySelector("#askLoading p");
+      if (!p) return;
+      const frames = ["loading", "loading.", "loading..", "loading..."];
+      let step = 0;
+      p.textContent = frames[0];
+      clearInterval(loadingDotsTimer);
+      loadingDotsTimer = setInterval(() => {
+        step = (step + 1) % frames.length;
+        p.textContent = frames[step];
+      }, 450);
+    }
+    function stopLoadingDots() {
+      clearInterval(loadingDotsTimer);
+      loadingDotsTimer = 0;
+      const p = document.querySelector("#askLoading p");
+      if (p) p.textContent = "loading";
+    }
+    function setAskLoading(on) {
+      const el = document.getElementById("askLoading");
+      if (!el) return;
+      if (on) {
+        dataLoadDepth += 1;
+        if (dataLoadDepth === 1) {
+          clearTimeout(dataLoadTimer);
+          dataLoadTimer = setTimeout(() => {
+            if (dataLoadDepth > 0) {
+              el.hidden = false;
+              startLoadingDots();
+            }
+          }, 200);
+        }
+        return;
+      }
+      dataLoadDepth = Math.max(0, dataLoadDepth - 1);
+      if (dataLoadDepth === 0) {
+        clearTimeout(dataLoadTimer);
+        el.hidden = true;
+        stopLoadingDots();
+      }
+    }
+    function withDataLoading(work) {
+      setAskLoading(true);
+      return Promise.resolve()
+        .then(work)
+        .finally(() => setAskLoading(false));
+    }
+    async function submitAsk() {
       const q = document.getElementById("claudeQuestion").value.trim();
-      if (!q) return popup("Type a question first, or use Explain collection.", "Ask", "warn");
-      document.getElementById("askClaude").disabled = true;
+      if (!q) return;
+      const btn = document.getElementById("askClaude");
+      btn.disabled = true;
+      setAskLoading(true);
       try {
-        popup("Selecting excerpts and asking Claude…", "Ask", "info");
         await postClaude("/ask");
-        closePopup();
       } catch (err) {
         popup(err.message, "Ask failed", "warn");
       } finally {
-        document.getElementById("askClaude").disabled = false;
+        setAskLoading(false);
+        btn.disabled = false;
       }
-    };
-    document.getElementById("explainClaude").onclick = async () => {
-      document.getElementById("explainClaude").disabled = true;
-      try {
-        popup("Selecting excerpts for a grounded summary…", "Explain collection", "info");
-        await postClaude("/explain");
-        closePopup();
-      } catch (err) {
-        popup(err.message, "Explain failed", "warn");
-      } finally {
-        document.getElementById("explainClaude").disabled = false;
-      }
-    };
+    }
+    document.getElementById("askClaude").onclick = () => { submitAsk(); };
+    document.getElementById("claudeQuestion").addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" || e.shiftKey || e.isComposing) return;
+      if (!document.getElementById("claudeQuestion").value.trim()) return;
+      e.preventDefault();
+      submitAsk();
+    });
     document.getElementById("files").addEventListener("change", function () {
       const el = document.getElementById("fileNames");
       const files = [...this.files];
@@ -2721,7 +3606,7 @@
       popup(joined, title, allOk ? "ok" : "warn");
     };
 
-    loadDatasets().then(loadDashboard).catch(err => {
+    withDataLoading(() => loadDatasets().then(loadDashboard)).catch(err => {
       popup(err.message, "Could not load datasets", "warn");
     });
   </script>

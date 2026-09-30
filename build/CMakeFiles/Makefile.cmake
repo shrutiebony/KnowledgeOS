@@ -58,4 +58,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/sqlite3.dir/DependInfo.cmake"
   "CMakeFiles/miniz.dir/DependInfo.cmake"
   "CMakeFiles/knowledgeos.dir/DependInfo.cmake"
+  "CMakeFiles/runtime_lambda.dir/DependInfo.cmake"
   )

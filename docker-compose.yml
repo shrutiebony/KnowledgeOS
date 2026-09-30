@@ -11,10 +11,16 @@ services:
       PORT: "8080"
       KNOWLEDGEOS_DB: /data/knowledgeos.db
       KNOWLEDGEOS_WEB: /app/web
-      KNOWLEDGEOS_WIKIPEDIA_CRAWL: "false"
-      KNOWLEDGEOS_GDELT_CRAWL: "false"
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-3-5-haiku-latest}
+      KNOWLEDGEOS_WIKIPEDIA_CRAWL: "true"
+      KNOWLEDGEOS_WIKIPEDIA_INDIA_CRAWL: "true"
+      KNOWLEDGEOS_WIKIPEDIA_USA_CRAWL: "true"
+      KNOWLEDGEOS_WIKIPEDIA_AUSTRALIA_CRAWL: "true"
+      KNOWLEDGEOS_WIKIPEDIA_GERMANY_CRAWL: "false"
+      KNOWLEDGEOS_WIKIPEDIA_MAX_PAGES: "1500"
+      KNOWLEDGEOS_GDELT_CRAWL: "true"
+      KNOWLEDGEOS_GDELT_MAX_PAGES: "1500"
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.1-flash-lite}
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=5)"]
       interval: 10s

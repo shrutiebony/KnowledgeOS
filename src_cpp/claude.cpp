@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <unordered_set>
 #include <utility>
@@ -125,56 +126,165 @@ json evidence_from(Store& store, int64_t dataset_id, const std::string& topic, c
     return evidence;
 }
 
-json empty_response(const json& measured, const json& evidence, const std::string& note) {
+json empty_response(const json& measured, const json& evidence, const std::string& note, bool gemini_configured) {
     json out;
     out["measured"] = measured;
     out["answer"] = note;
     out["inferred"] = false;
     out["source"] = "unavailable";
-    out["claudeAvailable"] = false;
+    out["geminiAvailable"] = gemini_configured;
     out["evidence"] = evidence;
     return out;
 }
 
-std::string claude_text(const json& body) {
-    if (!body.contains("content") || !body["content"].is_array()) return "";
+struct GeminiCall {
+    std::string text;
+    std::string error;
+};
+
+std::string clip_note(std::string s, size_t max_chars) {
+    s = trim(s);
+    if (s.size() > max_chars) s.resize(max_chars);
+    return s;
+}
+
+std::string resolve_gemini_model(const std::string& configured) {
+    std::string model = trim(configured);
+    if (model.empty()) model = "gemini-3.1-flash-lite";
+    // gemini-2.0-flash and its pinned variants were shut down on 2026-06-01.
+    if (model.rfind("gemini-2.0", 0) == 0) {
+        std::cerr << "GEMINI_MODEL " << model << " is shut down; using gemini-3.1-flash-lite\n";
+        return "gemini-3.1-flash-lite";
+    }
+    return model;
+}
+
+std::string gemini_visible_text(const json& body) {
+    if (!body.contains("candidates") || !body["candidates"].is_array() || body["candidates"].empty()) return "";
+    const json& content = body["candidates"][0].value("content", json::object());
+    if (!content.contains("parts") || !content["parts"].is_array()) return "";
     std::ostringstream os;
-    for (const auto& block : body["content"]) {
-        if (block.is_object() && block.value("type", "") == "text") {
-            os << block.value("text", "");
-        }
+    for (const auto& part : content["parts"]) {
+        if (!part.is_object() || !part.contains("text") || !part["text"].is_string()) continue;
+        if (part.contains("thought") && part["thought"].is_boolean() && part["thought"].get<bool>()) continue;
+        os << part["text"].get<std::string>();
     }
     return trim(os.str());
 }
 
-std::string call_claude(const Config& cfg, const std::string& system, const std::string& user) {
-    if (cfg.anthropic_api_key.empty()) return "";
-    json req;
-    req["model"] = cfg.anthropic_model;
-    req["max_tokens"] = 1024;
-    req["temperature"] = 0.2;
-    req["system"] = system;
-    req["messages"] = json::array({json{{"role", "user"}, {"content", user}}});
-    std::vector<std::pair<std::string, std::string>> headers = {
-        {"x-api-key", cfg.anthropic_api_key},
-        {"anthropic-version", "2023-06-01"},
-    };
-    auto res = http_post_json("https://api.anthropic.com/v1/messages", UA, headers, req.dump(),
-                              cfg.claude_timeout_ms, 512 * 1024);
-    if (res.status < 200 || res.status >= 300) return "";
-    try {
-        return claude_text(json::parse(res.body));
-    } catch (...) {
-        return "";
+std::string gemini_failure(const json& body, const HttpResponse& res) {
+    std::string msg;
+    if (body.contains("error") && body["error"].is_object()) {
+        msg = body["error"].value("message", "");
     }
+    if (msg.empty() && body.contains("candidates") && body["candidates"].is_array() && !body["candidates"].empty()) {
+        msg = body["candidates"][0].value("finishReason", "");
+        if (msg == "STOP" || msg == "MAX_TOKENS") msg.clear();
+    }
+    if (msg.empty() && body.contains("promptFeedback") && body["promptFeedback"].is_object()) {
+        msg = body["promptFeedback"].value("blockReason", "");
+    }
+    if (msg.empty()) msg = res.error;
+    if (msg.empty()) msg = "HTTP " + std::to_string(res.status);
+    return "Gemini did not respond (" + clip_note(msg, 240) + "). The measured scores are unchanged.";
+}
+
+GeminiCall call_gemini(const Config& cfg, const std::string& system, const std::string& user) {
+    if (cfg.gemini_api_key.empty()) return {"", "Set GEMINI_API_KEY to have Ask answer from these readings."};
+    std::string model = resolve_gemini_model(cfg.gemini_model);
+    std::string url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent";
+    json req;
+    req["systemInstruction"] = json{{"parts", json::array({json{{"text", system}}})}};
+    req["contents"] = json::array({
+        json{{"role", "user"}, {"parts", json::array({json{{"text", user}}})}}
+    });
+    json gen = json{{"maxOutputTokens", 4096}};
+    if (model.rfind("gemini-3", 0) == 0) {
+        // Gemini 3.x degrades when temperature is overridden. Low thinking keeps the reply in the answer text.
+        gen["thinkingConfig"] = json{{"thinkingLevel", "low"}};
+    } else {
+        gen["temperature"] = 0.3;
+    }
+    req["generationConfig"] = std::move(gen);
+    std::vector<std::pair<std::string, std::string>> headers = {
+        {"x-goog-api-key", cfg.gemini_api_key},
+    };
+    auto res = http_post_json(url, UA, headers, req.dump(), cfg.claude_timeout_ms, 512 * 1024);
+    json body = json::object();
+    try {
+        if (!res.body.empty()) body = json::parse(res.body);
+    } catch (...) {
+        body = json::object();
+    }
+    if (!res.error.empty() || res.status < 200 || res.status >= 300) {
+        std::string note = gemini_failure(body, res);
+        std::cerr << note << "\n";
+        return {"", note};
+    }
+    std::string text = gemini_visible_text(body);
+    if (text.empty()) {
+        std::string note = gemini_failure(body, res);
+        if (note.find("HTTP 200") != std::string::npos) {
+            note = "Gemini returned no answer text. The measured scores are unchanged.";
+        }
+        std::cerr << note << "\n";
+        return {"", note};
+    }
+    return {text, ""};
+}
+
+std::string measured_brief(const json& measured) {
+    std::ostringstream os;
+    int n = measured.value("documentCount", 0);
+    os << "Pages looked at: " << n << ".\n";
+    if (!measured.contains("shareOfDocuments") || measured["shareOfDocuments"].is_null()) {
+        os << "AI share: not available yet.\n";
+    } else {
+        os << "About " << measured["shareOfDocuments"].dump() << "% of the text looks AI-generated.\n";
+    }
+    if (measured.contains("bands") && measured["bands"].is_object()) {
+        const json& bands = measured["bands"];
+        os << "Labels: " << bands.value("LIKELY_AI", 0) << " likely AI-generated, "
+           << bands.value("LIKELY_HUMAN", 0) << " likely human-written, "
+           << bands.value("UNCERTAIN", 0) << " uncertain.\n";
+    }
+    return os.str();
+}
+
+std::string layman_answer(const std::string& question, const json& measured) {
+    int n = measured.value("documentCount", 0);
+    std::ostringstream os;
+    os << "We looked at " << n << (n == 1 ? " page. " : " pages. ");
+    if (!measured.contains("shareOfDocuments") || measured["shareOfDocuments"].is_null()) {
+        os << "The writing checks do not have a result for this view yet.";
+        return os.str();
+    }
+    os << "From the writing checks, about " << measured["shareOfDocuments"].dump()
+       << "% of the text looks AI-generated. ";
+    std::string q = ascii_lower(question);
+    if (q.find("why") != std::string::npos || q.find("high") != std::string::npos) {
+        os << "That percent is high when many of the pages score high on those checks. ";
+    } else if (q.find("how") != std::string::npos) {
+        os << "Each page is checked for writing that looks formulaic, and the percent is the average of those page scores. ";
+    } else {
+        os << "That percent is the average of the page scores. ";
+    }
+    os << "It is an estimate, not proof of who wrote the pages.";
+    return os.str();
 }
 
 std::string system_prompt() {
-    return "You explain KnowledgeOS results. KnowledgeOS already computed the measured numbers; never change them. "
-           "Use only the provided excerpts and findings. Cite documents by documentId. "
-           "Label what KnowledgeOS measured versus what you infer from excerpts. "
-           "Do not invent documents, percentages, or medical advice. Do not mention HITS. "
-           "GraphSAGE is not the headline AI-generated share.";
+    return "You answer questions for a layperson about a KnowledgeOS collection. "
+           "KnowledgeOS estimates how much of the writing looks AI-generated. "
+           "The measured numbers are already computed. Never change them and never invent a percent. "
+           "Each page is checked for formulaic wording, stock phrases, even sentence lengths, and repeated phrases, "
+           "then compared with earlier writing in the same collection. The percent is the average of those page scores. "
+           "It is an estimate, not proof of who wrote a page. "
+           "Answer the user's question directly in 2 to 6 short everyday sentences. "
+           "Use the measured numbers. Do not cite document ids, titles, URLs, or excerpts. "
+           "Do not list pages. Do not show JSON or formulas. "
+           "If the numbers do not answer the question, say so in one plain sentence. "
+           "No medical advice. Reply with the answer only.";
 }
 
 json run_query(Store& store, const Config& cfg, int64_t dataset_id, const std::string& question,
@@ -184,43 +294,37 @@ json run_query(Store& store, const Config& cfg, int64_t dataset_id, const std::s
     json out;
     out["measured"] = measured;
     out["evidence"] = evidence;
-    out["claudeAvailable"] = !cfg.anthropic_api_key.empty();
+    out["geminiAvailable"] = !cfg.gemini_api_key.empty();
 
     std::string q = trim(question);
     if (q.empty() && !explain_mode) {
-        out["answer"] = "Ask a question about this collection. KnowledgeOS numbers are in measured; Claude is unused.";
+        out["answer"] = "Ask a question about this collection. KnowledgeOS numbers are in the measured readings.";
         out["inferred"] = false;
         out["source"] = "none";
         return out;
     }
-    if (cfg.anthropic_api_key.empty()) {
-        std::ostringstream note;
-        note << "Claude is not configured (set ANTHROPIC_API_KEY). ";
-        note << "KnowledgeOS measured share of documents: ";
-        if (measured["shareOfDocuments"].is_null()) note << "not yet available";
-        else note << measured["shareOfDocuments"].dump() << "%";
-        note << ". Dashboard metrics and deterministic notes still apply.";
-        out["answer"] = note.str();
+    if (cfg.gemini_api_key.empty()) {
+        out["answer"] = layman_answer(q, measured);
         out["inferred"] = false;
         out["source"] = "unavailable";
         return out;
     }
 
-    json user;
-    user["task"] = explain_mode ? "explain" : "ask";
-    user["question"] = explain_mode
-                           ? "Write a short readable summary of this collection using only measured findings and excerpts."
-                           : q;
-    user["measuredByKnowledgeOS"] = measured;
-    user["evidence"] = evidence;
-    std::string answer = call_claude(cfg, system_prompt(), user.dump(2));
-    if (answer.empty()) {
-        return empty_response(measured, evidence,
-                              "Claude did not respond. KnowledgeOS measured results are unchanged; try the dashboard notes.");
+    std::string asked = explain_mode
+                            ? "Explain what this collection shows, in a few short everyday sentences."
+                            : q;
+    std::ostringstream prompt;
+    prompt << "Question: " << asked
+           << "\n\nWhat this collection already shows. Do not change these numbers:\n"
+           << measured_brief(measured)
+           << "\nAnswer the question in plain language. Do not cite pages.";
+    GeminiCall reply = call_gemini(cfg, system_prompt(), prompt.str());
+    if (reply.text.empty()) {
+        return empty_response(measured, evidence, layman_answer(asked, measured), true);
     }
-    out["answer"] = answer;
+    out["answer"] = reply.text;
     out["inferred"] = true;
-    out["source"] = "claude";
+    out["source"] = "gemini";
     return out;
 }
 
@@ -228,8 +332,8 @@ json run_query(Store& store, const Config& cfg, int64_t dataset_id, const std::s
 
 nlohmann::json claude_status(const Config& cfg) {
     return json{
-        {"configured", !cfg.anthropic_api_key.empty()},
-        {"model", cfg.anthropic_model},
+        {"configured", !cfg.gemini_api_key.empty()},
+        {"model", resolve_gemini_model(cfg.gemini_model)},
     };
 }
 

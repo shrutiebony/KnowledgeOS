@@ -35,4 +35,4 @@ cp -a "$SRC/tools" "$PREFIX/share/knowledgeos/tools"
 install -m 0644 "$SRC/deploy/kvm/knowledgeos.service" /etc/systemd/system/knowledgeos.service
 systemctl daemon-reload
 systemctl enable --now knowledgeos.service
-echo "KnowledgeOS listening on port \${PORT:-8080}. Set ANTHROPIC_API_KEY in /etc/knowledgeos/knowledgeos.env to enable Ask/Explain."
+echo "KnowledgeOS listening on port \${PORT:-8080}. Set GEMINI_API_KEY in /etc/knowledgeos/knowledgeos.env to enable Ask/Explain."

@@ -144,6 +144,43 @@ knowledgeos\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\build
 .PHONY : knowledgeos\fast
 
+#=============================================================================
+# Target rules for targets named runtime_lambda
+
+# Build rule for target.
+runtime_lambda: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) runtime_lambda
+.PHONY : runtime_lambda
+
+# fast build rule for target.
+runtime_lambda\fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\build
+.PHONY : runtime_lambda\fast
+
+runtime_lambda\main.obj: runtime_lambda\main.cpp.obj
+.PHONY : runtime_lambda\main.obj
+
+# target to build an object file
+runtime_lambda\main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\runtime_lambda\main.cpp.obj
+.PHONY : runtime_lambda\main.cpp.obj
+
+runtime_lambda\main.i: runtime_lambda\main.cpp.i
+.PHONY : runtime_lambda\main.i
+
+# target to preprocess a source file
+runtime_lambda\main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\runtime_lambda\main.cpp.i
+.PHONY : runtime_lambda\main.cpp.i
+
+runtime_lambda\main.s: runtime_lambda\main.cpp.s
+.PHONY : runtime_lambda\main.s
+
+# target to generate assembly for a file
+runtime_lambda\main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\runtime_lambda\main.cpp.s
+.PHONY : runtime_lambda\main.cpp.s
+
 src_cpp\analysis.obj: src_cpp\analysis.cpp.obj
 .PHONY : src_cpp\analysis.obj
 
@@ -730,7 +767,11 @@ help:
 	@echo ... rebuild_cache
 	@echo ... knowledgeos
 	@echo ... miniz
+	@echo ... runtime_lambda
 	@echo ... sqlite3
+	@echo ... runtime_lambda/main.obj
+	@echo ... runtime_lambda/main.i
+	@echo ... runtime_lambda/main.s
 	@echo ... src_cpp/analysis.obj
 	@echo ... src_cpp/analysis.i
 	@echo ... src_cpp/analysis.s

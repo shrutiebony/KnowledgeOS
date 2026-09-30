@@ -189,4 +189,5 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/analysis.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/http_client.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util.hpp
+C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/iostream
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/unordered_set

@@ -144,7 +144,7 @@ int main() {
         send_json(res, json{
             {"status", "ok"},
             {"workers", kos::analysis_runtime().worker_count()},
-            {"claude", kos::claude_status(cfg)}
+            {"gemini", kos::claude_status(cfg)}
         });
     });
 

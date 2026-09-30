@@ -41,6 +41,8 @@ struct Config {
     int url_probe_max_fetches = 150;
     int worker_threads = 0;
     int task_chunk_size = 32;
+    std::string gemini_api_key;
+    std::string gemini_model = "gemini-3.1-flash-lite";
     std::string anthropic_api_key;
     std::string anthropic_model = "claude-3-5-haiku-latest";
     int claude_timeout_ms = 45000;

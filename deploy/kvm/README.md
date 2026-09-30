@@ -1,6 +1,6 @@
 # KnowledgeOS on one KVM guest
 
-The C++ server, scheduler, CPU workers, SQLite file, dashboard, and Claude adapter run **inside a single Linux VM**. Wikipedia, GDELT, and the Anthropic API stay outside the guest, reached over the VM network.
+The C++ server, scheduler, CPU workers, SQLite file, dashboard, and Gemini adapter run **inside a single Linux VM**. Wikipedia, GDELT, and the Gemini API stay outside the guest, reached over the VM network.
 
 KVM sets CPU, RAM, and disk limits. It does not change the analysis math.
 
@@ -12,7 +12,7 @@ On Ubuntu in the VM, with this repository at `/opt/knowledgeos`:
 sudo bash /opt/knowledgeos/deploy/kvm/install-guest.sh /opt/knowledgeos
 ```
 
-Put `ANTHROPIC_API_KEY` in `/etc/knowledgeos/knowledgeos.env` (mode 600) only if you want Ask / Explain. Metrics and **Explain insights** work without it.
+Put `GEMINI_API_KEY` in `/etc/knowledgeos/knowledgeos.env` (mode 600) only if you want Ask / Explain. You may also set `GEMINI_MODEL`. Metrics and **Explain insights** work without it. Do not commit the key.
 
 SQLite lives on a persistent disk at `/var/lib/knowledgeos/data/knowledgeos.db`.
 
