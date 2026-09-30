@@ -30,23 +30,36 @@ endif()
 add_executable(knowledgeos
   src_cpp/config.cpp
   src_cpp/db.cpp
+  src_cpp/db_dataset.cpp
+  src_cpp/db_document.cpp
+  src_cpp/db_edge.cpp
+  src_cpp/db_workflow.cpp
   src_cpp/stylometry.cpp
   src_cpp/detectors.cpp
   src_cpp/embedding.cpp
   src_cpp/calibration.cpp
-  src_cpp/analysis.cpp
+  src_cpp/analysis_score.cpp
+  src_cpp/analysis_view.cpp
   src_cpp/html.cpp
   src_cpp/http_client.cpp
   src_cpp/pdf.cpp
   src_cpp/url_crawl.cpp
   src_cpp/wiki_crawl.cpp
+  src_cpp/wiki_revision.cpp
   src_cpp/gdelt_crawl.cpp
-  src_cpp/ingest.cpp
+  src_cpp/ingest_files.cpp
+  src_cpp/ingest_catalog.cpp
+  src_cpp/ingest_wiki.cpp
+  src_cpp/ingest_gdelt.cpp
   src_cpp/insights.cpp
+  src_cpp/insights_agent.cpp
+  src_cpp/insights_calc.cpp
   src_cpp/claude.cpp
+  src_cpp/claude_gemini.cpp
   src_cpp/runtime/task.cpp
   src_cpp/runtime/scheduler.cpp
   src_cpp/server.cpp
+  src_cpp/server_http.cpp
 )
 
 target_include_directories(knowledgeos PRIVATE src_cpp third_party)

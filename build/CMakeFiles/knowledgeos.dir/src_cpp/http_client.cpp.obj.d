@@ -93,6 +93,7 @@ C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/ucrt/ctype.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/vector
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_bit_utils.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util.hpp
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_text.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/algorithm
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_heap_algorithms.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_minmax.hpp
@@ -155,6 +156,7 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/xsmf_control.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/sstream
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/string_view
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_url.hpp
 C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/um/windows.h
 C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/shared/winapifamily.h
 C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/shared/winpackagefamily.h

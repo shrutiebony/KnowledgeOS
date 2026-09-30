@@ -1,0 +1,360 @@
+#include "db.hpp"
+
+#include "util.hpp"
+
+#include <algorithm>
+#include <cstring>
+#include <filesystem>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "sqlite3.h"
+
+#include "db_sql.hpp"
+
+namespace kos {
+
+static std::vector<uint8_t> floats_to_blob(const std::vector<float>& v) {
+    std::vector<uint8_t> b(v.size() * sizeof(float));
+    if (!v.empty()) std::memcpy(b.data(), v.data(), b.size());
+    return b;
+}
+
+static std::vector<float> blob_to_floats(const void* p, int n) {
+    std::vector<float> v;
+    if (!p || n <= 0 || n % static_cast<int>(sizeof(float)) != 0) return v;
+    v.resize(static_cast<size_t>(n) / sizeof(float));
+    std::memcpy(v.data(), p, static_cast<size_t>(n));
+    return v;
+}
+
+static std::optional<double> opt_double(sqlite3_stmt* st, int col) {
+    if (sqlite3_column_type(st, col) == SQLITE_NULL) return std::nullopt;
+    return sqlite3_column_double(st, col);
+}
+
+static void bind_opt(sqlite3_stmt* st, int i, const std::optional<double>& v) {
+    if (v) sqlite3_bind_double(st, i, *v);
+    else sqlite3_bind_null(st, i);
+}
+
+static void bind_blob_floats(sqlite3_stmt* st, int i, const std::vector<float>& v) {
+    if (v.empty()) {
+        sqlite3_bind_null(st, i);
+        return;
+    }
+    sqlite3_bind_blob(st, i, v.data(), static_cast<int>(v.size() * sizeof(float)), SQLITE_TRANSIENT);
+}
+
+static const char* DOC_COLS =
+    "id, dataset_id, title, url, source, topic, published_at, text, word_count, embedding, gnn_embedding, "
+    "type_token_ratio, avg_sentence_length, sentence_length_std, burstiness, punctuation_ratio, char_entropy, "
+    "repetition_score, detector_stylometry, detector_repetition, detector_uniformity, embedding_anomaly, "
+    "stylometry_deviation, p_ai, ci_low, ci_high, band, explanation_json, created_at";
+
+Document Store::read_document(void* stmt_v, bool include_text) {
+    auto* st = static_cast<sqlite3_stmt*>(stmt_v);
+    Document d;
+    d.id = sqlite3_column_int64(st, 0);
+    d.dataset_id = sqlite3_column_int64(st, 1);
+    d.title = col_text(st, 2);
+    d.url = col_text(st, 3);
+    d.source = col_text(st, 4);
+    d.topic = col_text(st, 5);
+    d.published_at = col_text(st, 6);
+    d.created_at = col_text(st, 28);
+    d.text = include_text ? col_text(st, 7) : "";
+    d.word_count = sqlite3_column_int(st, 8);
+    d.embedding = blob_to_floats(sqlite3_column_blob(st, 9), sqlite3_column_bytes(st, 9));
+    d.gnn_embedding = blob_to_floats(sqlite3_column_blob(st, 10), sqlite3_column_bytes(st, 10));
+    d.type_token_ratio = opt_double(st, 11);
+    d.avg_sentence_length = opt_double(st, 12);
+    d.sentence_length_std = opt_double(st, 13);
+    d.burstiness = opt_double(st, 14);
+    d.punctuation_ratio = opt_double(st, 15);
+    d.char_entropy = opt_double(st, 16);
+    d.repetition_score = opt_double(st, 17);
+    d.detector_stylometry = opt_double(st, 18);
+    d.detector_repetition = opt_double(st, 19);
+    d.detector_uniformity = opt_double(st, 20);
+    d.embedding_anomaly = opt_double(st, 21);
+    d.stylometry_deviation = opt_double(st, 22);
+    d.p_ai = opt_double(st, 23);
+    d.ci_low = opt_double(st, 24);
+    d.ci_high = opt_double(st, 25);
+    d.band = col_text(st, 26);
+    d.explanation_json = col_text(st, 27);
+    if (d.band.empty()) d.band = BAND_PENDING;
+    if (d.title.empty()) d.title = "Untitled";
+    return d;
+}
+
+Document Store::insert_document(Document d) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_,
+        "INSERT INTO documents(dataset_id,title,url,source,topic,published_at,created_at,text,word_count) "
+        "VALUES(?,?,?,?,?,?,?,?,?)",
+        -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, d.dataset_id);
+    sqlite3_bind_text(st, 2, d.title.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 3, d.url.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 4, d.source.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 5, d.topic.c_str(), -1, SQLITE_TRANSIENT);
+    if (d.published_at.empty()) sqlite3_bind_null(st, 6);
+    else sqlite3_bind_text(st, 6, d.published_at.c_str(), -1, SQLITE_TRANSIENT);
+    if (d.created_at.empty()) sqlite3_bind_null(st, 7);
+    else sqlite3_bind_text(st, 7, d.created_at.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 8, d.text.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(st, 9, d.word_count);
+    if (sqlite3_step(st) != SQLITE_DONE) {
+        sqlite3_finalize(st);
+        throw std::runtime_error("insert document failed");
+    }
+    d.id = sqlite3_last_insert_rowid(db_);
+    sqlite3_finalize(st);
+    return d;
+}
+
+std::optional<Document> Store::get_document(int64_t id, bool include_text) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    std::string sql = std::string("SELECT ") + DOC_COLS + " FROM documents WHERE id=?";
+    sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, id);
+    std::optional<Document> out;
+    if (sqlite3_step(st) == SQLITE_ROW) out = read_document(st, include_text);
+    sqlite3_finalize(st);
+    return out;
+}
+
+std::vector<Document> Store::docs_by_dataset(int64_t dataset_id, bool include_text) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    std::string sql = std::string("SELECT ") + DOC_COLS + " FROM documents WHERE dataset_id=? ORDER BY id";
+    sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    std::vector<Document> out;
+    while (sqlite3_step(st) == SQLITE_ROW) out.push_back(read_document(st, include_text));
+    sqlite3_finalize(st);
+    return out;
+}
+
+std::vector<Document> Store::all_docs(bool include_text) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    std::string sql = std::string("SELECT ") + DOC_COLS +
+        " FROM documents WHERE dataset_id IN ("
+        "SELECT id FROM datasets WHERE kind != 'WIKIPEDIA_SUBSET') ORDER BY id";
+    sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+    std::vector<Document> out;
+    while (sqlite3_step(st) == SQLITE_ROW) out.push_back(read_document(st, include_text));
+    sqlite3_finalize(st);
+    return out;
+}
+
+std::vector<Document> Store::docs_by_ids(const std::vector<int64_t>& ids, bool include_text) {
+    std::vector<Document> out;
+    if (ids.empty()) return out;
+    std::lock_guard<std::mutex> lock(mu_);
+    const size_t chunk = 200;
+    for (size_t off = 0; off < ids.size(); off += chunk) {
+        size_t n = std::min(chunk, ids.size() - off);
+        std::string sql = std::string("SELECT ") + DOC_COLS + " FROM documents WHERE id IN (";
+        for (size_t i = 0; i < n; ++i) {
+            if (i) sql += ",";
+            sql += "?";
+        }
+        sql += ")";
+        sqlite3_stmt* st = nullptr;
+        sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+        for (size_t i = 0; i < n; ++i) sqlite3_bind_int64(st, static_cast<int>(i + 1), ids[off + i]);
+        while (sqlite3_step(st) == SQLITE_ROW) out.push_back(read_document(st, include_text));
+        sqlite3_finalize(st);
+    }
+    return out;
+}
+
+void Store::save_document(const Document& d) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_,
+        "UPDATE documents SET title=?,url=?,source=?,topic=?,published_at=?,created_at=?,text=?,word_count=?,"
+        "embedding=?,gnn_embedding=?,type_token_ratio=?,avg_sentence_length=?,sentence_length_std=?,"
+        "burstiness=?,punctuation_ratio=?,char_entropy=?,repetition_score=?,detector_stylometry=?,"
+        "detector_repetition=?,detector_uniformity=?,embedding_anomaly=?,stylometry_deviation=?,"
+        "p_ai=?,ci_low=?,ci_high=?,band=?,explanation_json=? WHERE id=?",
+        -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, d.title.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 2, d.url.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 3, d.source.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 4, d.topic.c_str(), -1, SQLITE_TRANSIENT);
+    if (d.published_at.empty()) sqlite3_bind_null(st, 5);
+    else sqlite3_bind_text(st, 5, d.published_at.c_str(), -1, SQLITE_TRANSIENT);
+    if (d.created_at.empty()) sqlite3_bind_null(st, 6);
+    else sqlite3_bind_text(st, 6, d.created_at.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 7, d.text.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(st, 8, d.word_count);
+    bind_blob_floats(st, 9, d.embedding);
+    bind_blob_floats(st, 10, d.gnn_embedding);
+    bind_opt(st, 11, d.type_token_ratio);
+    bind_opt(st, 12, d.avg_sentence_length);
+    bind_opt(st, 13, d.sentence_length_std);
+    bind_opt(st, 14, d.burstiness);
+    bind_opt(st, 15, d.punctuation_ratio);
+    bind_opt(st, 16, d.char_entropy);
+    bind_opt(st, 17, d.repetition_score);
+    bind_opt(st, 18, d.detector_stylometry);
+    bind_opt(st, 19, d.detector_repetition);
+    bind_opt(st, 20, d.detector_uniformity);
+    bind_opt(st, 21, d.embedding_anomaly);
+    bind_opt(st, 22, d.stylometry_deviation);
+    bind_opt(st, 23, d.p_ai);
+    bind_opt(st, 24, d.ci_low);
+    bind_opt(st, 25, d.ci_high);
+    sqlite3_bind_text(st, 26, d.band.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(st, 27, d.explanation_json.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 28, d.id);
+    sqlite3_step(st);
+    sqlite3_finalize(st);
+}
+
+void Store::save_documents(const std::vector<Document>& docs) {
+    for (const auto& d : docs) save_document(d);
+}
+
+void Store::delete_documents(int64_t dataset_id) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "DELETE FROM documents WHERE dataset_id=?", -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    sqlite3_step(st);
+    sqlite3_finalize(st);
+}
+
+int Store::delete_docs_below_word_count(int64_t dataset_id, int min_words) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_,
+        "DELETE FROM edges WHERE dataset_id=? AND ("
+        "source_document_id IN (SELECT id FROM documents WHERE dataset_id=? AND word_count < ?) OR "
+        "target_document_id IN (SELECT id FROM documents WHERE dataset_id=? AND word_count < ?))",
+        -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    sqlite3_bind_int64(st, 2, dataset_id);
+    sqlite3_bind_int(st, 3, min_words);
+    sqlite3_bind_int64(st, 4, dataset_id);
+    sqlite3_bind_int(st, 5, min_words);
+    sqlite3_step(st);
+    sqlite3_finalize(st);
+    sqlite3_prepare_v2(db_, "DELETE FROM documents WHERE dataset_id=? AND word_count < ?", -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    sqlite3_bind_int(st, 2, min_words);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int64_t Store::count_docs(int64_t dataset_id) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "SELECT COUNT(*) FROM documents WHERE dataset_id=?", -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    int64_t n = 0;
+    if (sqlite3_step(st) == SQLITE_ROW) n = sqlite3_column_int64(st, 0);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int64_t Store::count_all_docs() {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_,
+        "SELECT COUNT(*) FROM documents WHERE dataset_id IN ("
+        "SELECT id FROM datasets WHERE kind != 'WIKIPEDIA_SUBSET')",
+        -1, &st, nullptr);
+    int64_t n = 0;
+    if (sqlite3_step(st) == SQLITE_ROW) n = sqlite3_column_int64(st, 0);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int64_t Store::count_unscored(int64_t dataset_id) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "SELECT COUNT(*) FROM documents WHERE dataset_id=? AND p_ai IS NULL", -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    int64_t n = 0;
+    if (sqlite3_step(st) == SQLITE_ROW) n = sqlite3_column_int64(st, 0);
+    sqlite3_finalize(st);
+    return n;
+}
+
+std::vector<std::string> Store::distinct_topics(int64_t dataset_id) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    const std::string sql =
+        "SELECT topic FROM documents WHERE dataset_id=? AND topic IS NOT NULL AND topic!='' "
+        "GROUP BY topic HAVING COUNT(*) >= " +
+        std::to_string(MIN_TOPIC_DOCUMENTS) + " ORDER BY topic";
+    sqlite3_prepare_v2(db_, sql.c_str(), -1, &st, nullptr);
+    sqlite3_bind_int64(st, 1, dataset_id);
+    std::vector<std::string> out;
+    while (sqlite3_step(st) == SQLITE_ROW) out.push_back(col_text(st, 0));
+    sqlite3_finalize(st);
+    return out;
+}
+
+int Store::update_published_at_if_null(int64_t doc_id, const std::string& date) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "UPDATE documents SET published_at=? WHERE id=? AND published_at IS NULL", -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 2, doc_id);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int Store::update_created_at_if_null(int64_t doc_id, const std::string& date) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "UPDATE documents SET created_at=? WHERE id=? AND (created_at IS NULL OR created_at='')",
+                       -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 2, doc_id);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int Store::update_created_at(int64_t doc_id, const std::string& date) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "UPDATE documents SET created_at=? WHERE id=?", -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 2, doc_id);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+int Store::update_topic(int64_t doc_id, const std::string& topic) {
+    std::lock_guard<std::mutex> lock(mu_);
+    sqlite3_stmt* st = nullptr;
+    sqlite3_prepare_v2(db_, "UPDATE documents SET topic=? WHERE id=?", -1, &st, nullptr);
+    sqlite3_bind_text(st, 1, topic.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(st, 2, doc_id);
+    sqlite3_step(st);
+    int n = sqlite3_changes(db_);
+    sqlite3_finalize(st);
+    return n;
+}
+
+}  // namespace kos

@@ -181,29 +181,53 @@ runtime_lambda\main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\runtime_lambda.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\runtime_lambda.dir\runtime_lambda\main.cpp.s
 .PHONY : runtime_lambda\main.cpp.s
 
-src_cpp\analysis.obj: src_cpp\analysis.cpp.obj
-.PHONY : src_cpp\analysis.obj
+src_cpp\analysis_score.obj: src_cpp\analysis_score.cpp.obj
+.PHONY : src_cpp\analysis_score.obj
 
 # target to build an object file
-src_cpp\analysis.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.obj
-.PHONY : src_cpp\analysis.cpp.obj
+src_cpp\analysis_score.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_score.cpp.obj
+.PHONY : src_cpp\analysis_score.cpp.obj
 
-src_cpp\analysis.i: src_cpp\analysis.cpp.i
-.PHONY : src_cpp\analysis.i
+src_cpp\analysis_score.i: src_cpp\analysis_score.cpp.i
+.PHONY : src_cpp\analysis_score.i
 
 # target to preprocess a source file
-src_cpp\analysis.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.i
-.PHONY : src_cpp\analysis.cpp.i
+src_cpp\analysis_score.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_score.cpp.i
+.PHONY : src_cpp\analysis_score.cpp.i
 
-src_cpp\analysis.s: src_cpp\analysis.cpp.s
-.PHONY : src_cpp\analysis.s
+src_cpp\analysis_score.s: src_cpp\analysis_score.cpp.s
+.PHONY : src_cpp\analysis_score.s
 
 # target to generate assembly for a file
-src_cpp\analysis.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis.cpp.s
-.PHONY : src_cpp\analysis.cpp.s
+src_cpp\analysis_score.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_score.cpp.s
+.PHONY : src_cpp\analysis_score.cpp.s
+
+src_cpp\analysis_view.obj: src_cpp\analysis_view.cpp.obj
+.PHONY : src_cpp\analysis_view.obj
+
+# target to build an object file
+src_cpp\analysis_view.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_view.cpp.obj
+.PHONY : src_cpp\analysis_view.cpp.obj
+
+src_cpp\analysis_view.i: src_cpp\analysis_view.cpp.i
+.PHONY : src_cpp\analysis_view.i
+
+# target to preprocess a source file
+src_cpp\analysis_view.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_view.cpp.i
+.PHONY : src_cpp\analysis_view.cpp.i
+
+src_cpp\analysis_view.s: src_cpp\analysis_view.cpp.s
+.PHONY : src_cpp\analysis_view.s
+
+# target to generate assembly for a file
+src_cpp\analysis_view.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\analysis_view.cpp.s
+.PHONY : src_cpp\analysis_view.cpp.s
 
 src_cpp\calibration.obj: src_cpp\calibration.cpp.obj
 .PHONY : src_cpp\calibration.obj
@@ -253,6 +277,30 @@ src_cpp\claude.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude.cpp.s
 .PHONY : src_cpp\claude.cpp.s
 
+src_cpp\claude_gemini.obj: src_cpp\claude_gemini.cpp.obj
+.PHONY : src_cpp\claude_gemini.obj
+
+# target to build an object file
+src_cpp\claude_gemini.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude_gemini.cpp.obj
+.PHONY : src_cpp\claude_gemini.cpp.obj
+
+src_cpp\claude_gemini.i: src_cpp\claude_gemini.cpp.i
+.PHONY : src_cpp\claude_gemini.i
+
+# target to preprocess a source file
+src_cpp\claude_gemini.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude_gemini.cpp.i
+.PHONY : src_cpp\claude_gemini.cpp.i
+
+src_cpp\claude_gemini.s: src_cpp\claude_gemini.cpp.s
+.PHONY : src_cpp\claude_gemini.s
+
+# target to generate assembly for a file
+src_cpp\claude_gemini.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\claude_gemini.cpp.s
+.PHONY : src_cpp\claude_gemini.cpp.s
+
 src_cpp\config.obj: src_cpp\config.cpp.obj
 .PHONY : src_cpp\config.obj
 
@@ -300,6 +348,102 @@ src_cpp\db.s: src_cpp\db.cpp.s
 src_cpp\db.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db.cpp.s
 .PHONY : src_cpp\db.cpp.s
+
+src_cpp\db_dataset.obj: src_cpp\db_dataset.cpp.obj
+.PHONY : src_cpp\db_dataset.obj
+
+# target to build an object file
+src_cpp\db_dataset.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_dataset.cpp.obj
+.PHONY : src_cpp\db_dataset.cpp.obj
+
+src_cpp\db_dataset.i: src_cpp\db_dataset.cpp.i
+.PHONY : src_cpp\db_dataset.i
+
+# target to preprocess a source file
+src_cpp\db_dataset.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_dataset.cpp.i
+.PHONY : src_cpp\db_dataset.cpp.i
+
+src_cpp\db_dataset.s: src_cpp\db_dataset.cpp.s
+.PHONY : src_cpp\db_dataset.s
+
+# target to generate assembly for a file
+src_cpp\db_dataset.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_dataset.cpp.s
+.PHONY : src_cpp\db_dataset.cpp.s
+
+src_cpp\db_document.obj: src_cpp\db_document.cpp.obj
+.PHONY : src_cpp\db_document.obj
+
+# target to build an object file
+src_cpp\db_document.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_document.cpp.obj
+.PHONY : src_cpp\db_document.cpp.obj
+
+src_cpp\db_document.i: src_cpp\db_document.cpp.i
+.PHONY : src_cpp\db_document.i
+
+# target to preprocess a source file
+src_cpp\db_document.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_document.cpp.i
+.PHONY : src_cpp\db_document.cpp.i
+
+src_cpp\db_document.s: src_cpp\db_document.cpp.s
+.PHONY : src_cpp\db_document.s
+
+# target to generate assembly for a file
+src_cpp\db_document.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_document.cpp.s
+.PHONY : src_cpp\db_document.cpp.s
+
+src_cpp\db_edge.obj: src_cpp\db_edge.cpp.obj
+.PHONY : src_cpp\db_edge.obj
+
+# target to build an object file
+src_cpp\db_edge.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_edge.cpp.obj
+.PHONY : src_cpp\db_edge.cpp.obj
+
+src_cpp\db_edge.i: src_cpp\db_edge.cpp.i
+.PHONY : src_cpp\db_edge.i
+
+# target to preprocess a source file
+src_cpp\db_edge.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_edge.cpp.i
+.PHONY : src_cpp\db_edge.cpp.i
+
+src_cpp\db_edge.s: src_cpp\db_edge.cpp.s
+.PHONY : src_cpp\db_edge.s
+
+# target to generate assembly for a file
+src_cpp\db_edge.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_edge.cpp.s
+.PHONY : src_cpp\db_edge.cpp.s
+
+src_cpp\db_workflow.obj: src_cpp\db_workflow.cpp.obj
+.PHONY : src_cpp\db_workflow.obj
+
+# target to build an object file
+src_cpp\db_workflow.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_workflow.cpp.obj
+.PHONY : src_cpp\db_workflow.cpp.obj
+
+src_cpp\db_workflow.i: src_cpp\db_workflow.cpp.i
+.PHONY : src_cpp\db_workflow.i
+
+# target to preprocess a source file
+src_cpp\db_workflow.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_workflow.cpp.i
+.PHONY : src_cpp\db_workflow.cpp.i
+
+src_cpp\db_workflow.s: src_cpp\db_workflow.cpp.s
+.PHONY : src_cpp\db_workflow.s
+
+# target to generate assembly for a file
+src_cpp\db_workflow.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\db_workflow.cpp.s
+.PHONY : src_cpp\db_workflow.cpp.s
 
 src_cpp\detectors.obj: src_cpp\detectors.cpp.obj
 .PHONY : src_cpp\detectors.obj
@@ -421,29 +565,101 @@ src_cpp\http_client.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\http_client.cpp.s
 .PHONY : src_cpp\http_client.cpp.s
 
-src_cpp\ingest.obj: src_cpp\ingest.cpp.obj
-.PHONY : src_cpp\ingest.obj
+src_cpp\ingest_catalog.obj: src_cpp\ingest_catalog.cpp.obj
+.PHONY : src_cpp\ingest_catalog.obj
 
 # target to build an object file
-src_cpp\ingest.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.obj
-.PHONY : src_cpp\ingest.cpp.obj
+src_cpp\ingest_catalog.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_catalog.cpp.obj
+.PHONY : src_cpp\ingest_catalog.cpp.obj
 
-src_cpp\ingest.i: src_cpp\ingest.cpp.i
-.PHONY : src_cpp\ingest.i
+src_cpp\ingest_catalog.i: src_cpp\ingest_catalog.cpp.i
+.PHONY : src_cpp\ingest_catalog.i
 
 # target to preprocess a source file
-src_cpp\ingest.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.i
-.PHONY : src_cpp\ingest.cpp.i
+src_cpp\ingest_catalog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_catalog.cpp.i
+.PHONY : src_cpp\ingest_catalog.cpp.i
 
-src_cpp\ingest.s: src_cpp\ingest.cpp.s
-.PHONY : src_cpp\ingest.s
+src_cpp\ingest_catalog.s: src_cpp\ingest_catalog.cpp.s
+.PHONY : src_cpp\ingest_catalog.s
 
 # target to generate assembly for a file
-src_cpp\ingest.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest.cpp.s
-.PHONY : src_cpp\ingest.cpp.s
+src_cpp\ingest_catalog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_catalog.cpp.s
+.PHONY : src_cpp\ingest_catalog.cpp.s
+
+src_cpp\ingest_files.obj: src_cpp\ingest_files.cpp.obj
+.PHONY : src_cpp\ingest_files.obj
+
+# target to build an object file
+src_cpp\ingest_files.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_files.cpp.obj
+.PHONY : src_cpp\ingest_files.cpp.obj
+
+src_cpp\ingest_files.i: src_cpp\ingest_files.cpp.i
+.PHONY : src_cpp\ingest_files.i
+
+# target to preprocess a source file
+src_cpp\ingest_files.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_files.cpp.i
+.PHONY : src_cpp\ingest_files.cpp.i
+
+src_cpp\ingest_files.s: src_cpp\ingest_files.cpp.s
+.PHONY : src_cpp\ingest_files.s
+
+# target to generate assembly for a file
+src_cpp\ingest_files.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_files.cpp.s
+.PHONY : src_cpp\ingest_files.cpp.s
+
+src_cpp\ingest_gdelt.obj: src_cpp\ingest_gdelt.cpp.obj
+.PHONY : src_cpp\ingest_gdelt.obj
+
+# target to build an object file
+src_cpp\ingest_gdelt.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_gdelt.cpp.obj
+.PHONY : src_cpp\ingest_gdelt.cpp.obj
+
+src_cpp\ingest_gdelt.i: src_cpp\ingest_gdelt.cpp.i
+.PHONY : src_cpp\ingest_gdelt.i
+
+# target to preprocess a source file
+src_cpp\ingest_gdelt.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_gdelt.cpp.i
+.PHONY : src_cpp\ingest_gdelt.cpp.i
+
+src_cpp\ingest_gdelt.s: src_cpp\ingest_gdelt.cpp.s
+.PHONY : src_cpp\ingest_gdelt.s
+
+# target to generate assembly for a file
+src_cpp\ingest_gdelt.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_gdelt.cpp.s
+.PHONY : src_cpp\ingest_gdelt.cpp.s
+
+src_cpp\ingest_wiki.obj: src_cpp\ingest_wiki.cpp.obj
+.PHONY : src_cpp\ingest_wiki.obj
+
+# target to build an object file
+src_cpp\ingest_wiki.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_wiki.cpp.obj
+.PHONY : src_cpp\ingest_wiki.cpp.obj
+
+src_cpp\ingest_wiki.i: src_cpp\ingest_wiki.cpp.i
+.PHONY : src_cpp\ingest_wiki.i
+
+# target to preprocess a source file
+src_cpp\ingest_wiki.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_wiki.cpp.i
+.PHONY : src_cpp\ingest_wiki.cpp.i
+
+src_cpp\ingest_wiki.s: src_cpp\ingest_wiki.cpp.s
+.PHONY : src_cpp\ingest_wiki.s
+
+# target to generate assembly for a file
+src_cpp\ingest_wiki.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\ingest_wiki.cpp.s
+.PHONY : src_cpp\ingest_wiki.cpp.s
 
 src_cpp\insights.obj: src_cpp\insights.cpp.obj
 .PHONY : src_cpp\insights.obj
@@ -468,6 +684,54 @@ src_cpp\insights.s: src_cpp\insights.cpp.s
 src_cpp\insights.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights.cpp.s
 .PHONY : src_cpp\insights.cpp.s
+
+src_cpp\insights_agent.obj: src_cpp\insights_agent.cpp.obj
+.PHONY : src_cpp\insights_agent.obj
+
+# target to build an object file
+src_cpp\insights_agent.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_agent.cpp.obj
+.PHONY : src_cpp\insights_agent.cpp.obj
+
+src_cpp\insights_agent.i: src_cpp\insights_agent.cpp.i
+.PHONY : src_cpp\insights_agent.i
+
+# target to preprocess a source file
+src_cpp\insights_agent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_agent.cpp.i
+.PHONY : src_cpp\insights_agent.cpp.i
+
+src_cpp\insights_agent.s: src_cpp\insights_agent.cpp.s
+.PHONY : src_cpp\insights_agent.s
+
+# target to generate assembly for a file
+src_cpp\insights_agent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_agent.cpp.s
+.PHONY : src_cpp\insights_agent.cpp.s
+
+src_cpp\insights_calc.obj: src_cpp\insights_calc.cpp.obj
+.PHONY : src_cpp\insights_calc.obj
+
+# target to build an object file
+src_cpp\insights_calc.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_calc.cpp.obj
+.PHONY : src_cpp\insights_calc.cpp.obj
+
+src_cpp\insights_calc.i: src_cpp\insights_calc.cpp.i
+.PHONY : src_cpp\insights_calc.i
+
+# target to preprocess a source file
+src_cpp\insights_calc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_calc.cpp.i
+.PHONY : src_cpp\insights_calc.cpp.i
+
+src_cpp\insights_calc.s: src_cpp\insights_calc.cpp.s
+.PHONY : src_cpp\insights_calc.s
+
+# target to generate assembly for a file
+src_cpp\insights_calc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\insights_calc.cpp.s
+.PHONY : src_cpp\insights_calc.cpp.s
 
 src_cpp\pdf.obj: src_cpp\pdf.cpp.obj
 .PHONY : src_cpp\pdf.obj
@@ -565,6 +829,30 @@ src_cpp\server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\server.cpp.s
 .PHONY : src_cpp\server.cpp.s
 
+src_cpp\server_http.obj: src_cpp\server_http.cpp.obj
+.PHONY : src_cpp\server_http.obj
+
+# target to build an object file
+src_cpp\server_http.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\server_http.cpp.obj
+.PHONY : src_cpp\server_http.cpp.obj
+
+src_cpp\server_http.i: src_cpp\server_http.cpp.i
+.PHONY : src_cpp\server_http.i
+
+# target to preprocess a source file
+src_cpp\server_http.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\server_http.cpp.i
+.PHONY : src_cpp\server_http.cpp.i
+
+src_cpp\server_http.s: src_cpp\server_http.cpp.s
+.PHONY : src_cpp\server_http.s
+
+# target to generate assembly for a file
+src_cpp\server_http.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\server_http.cpp.s
+.PHONY : src_cpp\server_http.cpp.s
+
 src_cpp\stylometry.obj: src_cpp\stylometry.cpp.obj
 .PHONY : src_cpp\stylometry.obj
 
@@ -636,6 +924,30 @@ src_cpp\wiki_crawl.s: src_cpp\wiki_crawl.cpp.s
 src_cpp\wiki_crawl.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\wiki_crawl.cpp.s
 .PHONY : src_cpp\wiki_crawl.cpp.s
+
+src_cpp\wiki_revision.obj: src_cpp\wiki_revision.cpp.obj
+.PHONY : src_cpp\wiki_revision.obj
+
+# target to build an object file
+src_cpp\wiki_revision.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\wiki_revision.cpp.obj
+.PHONY : src_cpp\wiki_revision.cpp.obj
+
+src_cpp\wiki_revision.i: src_cpp\wiki_revision.cpp.i
+.PHONY : src_cpp\wiki_revision.i
+
+# target to preprocess a source file
+src_cpp\wiki_revision.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\wiki_revision.cpp.i
+.PHONY : src_cpp\wiki_revision.cpp.i
+
+src_cpp\wiki_revision.s: src_cpp\wiki_revision.cpp.s
+.PHONY : src_cpp\wiki_revision.s
+
+# target to generate assembly for a file
+src_cpp\wiki_revision.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\knowledgeos.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\knowledgeos.dir\src_cpp\wiki_revision.cpp.s
+.PHONY : src_cpp\wiki_revision.cpp.s
 
 third_party\miniz.obj: third_party\miniz.c.obj
 .PHONY : third_party\miniz.obj
@@ -772,21 +1084,39 @@ help:
 	@echo ... runtime_lambda/main.obj
 	@echo ... runtime_lambda/main.i
 	@echo ... runtime_lambda/main.s
-	@echo ... src_cpp/analysis.obj
-	@echo ... src_cpp/analysis.i
-	@echo ... src_cpp/analysis.s
+	@echo ... src_cpp/analysis_score.obj
+	@echo ... src_cpp/analysis_score.i
+	@echo ... src_cpp/analysis_score.s
+	@echo ... src_cpp/analysis_view.obj
+	@echo ... src_cpp/analysis_view.i
+	@echo ... src_cpp/analysis_view.s
 	@echo ... src_cpp/calibration.obj
 	@echo ... src_cpp/calibration.i
 	@echo ... src_cpp/calibration.s
 	@echo ... src_cpp/claude.obj
 	@echo ... src_cpp/claude.i
 	@echo ... src_cpp/claude.s
+	@echo ... src_cpp/claude_gemini.obj
+	@echo ... src_cpp/claude_gemini.i
+	@echo ... src_cpp/claude_gemini.s
 	@echo ... src_cpp/config.obj
 	@echo ... src_cpp/config.i
 	@echo ... src_cpp/config.s
 	@echo ... src_cpp/db.obj
 	@echo ... src_cpp/db.i
 	@echo ... src_cpp/db.s
+	@echo ... src_cpp/db_dataset.obj
+	@echo ... src_cpp/db_dataset.i
+	@echo ... src_cpp/db_dataset.s
+	@echo ... src_cpp/db_document.obj
+	@echo ... src_cpp/db_document.i
+	@echo ... src_cpp/db_document.s
+	@echo ... src_cpp/db_edge.obj
+	@echo ... src_cpp/db_edge.i
+	@echo ... src_cpp/db_edge.s
+	@echo ... src_cpp/db_workflow.obj
+	@echo ... src_cpp/db_workflow.i
+	@echo ... src_cpp/db_workflow.s
 	@echo ... src_cpp/detectors.obj
 	@echo ... src_cpp/detectors.i
 	@echo ... src_cpp/detectors.s
@@ -802,12 +1132,27 @@ help:
 	@echo ... src_cpp/http_client.obj
 	@echo ... src_cpp/http_client.i
 	@echo ... src_cpp/http_client.s
-	@echo ... src_cpp/ingest.obj
-	@echo ... src_cpp/ingest.i
-	@echo ... src_cpp/ingest.s
+	@echo ... src_cpp/ingest_catalog.obj
+	@echo ... src_cpp/ingest_catalog.i
+	@echo ... src_cpp/ingest_catalog.s
+	@echo ... src_cpp/ingest_files.obj
+	@echo ... src_cpp/ingest_files.i
+	@echo ... src_cpp/ingest_files.s
+	@echo ... src_cpp/ingest_gdelt.obj
+	@echo ... src_cpp/ingest_gdelt.i
+	@echo ... src_cpp/ingest_gdelt.s
+	@echo ... src_cpp/ingest_wiki.obj
+	@echo ... src_cpp/ingest_wiki.i
+	@echo ... src_cpp/ingest_wiki.s
 	@echo ... src_cpp/insights.obj
 	@echo ... src_cpp/insights.i
 	@echo ... src_cpp/insights.s
+	@echo ... src_cpp/insights_agent.obj
+	@echo ... src_cpp/insights_agent.i
+	@echo ... src_cpp/insights_agent.s
+	@echo ... src_cpp/insights_calc.obj
+	@echo ... src_cpp/insights_calc.i
+	@echo ... src_cpp/insights_calc.s
 	@echo ... src_cpp/pdf.obj
 	@echo ... src_cpp/pdf.i
 	@echo ... src_cpp/pdf.s
@@ -820,6 +1165,9 @@ help:
 	@echo ... src_cpp/server.obj
 	@echo ... src_cpp/server.i
 	@echo ... src_cpp/server.s
+	@echo ... src_cpp/server_http.obj
+	@echo ... src_cpp/server_http.i
+	@echo ... src_cpp/server_http.s
 	@echo ... src_cpp/stylometry.obj
 	@echo ... src_cpp/stylometry.i
 	@echo ... src_cpp/stylometry.s
@@ -829,6 +1177,9 @@ help:
 	@echo ... src_cpp/wiki_crawl.obj
 	@echo ... src_cpp/wiki_crawl.i
 	@echo ... src_cpp/wiki_crawl.s
+	@echo ... src_cpp/wiki_revision.obj
+	@echo ... src_cpp/wiki_revision.i
+	@echo ... src_cpp/wiki_revision.s
 	@echo ... third_party/miniz.obj
 	@echo ... third_party/miniz.i
 	@echo ... third_party/miniz.s

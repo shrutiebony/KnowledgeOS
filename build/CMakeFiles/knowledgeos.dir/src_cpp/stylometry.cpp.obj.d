@@ -187,4 +187,6 @@ C:/Program Files (x86)/Windows Kits/10/include/10.0.26100.0/ucrt/math.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/vcruntime_startup.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/stop_token
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util.hpp
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_text.hpp
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_url.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/unordered_set

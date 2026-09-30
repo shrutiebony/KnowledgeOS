@@ -1,4 +1,5 @@
 #include "wiki_crawl.hpp"
+#include "wiki_detail.hpp"
 #include "html.hpp"
 #include "http_client.hpp"
 #include "util.hpp"
@@ -22,8 +23,6 @@
 namespace kos {
 
 static const char* HOST = "en.wikipedia.org";
-static const char* UA =
-    "KnowledgeOS-Wiki/1.0 (local educational corpus ingest; en.wikipedia.org general collection)";
 
 static const char* SKIP_NS[] = {
     "special", "file", "image", "talk", "user", "wikipedia", "wp", "help", "template", "module",
@@ -447,11 +446,6 @@ bool is_wikipedia_name(const std::string& name) {
     return lower == "wikipedia" || lower == "wikipedia india" || lower == "wikipedia sample";
 }
 
-static std::optional<std::string> parse_iso_date(const std::string& raw) {
-    std::string value = trim(raw);
-    if (value.size() >= 10 && value[4] == '-' && value[7] == '-') return value.substr(0, 10);
-    return std::nullopt;
-}
 
 static std::optional<std::string> parse_lastmod_text(const std::string& blob) {
     static const std::regex lastmod(R"(last (?:edited|modified) on\s+(\d{1,2}\s+\w+\s+\d{4}))",
@@ -581,7 +575,7 @@ std::optional<WikiExtract> fetch_wiki_extract(const std::string& title, const Co
     std::string api = "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2"
                       "&prop=extracts&explaintext=1&exsectionformat=plain&redirects=1&exlimit=1&titles=" +
                       url_encode(key);
-    auto res = http_get(api, UA, cfg.wikipedia_timeout_ms, 2'000'000);
+    auto res = http_get(api, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 2'000'000);
     if (res.status >= 400 || res.body.empty()) return std::nullopt;
     auto texts = parse_extract_query(res.body);
     if (texts.empty()) return std::nullopt;
@@ -700,7 +694,7 @@ static HttpResponse wiki_api_get(const std::string& api, const Config& cfg) {
     HttpResponse res;
     for (int attempt = 0; attempt < 16; ++attempt) {
         wiki_throttle(cfg);
-        res = http_get(api, UA, cfg.wikipedia_timeout_ms, 8'000'000);
+        res = http_get(api, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 8'000'000);
         wiki_note_status(res.status, cfg);
         if (res.status != 429 && res.status != 503) return res;
         int gap;
@@ -1138,7 +1132,7 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                                           "&list=categorymembers&cmtype=subcat&cmlimit=500&cmtitle=" +
                                           url_encode(seed_title);
                         if (!cont.empty()) api += "&cmcontinue=" + url_encode(cont);
-                        auto res = http_get(api, UA, cfg.wikipedia_timeout_ms, 2'000'000);
+                        auto res = http_get(api, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 2'000'000);
                         if (res.status >= 400 || res.body.empty()) break;
                         try {
                             auto root = nlohmann::json::parse(res.body);
@@ -1163,7 +1157,7 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
                                               "&list=categorymembers&cmtype=page&cmlimit=500&cmtitle=" +
                                               url_encode(cat);
                             if (!cont.empty()) api += "&cmcontinue=" + url_encode(cont);
-                            auto res = http_get(api, UA, cfg.wikipedia_timeout_ms, 2'000'000);
+                            auto res = http_get(api, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 2'000'000);
                             if (res.status >= 400 || res.body.empty()) break;
                             try {
                                 auto root = nlohmann::json::parse(res.body);
@@ -1207,12 +1201,12 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
             }
             stats.fetched++;
             campaign_fetches++;
-            auto page = http_get(item.url, UA, cfg.wikipedia_timeout_ms, 5'000'000);
+            auto page = http_get(item.url, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 5'000'000);
             if (page.status == 429 || page.status == 503) {
                 int wait = std::max(cfg.wikipedia_delay_ms, 4000);
                 std::cerr << "Wikipedia HTTP " << page.status << ", backoff " << wait << "ms\n" << std::flush;
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                page = http_get(item.url, UA, cfg.wikipedia_timeout_ms, 5'000'000);
+                page = http_get(item.url, WIKI_HTTP_UA, cfg.wikipedia_timeout_ms, 5'000'000);
                 if (page.status == 429 || page.status == 503) {
                     wait = std::min(wait * 2, 60000);
                     std::cerr << "Wikipedia HTTP " << page.status << ", requeue after " << wait << "ms\n"
@@ -1327,126 +1321,5 @@ WikiCrawlStats crawl_wikipedia(const Config& cfg, std::unordered_set<std::string
     return stats;
 }
 
-std::map<std::string, std::string> parse_revision_query(const std::string& body) {
-    std::map<std::string, std::string> out;
-    if (body.empty()) return out;
-    try {
-        auto root = nlohmann::json::parse(body);
-        auto query = root["query"];
-        std::map<std::string, std::string> aliases;
-        if (query.contains("normalized")) {
-            for (const auto& n : query["normalized"]) {
-                std::string from = n.value("from", "");
-                std::string to = n.value("to", "");
-                if (!from.empty() && !to.empty()) aliases[from] = to;
-            }
-        }
-        if (query.contains("redirects")) {
-            for (const auto& n : query["redirects"]) {
-                std::string from = n.value("from", "");
-                std::string to = n.value("to", "");
-                if (!from.empty() && !to.empty()) aliases[from] = to;
-            }
-        }
-        std::map<std::string, std::string> by_canonical;
-        if (root.contains("error")) {
-            std::cerr << "Wikipedia revision API error: " << root["error"].value("info", "unknown") << "\n";
-        }
-        if (query.contains("pages")) {
-            for (const auto& page : query["pages"]) {
-                if (page.value("missing", false)) continue;
-                std::string title = page.value("title", "");
-                if (!page.contains("revisions") || !page["revisions"].is_array() || page["revisions"].empty()) continue;
-                std::string ts = page["revisions"][0].value("timestamp", "");
-                auto date = parse_iso_date(ts);
-                if (date && !title.empty()) {
-                    by_canonical[title] = *date;
-                    out[title] = *date;
-                }
-            }
-        }
-        for (const auto& [from, to] : aliases) {
-            auto it = by_canonical.find(to);
-            if (it != by_canonical.end()) out[from] = it->second;
-        }
-    } catch (...) {
-    }
-    return out;
-}
-
-static std::string revision_api_url(const std::string& joined, bool first) {
-    std::string api = "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2"
-                      "&prop=revisions&rvprop=timestamp&redirects=1";
-    if (first) api += "&rvdir=newer&rvlimit=1";
-    api += "&titles=" + url_encode(joined);
-    return api;
-}
-
-struct RevisionFetch {
-    std::map<std::string, std::string> dates;
-    int status = 0;
-};
-
-static RevisionFetch fetch_revision_batch(const std::string& joined, const Config& cfg, bool first) {
-    int backoff = std::max(8000, cfg.wikipedia_delay_ms);
-    for (int attempt = 0; attempt < 6; ++attempt) {
-        auto res = http_get(revision_api_url(joined, first), UA, cfg.wikipedia_timeout_ms, 2'000'000);
-        if (res.status == 429 || res.status == 503) {
-            std::cerr << "Wikipedia revision query " << res.status << ", retry in " << backoff << "ms\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(backoff));
-            backoff = std::min(backoff * 2, 60000);
-            continue;
-        }
-        if (res.status >= 400 || res.body.empty()) {
-            std::cerr << "Wikipedia revision query failed (" << res.status
-                      << (res.error.empty() ? "" : ", " + res.error) << ")\n";
-            return {{}, res.status};
-        }
-        return {parse_revision_query(res.body), res.status};
-    }
-    return {{}, 429};
-}
-
-static std::map<std::string, std::string> fetch_revisions(const std::vector<std::string>& titles,
-                                                         const Config& cfg, bool first) {
-    std::map<std::string, std::string> out;
-    std::vector<std::string> unique;
-    std::unordered_set<std::string> seen;
-    for (const auto& title : titles) {
-        if (is_blank(title)) continue;
-        std::string key = title;
-        for (char& c : key) if (c == '_') c = ' ';
-        key = trim(key);
-        if (seen.insert(ascii_lower(key)).second) unique.push_back(key);
-    }
-    // First-revision params (rvdir=newer / rvlimit) are single-page only on MediaWiki.
-    const size_t batch = first ? 1 : 20;
-    const int pace = first ? std::max(200, cfg.wikipedia_delay_ms) : std::max(400, cfg.wikipedia_delay_ms);
-    for (size_t i = 0; i < unique.size(); i += batch) {
-        std::string joined;
-        for (size_t j = i; j < unique.size() && j < i + batch; ++j) {
-            if (!joined.empty()) joined += "|";
-            joined += unique[j];
-        }
-        auto part = fetch_revision_batch(joined, cfg, first);
-        out.insert(part.dates.begin(), part.dates.end());
-        if (i + batch < unique.size()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(pace));
-        }
-        if ((i / batch) % (first ? 40 : 4) == 0 || i + batch >= unique.size()) {
-            std::cerr << (first ? "First" : "Last") << "-revision dates: " << out.size() << "/" << unique.size()
-                      << " titles\n";
-        }
-    }
-    return out;
-}
-
-std::map<std::string, std::string> fetch_last_revisions(const std::vector<std::string>& titles, const Config& cfg) {
-    return fetch_revisions(titles, cfg, false);
-}
-
-std::map<std::string, std::string> fetch_first_revisions(const std::vector<std::string>& titles, const Config& cfg) {
-    return fetch_revisions(titles, cfg, true);
-}
 
 }  // namespace kos

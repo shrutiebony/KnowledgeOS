@@ -108,6 +108,7 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/html.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/http_client.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util.hpp
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_text.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/algorithm
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_heap_algorithms.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/__msvc_minmax.hpp
@@ -166,6 +167,7 @@ C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/xsmf_control.h
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/sstream
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/string_view
+C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/util_url.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/src_cpp/wiki_crawl.hpp
 C:/Users/sgoya/Downloads/KnowledgeOS/KnowledgeOS/third_party/json.hpp
 C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/include/array
