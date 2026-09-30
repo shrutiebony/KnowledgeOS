@@ -1,6 +1,6 @@
 # KnowledgeOS
  
-KnowledgeOS estimates how much of a document collection is likely AI-generated or AI-assisted. You work in a browser: pick a collection, optionally filter by country topic, and read scores, charts, and a document graph. The product is an estimate from writing signals, not proof of authorship, and it does not give medical advice.
+Built as part of the work as a research volunteer in Rutgers University - New Brunswick. KnowledgeOS estimates how much of a document collection is likely AI-generated or AI-assisted. You work in a browser: pick a collection, optionally filter by country topic, and read scores, charts, and a document graph. The product is an estimate from writing signals, not proof of authorship, and it does not give medical advice.
 
 You can study built-in encyclopedia and news collections, or add your own material as a separate collection (PDFs, text, or a public website). Extra material is never mixed into the encyclopedia or news collections. You may keep a small number of collections at once. Wikipedia and the news collection cannot be deleted.
 
